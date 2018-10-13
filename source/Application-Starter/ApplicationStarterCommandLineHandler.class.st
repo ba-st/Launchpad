@@ -133,7 +133,7 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 			self
 				logInfo:
 					('<1s>: <2p>'
-						expandMacrosWith: configurationKey greaseString
+						expandMacrosWith: configurationKey asString
 						with: (configuration at: configurationKey)) ]
 ]
 
