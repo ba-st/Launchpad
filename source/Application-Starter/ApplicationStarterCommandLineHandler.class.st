@@ -49,7 +49,7 @@ ApplicationStarterCommandLineHandler >> defaultLogFile [
 { #category : #'private - defaults' }
 ApplicationStarterCommandLineHandler >> defaultLogsPath [
 
-	^ FileLocator localDirectory / 'logs'
+	^ FileLocator workingDirectory / 'logs'
 ]
 
 { #category : #'private - defaults' }
