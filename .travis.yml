@@ -11,16 +11,3 @@ matrix:
   - smalltalk: Pharo64-7.0
   - smalltalk: Pharo-7.0
   fast_finish: true
-before_deploy:
-  - cp "${SMALLTALK_CI_IMAGE}" "ApplicationStarter.image"
-  - cp "${SMALLTALK_CI_CHANGES}" "ApplicationStarter.changes"
-  - zip -q "${TRAVIS_BRANCH}-${TRAVIS_SMALLTALK_VERSION}.zip" "ApplicationStarter.image" "ApplicationStarter.changes"
-deploy:
-  provider: releases
-  api_key:
-    secure: XXX (Use travis setup releases to configure it)
-  file: "${TRAVIS_BRANCH}-${TRAVIS_SMALLTALK_VERSION}.zip"
-  skip_cleanup: true
-  on:
-    repo: ba-st/ApplicationStarter
-    tags: true
