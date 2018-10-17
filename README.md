@@ -9,8 +9,6 @@ Command Line Handler meant to be used as superclass for an application entry poi
 
 [![Build Status](https://travis-ci.org/ba-st/ApplicationStarter.svg?branch=master)](https://travis-ci.org/ba-st/ApplicationStarter) [![Coverage Status](https://coveralls.io/repos/github/ba-st/ApplicationStarter/badge.svg?branch=master)](https://coveralls.io/github/ba-st/ApplicationStarter?branch=master)
 
-Why would I care about this thing? When to use, for whom is designed, when not to use.
-
 Useful when you want to start up your image from the command line, using parameters, this provides a framework to use: mandatory and optional arguments, logging and error handling.
 
 If an error stops the application, it dumps a fuel file with `thisContext` allowing you to debug the error later. More details about this in the [documentation](docs/Debugging.md)
