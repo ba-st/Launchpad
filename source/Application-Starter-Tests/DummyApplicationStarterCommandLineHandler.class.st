@@ -21,11 +21,11 @@ DummyApplicationStarterCommandLineHandler >> basicActivate [
 ]
 
 { #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler >> configuration [
+DummyApplicationStarterCommandLineHandler >> configurationDefinition [
 
-	^ Dictionary new
-		at: #optional put: (self optionNamed: 'optional' defaultingTo: 'unused-optional');
-		at: #mandatory put: (self mandatoryOptionNamed: 'mandatory');
+	^ OrderedCollection new
+		add: (MandatoryArgument named: #mandatory);
+		add: (OptionalArgument named: 'optional' defaultingTo: 'unused-optional');
 		yourself
 ]
 

@@ -31,7 +31,14 @@ ApplicationStarterCommandLineHandler >> basicActivate [
 { #category : #'private - accessing' }
 ApplicationStarterCommandLineHandler >> configuration [
 
-	self subclassResponsibility
+	configurationCache
+		ifNil: [ configurationCache := self configurationDefinition
+				inject: Dictionary new
+				into: [ :conf :definition | 
+					conf
+						at: definition name put: (definition argumentFrom: self);
+						yourself ] ].
+	^ configurationCache
 ]
 
 { #category : #'private - accessing' }
@@ -89,13 +96,6 @@ ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
 
 	self isDebugModeEnabled
 		ifFalse: [ super exitFailure: aMessage ]
-]
-
-{ #category : #initialization }
-ApplicationStarterCommandLineHandler >> initialize [
-
-	super initialize.
-	configurationCache := Dictionary new
 ]
 
 { #category : #'private - accessing arguments' }
@@ -189,26 +189,4 @@ ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage during: aBloc
 		to: self stdout
 		withLevel: 'WARNING'
 		during: aBlock
-]
-
-{ #category : #'private - accessing arguments' }
-ApplicationStarterCommandLineHandler >> mandatoryOptionNamed: aName [
-
-	^ configurationCache
-		at: aName
-		ifAbsentPut: [ self
-				optionAt: aName
-				ifAbsent: [ self logError: ('<1s> option not provided. You must provide one.' expandMacrosWith: aName).
-					self exitFailure: ('<1s> option not present' expandMacrosWith: aName) ] ]
-]
-
-{ #category : #'private - accessing arguments' }
-ApplicationStarterCommandLineHandler >> optionNamed: aName defaultingTo: default [
-
-	^ configurationCache
-		at: aName
-		ifAbsentPut: [ self
-				optionAt: aName
-				ifAbsent: [ self logWarning: ('<1s> option not provided. Defaulting to <2p>' expandMacrosWith: aName with: default).
-					default ] ]
 ]
