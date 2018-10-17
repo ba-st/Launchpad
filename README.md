@@ -1,19 +1,13 @@
-<p align="center"><img src="assets/logos/128x128.png">
- <h1 align="center">ApplicationStarter</h1>
-  <p align="center">
-    Command Line Handler meant to be used as superclass for an application entry point.
-    <br>
-    <a href="docs/"><strong>Explore the docs »</strong></a>
-    <br>
-    <br>
-    <a href="https://github.com/ba-st/ApplicationStarter/issues/new?labels=Type%3A+Defect">Report a defect</a>
-    |
-    <a href="https://github.com/ba-st/ApplicationStarter/issues/new?labels=Type%3A+Feature">Request feature</a>
-  </p>
-</p>
+# ApplicationStarter
 
-[![Build Status](https://travis-ci.org/ba-st/ApplicationStarter.svg?branch=master)](https://travis-ci.org/ba-st/ApplicationStarter)
-[![Coverage Status](https://coveralls.io/repos/github/ba-st/ApplicationStarter/badge.svg?branch=master)](https://coveralls.io/github/ba-st/ApplicationStarter?branch=master)
+Command Line Handler meant to be used as superclass for an application entry point.
+
+**[Explore the Docs](docs/)**
+
+[Report a defect](https://github.com/ba-st/ApplicationStarter/issues/new?labels=Type%3A+Defect) | 
+[Request feature](https://github.com/ba-st/ApplicationStarter/issues/new?labels=Type%3A+Feature)
+
+[![Build Status](https://travis-ci.org/ba-st/ApplicationStarter.svg?branch=master)](https://travis-ci.org/ba-st/ApplicationStarter) [![Coverage Status](https://coveralls.io/repos/github/ba-st/ApplicationStarter/badge.svg?branch=master)](https://coveralls.io/github/ba-st/ApplicationStarter?branch=master)
 
 Why would I care about this thing? When to use, for whom is designed, when not to use.
 
