@@ -42,6 +42,12 @@ ApplicationStarterCommandLineHandler >> configuration [
 ]
 
 { #category : #'private - accessing' }
+ApplicationStarterCommandLineHandler >> configurationDefinition [
+
+	self subclassResponsibility 
+]
+
+{ #category : #'private - accessing' }
 ApplicationStarterCommandLineHandler >> currentTimeStampString [
 
 	^ (DateAndTime current asUTC printString copyReplaceAll: '+00:00' with: 'Z') copyReplaceAll: ':' with: ''
