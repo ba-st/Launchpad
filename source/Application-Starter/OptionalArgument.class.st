@@ -45,3 +45,12 @@ OptionalArgument >> name [
 
 	^ name
 ]
+
+{ #category : #accessing }
+OptionalArgument >> printOn: aStream [
+
+	aStream
+		nextPutAll: '--';
+		nextPutAll: name;
+		nextPutAll: ' (optional)'
+]

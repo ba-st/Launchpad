@@ -101,6 +101,7 @@ ApplicationStarterCommandLineHandler >> exceptionsToHandle [
 ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
 
 	self isDebugModeEnabled
+		ifTrue: [ self error: aMessage ]
 		ifFalse: [ super exitFailure: aMessage ]
 ]
 
