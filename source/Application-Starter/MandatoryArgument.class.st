@@ -43,3 +43,12 @@ MandatoryArgument >> name [
 
 	^ name
 ]
+
+{ #category : #printing }
+MandatoryArgument >> printOn: aStream [
+
+	aStream
+		nextPutAll: '--';
+		nextPutAll: name;
+		nextPutAll: ' (mandatory)'
+]
