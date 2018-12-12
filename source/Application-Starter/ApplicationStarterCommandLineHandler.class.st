@@ -75,11 +75,23 @@ ApplicationStarterCommandLineHandler >> defaultStackDumpFile [
 ApplicationStarterCommandLineHandler >> dumpStackAndReport: exception [
 
 	^ self
-		logError: ('Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: exception messageText)
+		logError:
+			('Dumping Stack Due to Unexpected Error: <1s>'
+				expandMacrosWith: exception messageText)
 		during: [ | serializer binaryMemoryStream |
 
 			serializer := FLSerializer newDefault.
-			serializer analyzer when: [ :object | object class isObsolete ] substituteBy: [ :object | nil ].
+			serializer analyzer
+				when: [ :object | object class isObsolete ]
+				substituteBy: [ :object | nil ].
+			serializer
+				addPostMaterializationAction: [ :materialization | 
+					Smalltalk tools debugger
+						openOn:
+							(Processor activeProcess
+								newDebugSessionNamed: 'External stack'
+								startedAt: materialization root)
+						withFullView: true ].
 
 			binaryMemoryStream := WriteStream on: (ByteArray new: 100).
 			serializer serialize: thisContext on: binaryMemoryStream.
