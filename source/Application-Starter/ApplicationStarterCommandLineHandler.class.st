@@ -89,12 +89,15 @@ ApplicationStarterCommandLineHandler >> dumpStackAndReport: exception [
 					Smalltalk tools debugger
 						openOn:
 							(Processor activeProcess
-								newDebugSessionNamed: 'External stack'
+								newDebugSessionNamed:
+									('Materialized stack: <1s>' expandMacrosWith: materialization root receiver description)
 								startedAt: materialization root)
 						withFullView: true ].
 
 			binaryMemoryStream := WriteStream on: (ByteArray new: 100).
-			serializer serialize: thisContext on: binaryMemoryStream.
+			serializer
+				serialize: (thisContext contextStack detect: [ :context | context receiver = exception ])
+				on: binaryMemoryStream.
 			self defaultStackDumpFile
 				writeStreamDo: [ :stream | 
 					stream binary.
