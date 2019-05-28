@@ -19,7 +19,7 @@ DummyApplicationStarterCommandLineHandlerTest >> assert: anOutputStream matches:
 
 	anOutputStream contents lines
 		with: lines
-		do: [ :line :expected | self assert: (expected match: line) ]
+		do: [ :line :expected | self assert: ( expected match: line ) ]
 ]
 
 { #category : #running }
@@ -51,7 +51,8 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivation [
 
 	| arguments handler |
 
-	arguments := CommandLineArguments withArguments: {'start-service' . '--debug-mode' . '--optional=used-optional' . '--mandatory=something'}.
+	arguments := CommandLineArguments
+		withArguments: {'start-service' . '--debug-mode' . '--optional=used-optional' . '--mandatory=something'}.
 	handler := DummyApplicationStarterCommandLineHandler new commandLine: arguments.
 	handler activationBlock: [ activated := true ].
 	self configureForTest: handler.
@@ -60,12 +61,17 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivation [
 	self assert: fakeStderr contents isEmpty.
 	self shouldnt: [ handler activate ] raise: Exit.
 	self assert: activated.
-	self assert: (('<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix) match: Smalltalk logFileName).
+	self
+		assert:
+			( ( '<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix )
+				match: Smalltalk logFileName ).
 	self assert: fakeStderr contents isEmpty.
 	self deny: fakeStdout contents isEmpty.
-	self assert: fakeStdout matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''used-optional'''}.
-	self assert: (handler configuration at: #optional) equals: 'used-optional'.
-	self assert: (handler configuration at: #mandatory) equals: 'something'
+	self
+		assert: fakeStdout
+		matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''used-optional'''}.
+	self assert: ( handler configuration at: #optional ) equals: 'used-optional'.
+	self assert: ( handler configuration at: #mandatory ) equals: 'something'
 ]
 
 { #category : #tests }
@@ -73,23 +79,30 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithErrorInDebugM
 
 	| arguments handler |
 
-	arguments := CommandLineArguments withArguments: {'start-service' . '--debug-mode' . '--optional=used-optional' . '--mandatory=something'}.
+	arguments := CommandLineArguments
+		withArguments: {'start-service' . '--debug-mode' . '--optional=used-optional' . '--mandatory=something'}.
 	handler := DummyApplicationStarterCommandLineHandler new commandLine: arguments.
 	handler
 		activationBlock: [ activated := true.
-			ZeroDivide signal ].
+			ZeroDivide signal
+			].
 	self configureForTest: handler.
 	self deny: activated.
 	self assert: fakeStdout contents isEmpty.
 	self assert: fakeStderr contents isEmpty.
 	self should: [ handler activate ] raise: ZeroDivide.
 	self assert: activated.
-	self assert: (('<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix) match: Smalltalk logFileName).
+	self
+		assert:
+			( ( '<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix )
+				match: Smalltalk logFileName ).
 	self assert: fakeStderr contents isEmpty.
 	self deny: fakeStdout contents isEmpty.
-	self assert: fakeStdout matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''used-optional'''}.
-	self assert: (handler configuration at: #optional) equals: 'used-optional'.
-	self assert: (handler configuration at: #mandatory) equals: 'something'
+	self
+		assert: fakeStdout
+		matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''used-optional'''}.
+	self assert: ( handler configuration at: #optional ) equals: 'used-optional'.
+	self assert: ( handler configuration at: #mandatory ) equals: 'something'
 ]
 
 { #category : #tests }
@@ -97,23 +110,37 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithErrorWithoutD
 
 	| arguments handler |
 
-	arguments := CommandLineArguments withArguments: {'start-service' . '--optional=used-optional' . '--mandatory=something'}.
+	arguments := CommandLineArguments
+		withArguments: {'start-service' . '--optional=used-optional' . '--mandatory=something'}.
 	handler := DummyApplicationStarterCommandLineHandler new commandLine: arguments.
 	handler
 		activationBlock: [ activated := true.
-			ZeroDivide signal: 'Division by Zero' ].
+			ZeroDivide signal: 'Division by Zero'
+			].
 	self configureForTest: handler.
 	self deny: activated.
 	self assert: fakeStdout contents isEmpty.
 	self assert: fakeStderr contents isEmpty.
 	self should: [ handler activate ] raise: Exit.
 	self assert: activated.
-	self assert: (('<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix) match: Smalltalk logFileName).
-	self assert: fakeStderr matches: {'[*] [ERROR] Dumping Stack Due to Unexpected Error: Division by Zero' . '[*] [ERROR] Dumping Stack Due to Unexpected Error: Division by Zero... [OK]'}.
-	self assert: fakeStdout matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''used-optional'''}.
-	self assert: (handler configuration at: #optional) equals: 'used-optional'.
-	self assert: (handler configuration at: #mandatory) equals: 'something'.
-	self assert: (handler defaultLogsPath childNames anySatisfy: [ :fileName | ('<1s>-*Z.fuel' expandMacrosWith: handler logPrefix) match: fileName ])
+	self
+		assert:
+			( ( '<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix )
+				match: Smalltalk logFileName ).
+	self
+		assert: fakeStderr
+		matches:
+			{'[*] [ERROR] Dumping Stack Due to Unexpected Error: Division by Zero'.
+			'[*] [ERROR] Dumping Stack Due to Unexpected Error: Division by Zero... [OK]'}.
+	self
+		assert: fakeStdout
+		matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''used-optional'''}.
+	self assert: ( handler configuration at: #optional ) equals: 'used-optional'.
+	self assert: ( handler configuration at: #mandatory ) equals: 'something'.
+	self
+		assert:
+			( handler defaultLogsPath childNames
+				anySatisfy: [ :fileName | ( '<1s>-*Z.fuel' expandMacrosWith: handler logPrefix ) match: fileName ] )
 ]
 
 { #category : #tests }
@@ -130,7 +157,9 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithoutMandatoryA
 	self assert: fakeStderr contents isEmpty.
 	self should: [ handler activate ] raise: Exit.
 	self assert: fakeStdout contents isEmpty.
-	self assert: fakeStderr matches: {'[*] [ERROR] mandatory option not provided. You must provide one.'}
+	self
+		assert: fakeStderr
+		matches: {'[*] [ERROR] mandatory option not provided. You must provide one.'}
 ]
 
 { #category : #tests }
@@ -147,9 +176,16 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithoutOptionalAr
 	self assert: fakeStderr contents isEmpty.
 	self shouldnt: [ handler activate ] raise: Exit.
 	self assert: activated.
-	self assert: (('<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix) match: Smalltalk logFileName).
-	self assert: fakeStderr matches: {'[*] [WARNING] optional option not provided. Defaulting to ''unused-optional'''}.
-	self assert: fakeStdout matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''unused-optional'''}.
-	self assert: (handler configuration at: #optional) equals: 'unused-optional'.
-	self assert: (handler configuration at: #mandatory) equals: 'something'
+	self
+		assert:
+			( ( '<1s>/<2s>-*Z.log' expandMacrosWith: handler defaultLogsPath pathString with: handler logPrefix )
+				match: Smalltalk logFileName ).
+	self
+		assert: fakeStderr
+		matches: {'[*] [WARNING] optional option not provided. Defaulting to ''unused-optional'''}.
+	self
+		assert: fakeStdout
+		matches: {'[*] [INFO] mandatory: ''something''' . '[*] [INFO] optional: ''unused-optional'''}.
+	self assert: ( handler configuration at: #optional ) equals: 'unused-optional'.
+	self assert: ( handler configuration at: #mandatory ) equals: 'something'
 ]

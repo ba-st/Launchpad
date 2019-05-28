@@ -7,6 +7,29 @@ Class {
 	#category : #'Application-Starter'
 }
 
+{ #category : #accessing }
+ApplicationStarterCommandLineHandler class >> commandName [
+
+	" Overwrite this method to provide a short name for this command handler.
+	You may pass the commandName as first argument to the image to select this handler"
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+ApplicationStarterCommandLineHandler class >> description [
+
+	"This method should return a short one-line description of the command"
+
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+ApplicationStarterCommandLineHandler class >> isAbstract [
+
+	^ self = ApplicationStarterCommandLineHandler
+]
+
 { #category : #activation }
 ApplicationStarterCommandLineHandler >> activate [
 
@@ -15,11 +38,13 @@ ApplicationStarterCommandLineHandler >> activate [
 
 	[ self
 		logConfiguration;
-		basicActivate ]
+		basicActivate
+	]
 		on: self exceptionsToHandle
 		do: [ :signal | 
 			self dumpStackAndReport: signal.
-			self exitFailure ]
+			self exitFailure
+			]
 ]
 
 { #category : #activation }
@@ -36,8 +61,10 @@ ApplicationStarterCommandLineHandler >> configuration [
 				inject: Dictionary new
 				into: [ :conf :definition | 
 					conf
-						at: definition name put: (definition argumentFrom: self);
-						yourself ] ].
+						at: definition name put: ( definition argumentFrom: self );
+						yourself
+					]
+			].
 	^ configurationCache
 ]
 
@@ -50,13 +77,16 @@ ApplicationStarterCommandLineHandler >> configurationDefinition [
 { #category : #'private - accessing' }
 ApplicationStarterCommandLineHandler >> currentTimeStampString [
 
-	^ (DateAndTime current asUTC printString copyReplaceAll: '+00:00' with: 'Z') copyReplaceAll: ':' with: ''
+	^ ( DateAndTime current asUTC printString copyReplaceAll: '+00:00' with: 'Z' )
+		copyReplaceAll: ':'
+		with: ''
 ]
 
 { #category : #'private - defaults' }
 ApplicationStarterCommandLineHandler >> defaultLogFile [
 
-	^ self defaultLogsPath / ('<1s>-<2s>.log' expandMacrosWith: self logPrefix with: self currentTimeStampString)
+	^ self defaultLogsPath
+		/ ( '<1s>-<2s>.log' expandMacrosWith: self logPrefix with: self currentTimeStampString )
 ]
 
 { #category : #'private - defaults' }
@@ -68,40 +98,16 @@ ApplicationStarterCommandLineHandler >> defaultLogsPath [
 { #category : #'private - defaults' }
 ApplicationStarterCommandLineHandler >> defaultStackDumpFile [
 
-	^ self defaultLogsPath / ('<1s>-<2s>.fuel' expandMacrosWith: self logPrefix with: self currentTimeStampString)
+	^ self defaultLogsPath
+		/ ( '<1s>-<2s>.fuel' expandMacrosWith: self logPrefix with: self currentTimeStampString )
 ]
 
 { #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> dumpStackAndReport: exception [
+ApplicationStarterCommandLineHandler >> dumpStackAndReport: aSignal [
 
 	^ self
-		logError:
-			('Dumping Stack Due to Unexpected Error: <1s>'
-				expandMacrosWith: exception messageText)
-		during: [ | serializer binaryMemoryStream |
-
-			serializer := FLSerializer newDefault.
-			serializer analyzer
-				when: [ :object | object class isObsolete ]
-				substituteBy: [ :object | nil ].
-			serializer
-				addPostMaterializationAction: [ :materialization | 
-					Smalltalk tools debugger
-						openOn:
-							(Processor activeProcess
-								newDebugSessionNamed:
-									('Materialized stack: <1s>' expandMacrosWith: materialization root receiver description)
-								startedAt: materialization root)
-						withFullView: true ].
-
-			binaryMemoryStream := WriteStream on: (ByteArray new: 100).
-			serializer
-				serialize: (thisContext contextStack detect: [ :context | context receiver = exception ])
-				on: binaryMemoryStream.
-			self defaultStackDumpFile
-				writeStreamDo: [ :stream | 
-					stream binary.
-					stream nextPutAll: binaryMemoryStream contents ] ]
+		logError: ( 'Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: aSignal messageText )
+		during: [ ErrorStackSerializer serializeStackOf: aSignal to: self defaultStackDumpFile ]
 ]
 
 { #category : #'private - accessing' }
@@ -112,7 +118,7 @@ ApplicationStarterCommandLineHandler >> exceptionsToHandle [
 		ifFalse: [ Error ]
 ]
 
-{ #category : #utility }
+{ #category : #utilities }
 ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
 
 	self isDebugModeEnabled
@@ -131,7 +137,7 @@ ApplicationStarterCommandLineHandler >> isDebugModeEnabled [
 ApplicationStarterCommandLineHandler >> log: aMessage to: anOutputStream withLevel: aLogLevel [
 
 	anOutputStream
-		nextPutAll: ('[<1p>] [<2s>] <3s><n>' expandMacrosWith: DateAndTime current with: aLogLevel with: aMessage);
+		nextPutAll: ( '[<1p>] [<2s>] <3s><n>' expandMacrosWith: DateAndTime current with: aLogLevel with: aMessage );
 		flush
 ]
 
@@ -140,7 +146,8 @@ ApplicationStarterCommandLineHandler >> log: aMessage to: anOutputStream withLev
 
 	self log: aMessage to: anOutputStream withLevel: aLogLevel.
 	[ aBlock value.
-	self log: aMessage , '... [OK]' to: anOutputStream withLevel: aLogLevel ]
+	self log: aMessage , '... [OK]' to: anOutputStream withLevel: aLogLevel
+	]
 		ifCurtailed: [ self logError: aMessage , '... [FAILED]' ]
 ]
 
@@ -154,9 +161,10 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 		do: [ :configurationKey | 
 			self
 				logInfo:
-					('<1s>: <2p>'
+					( '<1s>: <2p>'
 						expandMacrosWith: configurationKey asString
-						with: (configuration at: configurationKey)) ]
+						with: ( configuration at: configurationKey ) )
+			]
 ]
 
 { #category : #'private - logging' }

@@ -8,6 +8,18 @@ Class {
 	#category : #'Application-Starter-Tests'
 }
 
+{ #category : #accessing }
+DummyApplicationStarterCommandLineHandler class >> commandName [
+
+	^ 'dummy'
+]
+
+{ #category : #accessing }
+DummyApplicationStarterCommandLineHandler class >> description [
+
+	^ 'this is a dummy command line handler for tests'
+]
+
 { #category : #initialization }
 DummyApplicationStarterCommandLineHandler >> activationBlock: aBlock [
 
@@ -24,8 +36,8 @@ DummyApplicationStarterCommandLineHandler >> basicActivate [
 DummyApplicationStarterCommandLineHandler >> configurationDefinition [
 
 	^ OrderedCollection new
-		add: (MandatoryArgument named: #mandatory);
-		add: (OptionalArgument named: 'optional' defaultingTo: 'unused-optional');
+		add: ( MandatoryArgument named: #mandatory );
+		add: ( OptionalArgument named: 'optional' defaultingTo: 'unused-optional' );
 		yourself
 ]
 
