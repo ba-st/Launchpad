@@ -20,6 +20,18 @@ BaselineOfApplicationStarter >> baseline: spec [
 				group: 'Development' with: 'Deployment';
 				group: 'default' with: 'Deployment'
 			].
+	self setUpCompatibilityPackages: spec
+]
+
+{ #category : #baselines }
+BaselineOfApplicationStarter >> setUpCompatibilityPackages: spec [
+
+	spec
+		for: #'pharo6.x'
+		do: [ spec
+				package: 'Application-Starter-Pharo6';
+				group: 'Deployment' with: 'Application-Starter-Pharo6'
+			].
 	spec
 		for: #'pharo7.x'
 		do: [ spec
