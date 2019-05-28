@@ -13,9 +13,7 @@ ApplicationStarterCommandLineHandler class >> commandName [
 	" Overwrite this method to provide a short name for this command handler.
 	You may pass the commandName as first argument to the image to select this handler"
 
-	^ self = ApplicationStarterCommandLineHandler
-		ifTrue: [ super commandName ]
-		ifFalse: [ self subclassResponsibility ]
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -23,9 +21,13 @@ ApplicationStarterCommandLineHandler class >> description [
 
 	"This method should return a short one-line description of the command"
 
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
+ApplicationStarterCommandLineHandler class >> isAbstract [
+
 	^ self = ApplicationStarterCommandLineHandler
-		ifTrue: [ super description ]
-		ifFalse: [ self subclassResponsibility ]
 ]
 
 { #category : #activation }
