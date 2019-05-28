@@ -9,12 +9,21 @@ BaselineOfApplicationStarter >> baseline: spec [
 
 	<baseline>
 	spec
-		for: #common
+		for: #pharo
 		do: [ spec
 				package: 'Application-Starter';
-				package: 'Application-Starter-Tests' with: [ spec requires: 'Application-Starter' ].
+				group: 'Deployment' with: 'Application-Starter'.
 			spec
-				group: 'Deployment' with: #('Application-Starter');
-				group: 'Development' with: #('Application-Starter-Tests');
-				group: 'default' with: #('Deployment') ]
+				package: 'Application-Starter-Tests' with: [ spec requires: 'Application-Starter' ];
+				group: 'Development' with: 'Application-Starter-Tests'.
+			spec
+				group: 'Development' with: 'Deployment';
+				group: 'default' with: 'Deployment'
+			].
+	spec
+		for: #'pharo7.x'
+		do: [ spec
+				package: 'Application-Starter-Pharo7';
+				group: 'Deployment' with: 'Application-Starter-Pharo7'
+			]
 ]

@@ -99,9 +99,7 @@ ApplicationStarterCommandLineHandler >> dumpStackAndReport: exception [
 				serialize: (thisContext contextStack detect: [ :context | context receiver = exception ])
 				on: binaryMemoryStream.
 			self defaultStackDumpFile
-				writeStreamDo: [ :stream | 
-					stream binary.
-					stream nextPutAll: binaryMemoryStream contents ] ]
+				binaryWriteStreamDo: [ :stream | stream nextPutAll: binaryMemoryStream contents ] ]
 ]
 
 { #category : #'private - accessing' }
