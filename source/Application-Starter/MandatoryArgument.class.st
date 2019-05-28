@@ -25,10 +25,12 @@ MandatoryArgument >> argumentFrom: aCommandLineHandler [
 
 	^ converter
 		cull:
-			(aCommandLineHandler
+			( aCommandLineHandler
 				optionAt: name
-				ifAbsent: [ aCommandLineHandler logError: ('<1s> option not provided. You must provide one.' expandMacrosWith: name).
-					aCommandLineHandler exitFailure: ('<1s> option not present' expandMacrosWith: name) ])
+				ifAbsent: [ aCommandLineHandler
+						logError: ( '<1s> option not provided. You must provide one.' expandMacrosWith: name ).
+					aCommandLineHandler exitFailure: ( '<1s> option not present' expandMacrosWith: name )
+					] )
 ]
 
 { #category : #initialization }

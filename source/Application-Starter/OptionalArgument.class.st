@@ -18,7 +18,10 @@ OptionalArgument class >> named: anArgumentName defaultingTo: aDefaultValue [
 { #category : #'Instance Creation' }
 OptionalArgument class >> named: anArgumentName defaultingTo: aDefaultValue convertingWith: aSymbolOrBlock [
 
-	^ self new initializeNamed: anArgumentName defaultingTo: aDefaultValue convertingWith: aSymbolOrBlock
+	^ self new
+		initializeNamed: anArgumentName
+		defaultingTo: aDefaultValue
+		convertingWith: aSymbolOrBlock
 ]
 
 { #category : #Evaluating }
@@ -26,10 +29,12 @@ OptionalArgument >> argumentFrom: aCommandLineHandler [
 
 	^ converter
 		cull:
-			(aCommandLineHandler
+			( aCommandLineHandler
 				optionAt: name
-				ifAbsent: [ aCommandLineHandler logWarning: ('<1s> option not provided. Defaulting to <2p>' expandMacrosWith: name with: default).
-					default ])
+				ifAbsent: [ aCommandLineHandler
+						logWarning: ( '<1s> option not provided. Defaulting to <2p>' expandMacrosWith: name with: default ).
+					default
+					] )
 ]
 
 { #category : #initialization }

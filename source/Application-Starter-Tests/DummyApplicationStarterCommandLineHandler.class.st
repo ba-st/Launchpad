@@ -24,8 +24,8 @@ DummyApplicationStarterCommandLineHandler >> basicActivate [
 DummyApplicationStarterCommandLineHandler >> configurationDefinition [
 
 	^ OrderedCollection new
-		add: (MandatoryArgument named: #mandatory);
-		add: (OptionalArgument named: 'optional' defaultingTo: 'unused-optional');
+		add: ( MandatoryArgument named: #mandatory );
+		add: ( OptionalArgument named: 'optional' defaultingTo: 'unused-optional' );
 		yourself
 ]
 
