@@ -35,19 +35,18 @@ ApplicationStarterCommandLineHandler >> activate [
 
 	self defaultLogsPath ensureCreateDirectory.
 	Smalltalk logFileName: self defaultLogFile pathString.
-
-	[ self
-		logConfiguration;
-		basicActivate
+	[ self logConfiguration.
+	self basicActivate
 	]
 		on: self exceptionsToHandle
 		do: [ :signal | 
 			self dumpStackAndReport: signal.
 			self exitFailure
-			]
+			].
+	self suspendUiIfRequired
 ]
 
-{ #category : #activation }
+{ #category : #'private - activation' }
 ApplicationStarterCommandLineHandler >> basicActivate [
 
 	self subclassResponsibility
@@ -219,4 +218,12 @@ ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage during: aBloc
 		to: self stdout
 		withLevel: 'WARNING'
 		during: aBlock
+]
+
+{ #category : #activation }
+ApplicationStarterCommandLineHandler >> suspendUiIfRequired [
+
+	<ignoreForCoverage>
+	( self hasOption: 'suspend-ui' )
+		ifTrue: [ UIManager default uiProcess suspend ]
 ]
