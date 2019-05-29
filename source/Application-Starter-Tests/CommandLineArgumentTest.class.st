@@ -19,7 +19,7 @@ CommandLineArgumentTest >> testFlagArgument [
 
 	| argument |
 
-	argument := FlagArgument named: 'my-flag' whenPresentBe: true.
+	argument := FlagArgument named: 'my-flag'.
 
 	self assert: argument printString equals: '--my-flag'.
 
@@ -29,24 +29,6 @@ CommandLineArgumentTest >> testFlagArgument [
 	self
 		assert: ( argument argumentFrom: ( self handlerWith: '--my-flag=true' ) ) equals: true;
 		assert: ( argument argumentFrom: ( self handlerWith: '--my-flag=false' ) ) equals: false
-]
-
-{ #category : #tests }
-CommandLineArgumentTest >> testFlagArgumentDefaultingToFalse [
-
-	| argument |
-
-	argument := FlagArgument named: 'dont-do-something' whenPresentBe: false.
-
-	self assert: argument printString equals: '--dont-do-something'.
-
-	self
-		assert: ( argument argumentFrom: ( self handlerWith: '--dont-do-something' ) ) equals: false;
-		assert: ( argument argumentFrom: ( self handlerWith: '--do-something' ) ) equals: true.
-	self
-		assert: ( argument argumentFrom: ( self handlerWith: '--dont-do-something=true' ) ) equals: true;
-		assert: ( argument argumentFrom: ( self handlerWith: '--dont-do-something=false' ) )
-			equals: false
 ]
 
 { #category : #tests }

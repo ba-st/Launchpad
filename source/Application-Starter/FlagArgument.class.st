@@ -9,27 +9,24 @@ Class {
 }
 
 { #category : #'instance creation' }
-FlagArgument class >> named: anArgumentName whenPresentBe: aBoolean [
+FlagArgument class >> named: anArgumentName [
 
-	^ self new initializeNamed: anArgumentName whenPresentBe: aBoolean
+	^ self new initializeNamed: anArgumentName
 ]
 
 { #category : #evaluating }
 FlagArgument >> argumentFrom: aCommandLineHandler [
 
-	( aCommandLineHandler hasOption: name )
-		ifFalse: [ ^ valueWhenPresent not ].
 	^ aCommandLineHandler
 		optionAt: name
 		ifPresent: [ :value | self parseBooleanFrom: value inContextOf: aCommandLineHandler ]
-		ifAbsent: [ valueWhenPresent ]
+		ifAbsent: [ aCommandLineHandler hasOption: name ]
 ]
 
 { #category : #initialization }
-FlagArgument >> initializeNamed: anArgumentName whenPresentBe: aBoolean [
+FlagArgument >> initializeNamed: anArgumentName [
 
-	name := anArgumentName.
-	valueWhenPresent := aBoolean
+	name := anArgumentName
 ]
 
 { #category : #accessing }
@@ -47,10 +44,9 @@ FlagArgument >> parseBooleanFrom: aString inContextOf: aCommandLineHandler [
 		ifTrue: [ ^ false ].
 	aCommandLineHandler
 		exitFailure:
-			( '<1s> is not a valid argument for <2s>, expected true, false or nothing (<3p>)'
+			( '<1s> is not a valid argument for <2s>, expected --<2s>=true, --<2s>=false or --<2s>'
 				expandMacrosWith: aString
-				with: name
-				with: valueWhenPresent )
+				with: name )
 ]
 
 { #category : #printing }

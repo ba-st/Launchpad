@@ -44,9 +44,9 @@ ExampleApplicationStarterCommandLineHandler >> basicActivate [
 ExampleApplicationStarterCommandLineHandler >> configurationDefinition [
 
 	^ OrderedCollection new
-		add: ( FlagArgument named: 'fail' whenPresentBe: true );
-		add: ( FlagArgument named: 'raise-error' whenPresentBe: true );
-		add: ( FlagArgument named: 'quit' whenPresentBe: true );
+		add: ( FlagArgument named: 'fail' );
+		add: ( FlagArgument named: 'raise-error' );
+		add: ( FlagArgument named: 'quit' );
 		add: ( OptionalArgument named: 'seed' defaultingTo: 0 convertingWith: #asNumber );
 		add: ( MandatoryArgument named: 'addend' convertingWith: [ :arg | arg asNumber ] );
 		asArray
