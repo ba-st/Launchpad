@@ -31,12 +31,13 @@ ExampleApplicationStarterCommandLineHandler >> addend [
 ExampleApplicationStarterCommandLineHandler >> basicActivate [
 
 	( self configuration at: 'fail' )
-		ifTrue: [ self exitFailure: 'This was a forced failure' ].
+		ifTrue: [ self exitFailure: 'This was a forced failure, should not dump a stack on runtime, nor log nothing specific' ].
 	( self configuration at: 'raise-error' )
 		ifTrue: [ self error: 'This was a forced error, which should dump a stack file on runtime' ].
-
 	self
-		logInfo: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self addend with: self sum )
+		logInfo: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self addend with: self sum ).
+	( self configuration at: 'quit' )
+		ifTrue: [ Smalltalk snapshot: false andQuit: true ]
 ]
 
 { #category : #'private - accessing' }
@@ -45,6 +46,7 @@ ExampleApplicationStarterCommandLineHandler >> configurationDefinition [
 	^ OrderedCollection new
 		add: ( FlagArgument named: 'fail' whenPresentBe: true );
 		add: ( FlagArgument named: 'raise-error' whenPresentBe: true );
+		add: ( FlagArgument named: 'quit' whenPresentBe: true );
 		add: ( OptionalArgument named: 'seed' defaultingTo: 0 convertingWith: #asNumber );
 		add: ( MandatoryArgument named: 'addend' convertingWith: [ :arg | arg asNumber ] );
 		asArray
