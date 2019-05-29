@@ -18,12 +18,10 @@ ErrorStackSerializer class >> openDebuggerOn: anExecutionStack [
 { #category : #utilities }
 ErrorStackSerializer class >> serializeStackOf: aSignal to: aFile [
 
-	| binaryMemoryStream stackToDump |
+	| stackToDump |
 
-	binaryMemoryStream := WriteStream on: ( ByteArray new: 100 ).
 	stackToDump := thisContext contextStack detect: [ :context | context receiver = aSignal ].
-	self serializer serialize: stackToDump on: binaryMemoryStream.
-	aFile binaryWriteStreamDo: [ :stream | stream nextPutAll: binaryMemoryStream contents ]
+	aFile binaryWriteStreamDo: [ :stream | self serializer serialize: stackToDump on: stream ]
 ]
 
 { #category : #private }
