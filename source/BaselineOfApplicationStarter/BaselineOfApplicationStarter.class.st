@@ -14,11 +14,15 @@ BaselineOfApplicationStarter >> baseline: spec [
 				package: 'Application-Starter';
 				group: 'Deployment' with: 'Application-Starter'.
 			spec
-				package: 'Application-Starter-Tests' with: [ spec requires: 'Application-Starter' ];
+				package: 'Application-Starter-Examples' with: [ spec requires: 'Application-Starter' ];
+				group: 'Examples' with: 'Application-Starter-Examples'.
+			spec
+				package: 'Application-Starter-Tests'
+					with: [ spec requires: #('Application-Starter' 'Application-Starter-Examples') ];
 				group: 'Development' with: 'Application-Starter-Tests'.
 			spec
 				group: 'Development' with: 'Deployment';
-				group: 'default' with: 'Deployment'
+				group: 'default' with: 'Development'
 			].
 	self setUpCompatibilityPackages: spec
 ]

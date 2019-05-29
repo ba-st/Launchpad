@@ -33,6 +33,7 @@ DummyApplicationStarterCommandLineHandlerTest >> configureForTest: handler [
 { #category : #running }
 DummyApplicationStarterCommandLineHandlerTest >> setUp [
 
+	super setUp.
 	memoryFileSystem := FileSystem memory.
 	fakeStdout := memoryFileSystem / 'stdout'.
 	fakeStderr := memoryFileSystem / 'stderr'.
@@ -43,7 +44,8 @@ DummyApplicationStarterCommandLineHandlerTest >> setUp [
 { #category : #running }
 DummyApplicationStarterCommandLineHandlerTest >> tearDown [
 
-	Smalltalk logFileName: currentLogFileName
+	Smalltalk logFileName: currentLogFileName.
+	super tearDown
 ]
 
 { #category : #tests }
