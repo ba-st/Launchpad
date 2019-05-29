@@ -20,7 +20,7 @@ MandatoryArgument class >> named: anArgumentName convertingWith: aSymbolOrBlock 
 	^ self new initializeNamed: anArgumentName convertingWith: aSymbolOrBlock
 ]
 
-{ #category : #Evaluating }
+{ #category : #evaluating }
 MandatoryArgument >> argumentFrom: aCommandLineHandler [
 
 	^ converter
@@ -40,7 +40,7 @@ MandatoryArgument >> initializeNamed: anArgumentName convertingWith: aSymbolOrBl
 	converter := aSymbolOrBlock
 ]
 
-{ #category : #Evaluating }
+{ #category : #accessing }
 MandatoryArgument >> name [
 
 	^ name

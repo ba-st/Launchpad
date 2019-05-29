@@ -24,7 +24,7 @@ OptionalArgument class >> named: anArgumentName defaultingTo: aDefaultValue conv
 		convertingWith: aSymbolOrBlock
 ]
 
-{ #category : #Evaluating }
+{ #category : #evaluating }
 OptionalArgument >> argumentFrom: aCommandLineHandler [
 
 	^ converter
@@ -51,7 +51,7 @@ OptionalArgument >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : #printing }
 OptionalArgument >> printOn: aStream [
 
 	aStream

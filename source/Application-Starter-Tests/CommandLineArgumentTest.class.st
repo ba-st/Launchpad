@@ -15,11 +15,49 @@ CommandLineArgumentTest >> handlerWith: anArgument [
 ]
 
 { #category : #tests }
+CommandLineArgumentTest >> testFlagArgument [
+
+	| argument |
+
+	argument := FlagArgument named: 'my-flag' whenPresentBe: true.
+
+	self assert: argument printString equals: '--my-flag'.
+
+	self
+		assert: ( argument argumentFrom: ( self handlerWith: '--my-flag' ) ) equals: true;
+		assert: ( argument argumentFrom: ( self handlerWith: '--not-my-flag' ) ) equals: false.
+	self
+		assert: ( argument argumentFrom: ( self handlerWith: '--my-flag=true' ) ) equals: true;
+		assert: ( argument argumentFrom: ( self handlerWith: '--my-flag=false' ) ) equals: false
+]
+
+{ #category : #tests }
+CommandLineArgumentTest >> testFlagArgumentDefaultingToFalse [
+
+	| argument |
+
+	argument := FlagArgument named: 'dont-do-something' whenPresentBe: false.
+
+	self assert: argument printString equals: '--dont-do-something'.
+
+	self
+		assert: ( argument argumentFrom: ( self handlerWith: '--dont-do-something' ) ) equals: false;
+		assert: ( argument argumentFrom: ( self handlerWith: '--do-something' ) ) equals: true.
+	self
+		assert: ( argument argumentFrom: ( self handlerWith: '--dont-do-something=true' ) ) equals: true;
+		assert: ( argument argumentFrom: ( self handlerWith: '--dont-do-something=false' ) )
+			equals: false
+]
+
+{ #category : #tests }
 CommandLineArgumentTest >> testMandatoryArgument [
 
 	| argument |
 
 	argument := MandatoryArgument named: 'one'.
+
+	self assert: argument printString equals: '--one (mandatory)'.
+
 	self assert: ( argument argumentFrom: ( self handlerWith: '--one=1' ) ) equals: '1'.
 	self should: [ argument argumentFrom: ( self handlerWith: '--one' ) ] raise: Exit.
 	self should: [ argument argumentFrom: ( self handlerWith: '--two' ) ] raise: Exit.
@@ -36,9 +74,13 @@ CommandLineArgumentTest >> testOptionalArgument [
 	| argument |
 
 	argument := OptionalArgument named: 'one' defaultingTo: 'no one'.
+
+	self assert: argument printString equals: '--one (optional)'.
+
 	self assert: ( argument argumentFrom: ( self handlerWith: '--one=1' ) ) equals: '1'.
-	self assert: ( argument argumentFrom: ( self handlerWith: '--one' ) ) equals: 'no one'.
-	self assert: ( argument argumentFrom: ( self handlerWith: '--two' ) ) equals: 'no one'.
+	self
+		assert: ( argument argumentFrom: ( self handlerWith: '--one' ) ) equals: 'no one';
+		assert: ( argument argumentFrom: ( self handlerWith: '--two' ) ) equals: 'no one'.
 	self
 		assert:
 			( ( OptionalArgument named: 'number' defaultingTo: 42 convertingWith: #asNumber )
