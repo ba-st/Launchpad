@@ -1,5 +1,4 @@
 language: smalltalk
-sudo: false
 os:
 - linux
 smalltalk:
