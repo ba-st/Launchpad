@@ -13,7 +13,7 @@ Then implement the required methods:
 - basicActivate: what to do to start up your application.
 - configurationDefinitions: a collection of arguments required by the command line handler.
 - logPrefix: a string to prepend to the logs and fuel files.
-- commandName: (class side) used to activate this handler from command line.
+- commandName: (class side) used to activate this handler from the command line.
 - description: (class side) used to describe this handler when `./pharo <image> list` is called.
 
 ### basicActivate
@@ -40,7 +40,7 @@ Supports transformations to the provided value (something like: `#asNumber` or `
 #### OptionalArgument
 
 To define arguments of the format `--key=value`, defined as: `OptionalArgument named: 'key' defaultingTo: aDefaultValue`.
-If this argument is absent, the program will warn that a `aDefaultValue` is being used but continue execution.
+If this argument is absent, the program will warn that `aDefaultValue` is being used but continue execution.
 
 Supports transformations to the provided value (something like: `#asNumber` or `[:arg | arg asNumber]`).
 
@@ -57,7 +57,7 @@ _Assuming the `ExampleApplicationStarterCommandLineHandler` is being used_
 The Example allows 5 possible arguments:
 
 - `--fail` a flag to demonstrate what happens when the handler exits with an expected error (just exit).
-- `--raise-error` a flag to demonstrate what happens when the handler exits with an unexpected error (crate a fuel stack file).
+- `--raise-error` a flag to demonstrate what happens when the handler exits with an unexpected error (create a fuel stack file).
 - `--seed` an optional argument which is interpreted as a Number defaults to 0.
 - `--addend` mandatory argument which is interpreted as a Number.
 
@@ -74,10 +74,10 @@ Let's split that and explain each section:
 - `./pharo` is the pharo headless startup script
 - `Pharo.image` is our current image
 - `example` is the `commandName` we defined on the class side of the example handler.
-    Without this the handler is not activated and the image does nothing in partiocular.
+    Without this, the handler is not activated and the image does nothing in particular.
 - `--seed=2` our optional argument, this could be absent, and then `self configuration at: 'seed'` would be 0.
     Because the handler uses `#asNumber`, the string `'2'` is converted to the number `2`.
-- `--addend=40` out mandatory argument, without this the program will log an error and exit (no dump file).
+- `--addend=40` out mandatory argument, without this, the program will log an error and exit (no dump file).
     Because the handler uses `#asNumber`, the string `'40'` is converted to the number `4`.
 
 This would log:
@@ -90,7 +90,7 @@ This would log:
 [2019-05-31T03:06:56.965318-03:00] [INFO] The sum of 2 and 40 is 42
 ```
 
-If we ommit `--addend` which is mandatory, the output would be:
+If we omit `--addend` which is mandatory, the output would be:
 
 ```bash
 ./pharo Pharo.image example --seed=2
@@ -100,7 +100,7 @@ If we ommit `--addend` which is mandatory, the output would be:
 [2019-05-31T03:06:56.965318-03:00] [ERROR] addend option not provided. You must provide one.
 ```
 
-On the other hand if we ommit `--seed` which is optional, the output would be:
+On the other hand, if we omit `--seed` which is optional, the output would be:
 
 ```bash
 ./pharo Pharo.image example --addend=40
@@ -114,7 +114,7 @@ On the other hand if we ommit `--seed` which is optional, the output would be:
 [2019-05-31T03:06:56.965318-03:00] [INFO] The sum of 0 and 40 is 40
 ```
 
-Ussing `--fail` which will force an exit (expected exit, so no fuel dump)
+Using `--fail` which will force an exit (expected exit, so no fuel dump)
 
 ```bash
 ./pharo Pharo.image example --addend=40 --fail
@@ -131,7 +131,7 @@ This was a forced failure, should not dump a stack on runtime, nor log nothing s
 Command line handler failed
 ```
 
-Using `--raise-error` which simulates an unexpected error and generate a fuel dump file.
+Using `--raise-error` which simulates an unexpected error and generates a fuel dump file.
 Details on how can you use that dump are described in [Debugging](Debugging.md).
 
 You should also see a .fuel file on logs/, this is usually a `<logPrefix>-<timestamp>.fuel` but for testing purpouses, the example uses `<logPrefix>-<date>.fuel`.
@@ -158,7 +158,7 @@ Command line handler failed
 There are 2 flags which are defined on the superclass and always present:
 
 - `--suspend-ui` suspends the UI process to improve performance on headless applications. (Teapot servers are a common use case)
-- `--debug-mode` supresses exit on error and enables debugging, useful when you are trying to debug the handler.
-  - With the example handler it would be: `./pharo-ui example --addend=2 --raise-error`
+- `--debug-mode` suppresses exit on error and enables debugging, useful when you are trying to debug the handler.
+  - With the example handler, it would be: `./pharo-ui example --addend=2 --raise-error`
 
 By default both are disabled.
