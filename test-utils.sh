@@ -8,7 +8,7 @@ DUMP_FILE=logs/example-$(date --iso).fuel
 function executeWithArguments() {
 	rm -rf stdout stderr logs
 	LAST_ARGUMENTS=$@
-	"$PHARO" "$IMAGE" example $@ > out 2> err || true
+	"$PHARO" "$IMAGE" example $@ --quit > out 2> err || true
 	[ -f stdout ] && mv stdout out || touch out
 	[ -f stderr ] && mv stderr err || touch err
 }
