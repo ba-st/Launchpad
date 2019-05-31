@@ -7,9 +7,8 @@ DUMP_FILE=logs/example-$(date --iso).fuel
 
 function executeWithArguments() {
 	rm -rf stdout stderr logs
-	# We force --quit on every command because the example for itself does not close the image"
 	LAST_ARGUMENTS=$@
-	"$PHARO" "$IMAGE" example --quit $@ > out 2> err || true
+	"$PHARO" "$IMAGE" example $@ > out 2> err || true
 	[ -f stdout ] && mv stdout out || touch out
 	[ -f stderr ] && mv stderr err || touch err
 }

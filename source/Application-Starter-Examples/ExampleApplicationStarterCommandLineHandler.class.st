@@ -36,8 +36,8 @@ ExampleApplicationStarterCommandLineHandler >> basicActivate [
 		ifTrue: [ self error: 'This was a forced error, which should dump a stack file on runtime' ].
 	self
 		logInfo: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self addend with: self sum ).
-	( self configuration at: 'quit' )
-		ifTrue: [ Smalltalk snapshot: false andQuit: true ]
+	self isDebugModeEnabled 
+		ifFalse: [ Smalltalk snapshot: false andQuit: true ]
 ]
 
 { #category : #'private - accessing' }
@@ -46,7 +46,6 @@ ExampleApplicationStarterCommandLineHandler >> configurationDefinition [
 	^ OrderedCollection new
 		add: ( FlagArgument named: 'fail' );
 		add: ( FlagArgument named: 'raise-error' );
-		add: ( FlagArgument named: 'quit' );
 		add: ( OptionalArgument named: 'seed' defaultingTo: 0 convertingWith: #asNumber );
 		add: ( MandatoryArgument named: 'addend' convertingWith: [ :arg | arg asNumber ] );
 		asArray
