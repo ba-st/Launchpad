@@ -72,6 +72,8 @@ This would log:
 [2019-05-31T03:06:56.965318-03:00] [INFO] The sum of 2 and 40 is 42
 ```
 
+### Omitting mandatory arguments
+
 If we omit `--add` which is mandatory, the output would be:
 
 ```bash
@@ -81,6 +83,8 @@ If we omit `--add` which is mandatory, the output would be:
 ```log
 [2019-05-31T03:06:56.965318-03:00] [ERROR] add option not provided. You must provide one.
 ```
+
+### Omitting optional arguments
 
 On the other hand, if we omit `--seed` which is optional, the output would be:
 
@@ -95,6 +99,8 @@ On the other hand, if we omit `--seed` which is optional, the output would be:
 [2019-05-31T03:06:56.965318-03:00] [WRANING]  seed option not provided. Defaulting to 0"
 [2019-05-31T03:06:56.965318-03:00] [INFO] The sum of 0 and 40 is 40
 ```
+
+### Graceful handler exit
 
 Using `--fail` which will force an exit (expected exit, so no fuel dump)
 
@@ -112,6 +118,8 @@ This was a forced failure, should not dump a stack on runtime, nor log nothing s
     ...
 Command line handler failed
 ```
+
+### Unexpected errors
 
 Using `--raise-error` which simulates an unexpected error and generates a fuel dump file.
 Details on how can you use that dump are described in [Debugging](Debugging.md).
