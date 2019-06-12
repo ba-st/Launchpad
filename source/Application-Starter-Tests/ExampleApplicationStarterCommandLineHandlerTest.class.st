@@ -30,11 +30,11 @@ ExampleApplicationStarterCommandLineHandlerTest >> testActivation [
 
 	| arguments handler |
 
-	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--addend=5'}.
+	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--add=5'}.
 	handler := ExampleApplicationStarterCommandLineHandler new commandLine: arguments.
 	self shouldnt: [ handler activate ] raise: Exit.
 	self assert: handler seed equals: 1.
-	self assert: handler addend equals: 5.
+	self assert: handler add equals: 5.
 	self assert: handler sum equals: 6
 ]
 
@@ -43,7 +43,7 @@ ExampleApplicationStarterCommandLineHandlerTest >> testActivationWithFail [
 
 	| arguments handler |
 
-	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--addend=5' . '--fail'}.
+	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--add=5' . '--fail'}.
 	handler := ExampleApplicationStarterCommandLineHandler new commandLine: arguments.
 	self should: [ handler activate ] raise: Exit.
 	self deny: handler defaultStackDumpFile exists
@@ -55,7 +55,7 @@ ExampleApplicationStarterCommandLineHandlerTest >> testActivationWithSignalError
 	| arguments handler |
 
 	arguments := CommandLineArguments
-		withArguments: {'example' . '--seed=1' . '--addend=5' . '--raise-error'}.
+		withArguments: {'example' . '--seed=1' . '--add=5' . '--raise-error'}.
 	handler := ExampleApplicationStarterCommandLineHandler commandLine: arguments.
 	self should: [ handler activate ] raise: Exit.
 	self assert: handler defaultStackDumpFile exists

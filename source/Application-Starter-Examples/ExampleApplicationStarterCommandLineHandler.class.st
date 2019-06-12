@@ -22,9 +22,9 @@ ExampleApplicationStarterCommandLineHandler class >> description [
 ]
 
 { #category : #accessing }
-ExampleApplicationStarterCommandLineHandler >> addend [
+ExampleApplicationStarterCommandLineHandler >> add [
 
-	^ self configuration at: 'addend'
+	^ self configuration at: 'add'
 ]
 
 { #category : #'private - activation' }
@@ -35,7 +35,7 @@ ExampleApplicationStarterCommandLineHandler >> basicActivate [
 	( self configuration at: 'raise-error' )
 		ifTrue: [ self error: 'This was a forced error, which should dump a stack file on runtime' ].
 	self
-		logInfo: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self addend with: self sum ).
+		logInfo: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self add with: self sum ).
 	( self configuration at: 'quit' )
 		ifTrue: [ Smalltalk snapshot: false andQuit: true ]
 ]
@@ -48,7 +48,7 @@ ExampleApplicationStarterCommandLineHandler >> configurationDefinition [
 		add: ( FlagArgument named: 'raise-error' );
 		add: ( FlagArgument named: 'quit' );
 		add: ( OptionalArgument named: 'seed' defaultingTo: 0 convertingWith: #asNumber );
-		add: ( MandatoryArgument named: 'addend' convertingWith: [ :arg | arg asNumber ] );
+		add: ( MandatoryArgument named: 'add' convertingWith: [ :arg | arg asNumber ] );
 		asArray
 ]
 
@@ -75,5 +75,5 @@ ExampleApplicationStarterCommandLineHandler >> seed [
 { #category : #accessing }
 ExampleApplicationStarterCommandLineHandler >> sum [
 
-	^ self seed + self addend
+	^ self seed + self add
 ]

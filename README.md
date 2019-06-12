@@ -14,6 +14,7 @@ Useful when you want to start up your image from the command line, using paramet
 If an error stops the application, it dumps a fuel file with `thisContext` allowing you to debug the error later. More details about this in the [documentation](docs/Debugging.md)
 
 ## License
+
 - The code is licensed under [MIT](LICENSE).
 - The documentation is licensed under [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/).
 
