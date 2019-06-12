@@ -1,3 +1,29 @@
+"
+# MandatoryArgument
+
+Used to define arguments of the format `--key=value`, defined as: `MandatoryArgument named: 'key'`.
+If this argument is not present the program will log an error and exit.
+
+Supports transformations to the provided value (something like: `#asNumber` or `[:arg | arg asNumber]`).
+
+## Example:
+
+```smalltalk
+MandatoryArgument named: 'my-number-argument' convertingWith: #asNumber
+```
+
+or
+
+```smalltalk
+MandatoryArgument named: 'my-number-argument' convertingWith: [ :arg | arg asNumber ]
+```
+
+Will parse `--my-number-argument=4` as the number `4`.
+If no `--my-number-argument` is not present or has no `=` assignment, then the program will exit.
+
+The parsed value will be accessible on the handler as
+`self configuration at: 'my-number-argument'`
+"
 Class {
 	#name : #MandatoryArgument,
 	#superclass : #Object,
@@ -20,7 +46,7 @@ MandatoryArgument class >> named: anArgumentName convertingWith: aSymbolOrBlock 
 	^ self new initializeNamed: anArgumentName convertingWith: aSymbolOrBlock
 ]
 
-{ #category : #Evaluating }
+{ #category : #evaluating }
 MandatoryArgument >> argumentFrom: aCommandLineHandler [
 
 	^ converter
@@ -40,7 +66,7 @@ MandatoryArgument >> initializeNamed: anArgumentName convertingWith: aSymbolOrBl
 	converter := aSymbolOrBlock
 ]
 
-{ #category : #Evaluating }
+{ #category : #accessing }
 MandatoryArgument >> name [
 
 	^ name

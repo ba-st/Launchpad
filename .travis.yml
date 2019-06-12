@@ -7,3 +7,6 @@ smalltalk:
 - Pharo-6.1
 matrix:
   fast_finish: true
+script:
+- smalltalkci .smalltalk.ston
+- ./test.sh

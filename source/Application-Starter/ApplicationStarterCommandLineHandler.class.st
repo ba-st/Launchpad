@@ -91,7 +91,14 @@ ApplicationStarterCommandLineHandler >> defaultLogFile [
 { #category : #'private - defaults' }
 ApplicationStarterCommandLineHandler >> defaultLogsPath [
 
-	^ FileLocator workingDirectory / 'logs'
+	"Sorry for this, but pharo is not consistent across versions with the concept of working directory.
+	Bn old versions it was considered that the working directory is that of the image, which is incorrect.
+	-jmaestri"
+
+	^ ( OSEnvironment current
+		at: 'PWD'
+		ifPresent: #asFileReference
+		ifAbsent: [ FileLocator workingDirectory ] ) / 'logs'
 ]
 
 { #category : #'private - defaults' }
