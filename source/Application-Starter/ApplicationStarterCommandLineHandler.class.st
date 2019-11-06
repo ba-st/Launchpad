@@ -49,6 +49,8 @@ ApplicationStarterCommandLineHandler >> activate [
 { #category : #'private - activation' }
 ApplicationStarterCommandLineHandler >> basicActivate [
 
+	"Here you should define the code to start up your application, all the configuration passed by command line can be accessed on the `self configuration` dictionary."
+
 	self subclassResponsibility
 ]
 
@@ -69,6 +71,9 @@ ApplicationStarterCommandLineHandler >> configuration [
 
 { #category : #'private - accessing' }
 ApplicationStarterCommandLineHandler >> configurationDefinition [
+
+	"A collection of the arguments for this handler, wich can be MandatoryArgument, OptionalArgument or FlagArgument.
+	Answer #() if you don't have arguments, but in that case you probably do not need to use this handler :)"
 
 	self subclassResponsibility 
 ]
@@ -208,6 +213,7 @@ ApplicationStarterCommandLineHandler >> logInfo: anErrorMessage during: aBlock [
 { #category : #'private - accessing' }
 ApplicationStarterCommandLineHandler >> logPrefix [
 
+	"A prefix for the log files, can be an empty string"
 	self subclassResponsibility
 ]
 
