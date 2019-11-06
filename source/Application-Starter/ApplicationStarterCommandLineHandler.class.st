@@ -16,6 +16,39 @@ ApplicationStarterCommandLineHandler class >> commandName [
 	self subclassResponsibility
 ]
 
+{ #category : #'private - defaults' }
+ApplicationStarterCommandLineHandler class >> defaultLogFile [
+
+	| timestamp fileName |
+
+	timestamp := ( DateAndTime current asUTC printString copyWithoutAll: ':' )
+		copyReplaceAll: '+0000'
+		with: 'Z'.
+	fileName := self logPrefix isEmpty
+		ifTrue: [ timestamp ]
+		ifFalse: [ '<1s>-<2s>' expandMacrosWith: self logPrefix with: timestamp ].
+	^ self defaultLogsPath / fileName withExtension: 'log'
+]
+
+{ #category : #'private - defaults' }
+ApplicationStarterCommandLineHandler class >> defaultLogsPath [
+
+	"Sorry for this, but pharo is not consistent across versions with the concept of working directory.
+	Bn old versions it was considered that the working directory is that of the image, which is incorrect.
+	-jmaestri"
+
+	^ ( OSEnvironment current
+		at: 'PWD'
+		ifPresent: #asFileReference
+		ifAbsent: [ FileLocator workingDirectory ] ) / 'logs'
+]
+
+{ #category : #'private - defaults' }
+ApplicationStarterCommandLineHandler class >> defaultStackDumpFile [
+
+	^ self defaultLogFile withExtension: 'fuel'
+]
+
 { #category : #accessing }
 ApplicationStarterCommandLineHandler class >> description [
 
@@ -24,23 +57,39 @@ ApplicationStarterCommandLineHandler class >> description [
 	self subclassResponsibility
 ]
 
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler class >> dumpStackAndReport: aSignal [
+
+	^ CurrentLogger value
+		error: ( 'Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: aSignal messageText )
+		during: [ ErrorStackSerializer serializeStackOf: aSignal to: self defaultStackDumpFile ]
+]
+
 { #category : #accessing }
 ApplicationStarterCommandLineHandler class >> isAbstract [
 
 	^ self = ApplicationStarterCommandLineHandler
 ]
 
+{ #category : #'private - accessing' }
+ApplicationStarterCommandLineHandler class >> logPrefix [
+
+	"A prefix for the log files, can be an empty string"
+
+	self subclassResponsibility
+]
+
 { #category : #activation }
 ApplicationStarterCommandLineHandler >> activate [
 
-	self defaultLogsPath ensureCreateDirectory.
-	Smalltalk logFileName: self defaultLogFile pathString.
+	self class defaultLogsPath ensureCreateDirectory.
+	Smalltalk logFileName: self class defaultLogFile pathString.
 	[ self logConfiguration.
 	self basicActivate
 	]
 		on: self exceptionsToHandle
 		do: [ :signal | 
-			self dumpStackAndReport: signal.
+			self class dumpStackAndReport: signal.
 			self exitFailure
 			].
 	self suspendUiIfRequired
@@ -75,50 +124,7 @@ ApplicationStarterCommandLineHandler >> configurationDefinition [
 	"A collection of the arguments for this handler, wich can be MandatoryArgument, OptionalArgument or FlagArgument.
 	Answer #() if you don't have arguments, but in that case you probably do not need to use this handler :)"
 
-	self subclassResponsibility 
-]
-
-{ #category : #'private - accessing' }
-ApplicationStarterCommandLineHandler >> currentTimeStampString [
-
-	^ ( DateAndTime current asUTC printString copyReplaceAll: '+00:00' with: 'Z' )
-		copyReplaceAll: ':'
-		with: ''
-]
-
-{ #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler >> defaultLogFile [
-
-	^ self defaultLogsPath
-		/ ( '<1s>-<2s>.log' expandMacrosWith: self logPrefix with: self currentTimeStampString )
-]
-
-{ #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler >> defaultLogsPath [
-
-	"Sorry for this, but pharo is not consistent across versions with the concept of working directory.
-	Bn old versions it was considered that the working directory is that of the image, which is incorrect.
-	-jmaestri"
-
-	^ ( OSEnvironment current
-		at: 'PWD'
-		ifPresent: #asFileReference
-		ifAbsent: [ FileLocator workingDirectory ] ) / 'logs'
-]
-
-{ #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler >> defaultStackDumpFile [
-
-	^ self defaultLogsPath
-		/ ( '<1s>-<2s>.fuel' expandMacrosWith: self logPrefix with: self currentTimeStampString )
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> dumpStackAndReport: aSignal [
-
-	^ self
-		logError: ( 'Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: aSignal messageText )
-		during: [ ErrorStackSerializer serializeStackOf: aSignal to: self defaultStackDumpFile ]
+	self subclassResponsibility
 ]
 
 { #category : #'private - accessing' }
@@ -133,7 +139,7 @@ ApplicationStarterCommandLineHandler >> exceptionsToHandle [
 ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
 
 	self isDebugModeEnabled
-		ifTrue: [ self error: aMessage ]
+		ifTrue: [ CurrentLogger value error: aMessage ]
 		ifFalse: [ super exitFailure: aMessage ]
 ]
 
@@ -144,25 +150,7 @@ ApplicationStarterCommandLineHandler >> isDebugModeEnabled [
 	^ self hasOption: 'debug-mode'
 ]
 
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> log: aMessage to: anOutputStream withLevel: aLogLevel [
-
-	anOutputStream
-		nextPutAll: ( '[<1p>] [<2s>] <3s><n>' expandMacrosWith: DateAndTime current with: aLogLevel with: aMessage );
-		flush
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> log: aMessage to: anOutputStream withLevel: aLogLevel during: aBlock [
-
-	self log: aMessage to: anOutputStream withLevel: aLogLevel.
-	[ aBlock value.
-	self log: aMessage , '... [OK]' to: anOutputStream withLevel: aLogLevel
-	]
-		ifCurtailed: [ self logError: aMessage , '... [FAILED]' ]
-]
-
-{ #category : #'private - logging' }
+{ #category : #'private - activation' }
 ApplicationStarterCommandLineHandler >> logConfiguration [
 
 	| configuration |
@@ -170,67 +158,12 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 	configuration := self configuration.
 	configuration keys sorted
 		do: [ :configurationKey | 
-			self
-				logInfo:
+			CurrentLogger value
+				info:
 					( '<1s>: <2p>'
 						expandMacrosWith: configurationKey asString
 						with: ( configuration at: configurationKey ) )
 			]
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> logError: anErrorMessage [
-
-	self log: anErrorMessage to: self stderr withLevel: 'ERROR'
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> logError: anErrorMessage during: aBlock [
-
-	self
-		log: anErrorMessage
-		to: self stderr
-		withLevel: 'ERROR'
-		during: aBlock
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> logInfo: aMessage [
-
-	self log: aMessage to: self stdout withLevel: 'INFO'
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> logInfo: anErrorMessage during: aBlock [
-
-	self
-		log: anErrorMessage
-		to: self stdout
-		withLevel: 'INFO'
-		during: aBlock
-]
-
-{ #category : #'private - accessing' }
-ApplicationStarterCommandLineHandler >> logPrefix [
-
-	"A prefix for the log files, can be an empty string"
-	self subclassResponsibility
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage [
-
-	self log: anErrorMessage to: self stderr withLevel: 'WARNING'
-]
-
-{ #category : #'private - logging' }
-ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage during: aBlock [
-
-	self
-		log: anErrorMessage
-		to: self stdout
-		withLevel: 'WARNING'
-		during: aBlock
 ]
 
 { #category : #activation }

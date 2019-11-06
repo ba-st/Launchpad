@@ -57,8 +57,8 @@ OptionalArgument >> argumentFrom: aCommandLineHandler [
 		cull:
 			( aCommandLineHandler
 				optionAt: name
-				ifAbsent: [ aCommandLineHandler
-						logWarning: ( '<1s> option not provided. Defaulting to <2p>' expandMacrosWith: name with: default ).
+				ifAbsent: [ CurrentLogger value
+						warning: ( '<1s> option not provided. Defaulting to <2p>' expandMacrosWith: name with: default ).
 					default
 					] )
 ]

@@ -2,8 +2,10 @@ Class {
 	#name : #DummyApplicationStarterCommandLineHandler,
 	#superclass : #ApplicationStarterCommandLineHandler,
 	#instVars : [
-		'memoryLogPasthConfiguredFromTest',
 		'activationBlock'
+	],
+	#classVars : [
+		'memoryLogPasthConfiguredFromTest'
 	],
 	#category : #'Application-Starter-Tests'
 }
@@ -14,10 +16,28 @@ DummyApplicationStarterCommandLineHandler class >> commandName [
 	^ 'dummy'
 ]
 
+{ #category : #'private - accessing' }
+DummyApplicationStarterCommandLineHandler class >> defaultLogsPath [
+
+	^ memoryLogPasthConfiguredFromTest
+]
+
+{ #category : #'private - accessing' }
+DummyApplicationStarterCommandLineHandler class >> defaultLogsPath: aPath [
+
+	memoryLogPasthConfiguredFromTest := aPath
+]
+
 { #category : #accessing }
 DummyApplicationStarterCommandLineHandler class >> description [
 
 	^ 'this is a dummy command line handler for tests'
+]
+
+{ #category : #'private - accessing' }
+DummyApplicationStarterCommandLineHandler class >> logPrefix [
+
+	^ 'dummy'
 ]
 
 { #category : #initialization }
@@ -26,7 +46,7 @@ DummyApplicationStarterCommandLineHandler >> activationBlock: aBlock [
 	activationBlock := aBlock
 ]
 
-{ #category : #activation }
+{ #category : #'private - activation' }
 DummyApplicationStarterCommandLineHandler >> basicActivate [
 
 	activationBlock value
@@ -41,29 +61,11 @@ DummyApplicationStarterCommandLineHandler >> configurationDefinition [
 		yourself
 ]
 
-{ #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler >> defaultLogsPath [
-
-	^ memoryLogPasthConfiguredFromTest
-]
-
-{ #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler >> defaultLogsPath: aPath [
-
-	memoryLogPasthConfiguredFromTest := aPath
-]
-
 { #category : #initialization }
 DummyApplicationStarterCommandLineHandler >> initialize [
 
 	super initialize.
 	self activationBlock: [  ]
-]
-
-{ #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler >> logPrefix [
-
-	^ 'dummy'
 ]
 
 { #category : #initialization }
