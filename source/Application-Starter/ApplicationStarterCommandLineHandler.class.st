@@ -26,8 +26,8 @@ ApplicationStarterCommandLineHandler class >> defaultLogFile [
 		with: 'Z'.
 	fileName := self logPrefix isEmpty
 		ifTrue: [ timestamp ]
-		ifFalse: [ '<1s>-<2s>' expandMacrosWith: self logPrefix with: timestamp ].
-	^ self defaultLogsPath / fileName withExtension: 'log'
+		ifFalse: [ '<1s>-<2s>.log' expandMacrosWith: self logPrefix with: timestamp ].
+	^ self defaultLogsPath / fileName
 ]
 
 { #category : #'private - defaults' }
