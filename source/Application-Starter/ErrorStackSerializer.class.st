@@ -7,12 +7,13 @@ Class {
 { #category : #private }
 ErrorStackSerializer class >> openDebuggerOn: anExecutionStack [
 
-	^ Smalltalk tools debugger
+	^ [ Smalltalk tools debugger
 		openOn:
 			( Processor activeProcess
 				newDebugSessionNamed: ( 'Materialized stack: <1s>' expandMacrosWith: anExecutionStack receiver description )
 				startedAt: anExecutionStack )
 		withFullView: true
+	] fork
 ]
 
 { #category : #utilities }
