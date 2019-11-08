@@ -5,17 +5,13 @@ Class {
 		'stdout',
 		'stderr'
 	],
-	#classVars : [
-		'Default'
-	],
 	#category : #'Application-Starter'
 }
 
 { #category : #accessing }
 LeveledLogger class >> default [
 
-	^ Default
-		ifNil: [ Default := self outputTo: VTermOutputDriver stdout errorsTo: VTermOutputDriver stderr ]
+	^ self outputTo: VTermOutputDriver stdout errorsTo: VTermOutputDriver stderr
 ]
 
 { #category : #accessing }
