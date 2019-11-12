@@ -52,6 +52,22 @@ LeveledLogger >> info: anErrorMessage during: aBlock [
 		during: aBlock
 ]
 
+{ #category : #logging }
+LeveledLogger >> info: anInformationMessage loggingErrorsDuring: aBlock [
+
+	^ self
+		log: anInformationMessage
+		to: stdout
+		withLevel: 'INFO'
+		during: [ aBlock
+				on: Error
+				do: [ :signal | 
+					self error: signal messageText.
+					signal pass
+					]
+			]
+]
+
 { #category : #initialization }
 LeveledLogger >> initializeOutputTo: anOutputStream errorsTo: anErrorStream [
 
