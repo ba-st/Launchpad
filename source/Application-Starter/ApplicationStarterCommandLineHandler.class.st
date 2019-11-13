@@ -166,6 +166,42 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 			]
 ]
 
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler >> logError: anErrorMessage [
+
+	CurrentLogger value error: anErrorMessage
+]
+
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler >> logError: anErrorMessage during: aBlock [
+
+	CurrentLogger value error: anErrorMessage during: aBlock
+]
+
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler >> logInfo: aMessage [
+
+	CurrentLogger value info: aMessage
+]
+
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler >> logInfo: anErrorMessage during: aBlock [
+
+	CurrentLogger value info: anErrorMessage during: aBlock
+]
+
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage [
+
+	CurrentLogger value warning: anErrorMessage
+]
+
+{ #category : #'private - logging' }
+ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage during: aBlock [
+
+	CurrentLogger value warning: anErrorMessage during: aBlock
+]
+
 { #category : #activation }
 ApplicationStarterCommandLineHandler >> suspendUiIfRequired [
 
