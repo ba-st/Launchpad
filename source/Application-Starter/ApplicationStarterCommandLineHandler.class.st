@@ -17,13 +17,17 @@ ApplicationStarterCommandLineHandler class >> commandName [
 ]
 
 { #category : #'private - defaults' }
+ApplicationStarterCommandLineHandler class >> currentTimeStampString [
+
+	^ ( DateAndTime current asUTC printString copyWithoutAll: ':' ) copyReplaceAll: '+0000' with: 'Z'
+]
+
+{ #category : #'private - defaults' }
 ApplicationStarterCommandLineHandler class >> defaultLogFile [
 
 	| timestamp fileName |
 
-	timestamp := ( DateAndTime current asUTC printString copyWithoutAll: ':' )
-		copyReplaceAll: '+0000'
-		with: 'Z'.
+	timestamp := self currentTimeStampString.
 	fileName := self logPrefix isEmpty
 		ifTrue: [ timestamp ]
 		ifFalse: [ '<1s>-<2s>.log' expandMacrosWith: self logPrefix with: timestamp ].
