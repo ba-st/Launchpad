@@ -63,6 +63,12 @@ OptionalArgument >> argumentFrom: aCommandLineHandler [
 					] )
 ]
 
+{ #category : #accessing }
+OptionalArgument >> default [
+
+	^ default
+]
+
 { #category : #initialization }
 OptionalArgument >> initializeNamed: anArgumentName defaultingTo: aDefaultValue convertingWith: aSymbolOrBlock [
 
