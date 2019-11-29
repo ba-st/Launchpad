@@ -1,8 +1,8 @@
 "
-A sensible argument will decorate another argument changing the logging so no sensitive information is exposed
+A Sensitive argument will decorate another argument changing the logging so no sensitive information is exposed
 "
 Class {
-	#name : #SensibleArgument,
+	#name : #SensitiveArgument,
 	#superclass : #CommandLineArgument,
 	#instVars : [
 		'argument'
@@ -11,31 +11,31 @@ Class {
 }
 
 { #category : #'instance creation' }
-SensibleArgument class >> over: anArgument [
+SensitiveArgument class >> over: anArgument [
 
 	^ self new initializeOver: anArgument
 ]
 
 { #category : #evaluating }
-SensibleArgument >> argumentFrom: aCommandLineHandler [
+SensitiveArgument >> argumentFrom: aCommandLineHandler [
 
 	^ argument argumentFrom: aCommandLineHandler
 ]
 
 { #category : #initialization }
-SensibleArgument >> initializeOver: anArgument [
+SensitiveArgument >> initializeOver: anArgument [
 
 	argument := anArgument
 ]
 
 { #category : #logging }
-SensibleArgument >> logIn: aLogger using: configuration [
+SensitiveArgument >> logIn: aLogger using: configuration [
 
 	aLogger logAsInfo: ( '<1s>: *********' expandMacrosWith: self name asString )
 ]
 
 { #category : #accessing }
-SensibleArgument >> name [
+SensitiveArgument >> name [
 
 	^ argument name
 ]

@@ -58,7 +58,7 @@ DummyApplicationStarterCommandLineHandler >> configurationDefinition [
 	^ OrderedCollection new
 		add: ( MandatoryArgument named: #mandatory );
 		add: ( OptionalArgument named: 'optional' defaultingTo: 'unused-optional' );
-		add: ( MandatoryArgument named: 'secret' ) asSensible;
+		add: ( MandatoryArgument named: 'secret' ) asSensitive;
 		yourself
 ]
 

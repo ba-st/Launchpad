@@ -14,9 +14,9 @@ CommandLineArgument >> argumentFrom: aCommandLineHandler [
 ]
 
 { #category : #converting }
-CommandLineArgument >> asSensible [
+CommandLineArgument >> asSensitive [
 
-	^ SensibleArgument over: self
+	^ SensitiveArgument over: self
 ]
 
 { #category : #logging }
