@@ -26,7 +26,7 @@ The parsed value will be accessible on the handler as
 "
 Class {
 	#name : #OptionalArgument,
-	#superclass : #Object,
+	#superclass : #CommandLineArgument,
 	#instVars : [
 		'name',
 		'default',
