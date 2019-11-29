@@ -54,7 +54,7 @@ MandatoryArgument >> argumentFrom: aCommandLineHandler [
 			( aCommandLineHandler
 				optionAt: name
 				ifAbsent: [ CurrentLogger value
-						error: ( '<1s> option not provided. You must provide one.' expandMacrosWith: name ).
+						logAsError: ( '<1s> option not provided. You must provide one.' expandMacrosWith: name ).
 					aCommandLineHandler exitFailure: ( '<1s> option not present' expandMacrosWith: name )
 					] )
 ]

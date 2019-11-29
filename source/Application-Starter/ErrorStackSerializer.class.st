@@ -13,7 +13,7 @@ ErrorStackSerializer class >> openDebuggerOn: anExecutionStack [
 				newDebugSessionNamed: ( 'Materialized stack: <1s>' expandMacrosWith: anExecutionStack receiver description )
 				startedAt: anExecutionStack )
 		withFullView: true
-	] fork
+	] forkNamed: 'Debugging materialized stack'
 ]
 
 { #category : #utilities }

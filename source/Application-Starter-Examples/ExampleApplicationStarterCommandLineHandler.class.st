@@ -57,7 +57,7 @@ ExampleApplicationStarterCommandLineHandler >> basicActivate [
 	( self configuration at: 'raise-error' )
 		ifTrue: [ self error: 'This was a forced error, which should dump a stack file on runtime' ].
 	CurrentLogger value
-		info: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self add with: self sum ).
+		logAsInfo: ( 'The sum of <1p> and <2p> is <3p>' expandMacrosWith: self seed with: self add with: self sum ).
 	( self configuration at: 'quit' )
 		ifTrue: [ Smalltalk snapshot: false andQuit: true ]
 ]

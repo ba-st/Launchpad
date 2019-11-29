@@ -5,7 +5,7 @@ Class {
 		'activationBlock'
 	],
 	#classVars : [
-		'memoryLogPasthConfiguredFromTest'
+		'memoryLogPathConfiguredFromTest'
 	],
 	#category : #'Application-Starter-Tests'
 }
@@ -19,13 +19,13 @@ DummyApplicationStarterCommandLineHandler class >> commandName [
 { #category : #'private - accessing' }
 DummyApplicationStarterCommandLineHandler class >> defaultLogsPath [
 
-	^ memoryLogPasthConfiguredFromTest
+	^ memoryLogPathConfiguredFromTest
 ]
 
 { #category : #'private - accessing' }
 DummyApplicationStarterCommandLineHandler class >> defaultLogsPath: aPath [
 
-	memoryLogPasthConfiguredFromTest := aPath
+	memoryLogPathConfiguredFromTest := aPath
 ]
 
 { #category : #accessing }

@@ -20,54 +20,6 @@ LeveledLogger class >> outputTo: anOutputStream errorsTo: anErrorStream [
 	^ self new initializeOutputTo: anOutputStream errorsTo: anErrorStream
 ]
 
-{ #category : #logging }
-LeveledLogger >> error: anErrorMessage [
-
-	self log: anErrorMessage to: stderr withLevel: 'ERROR'
-]
-
-{ #category : #logging }
-LeveledLogger >> error: anErrorMessage during: aBlock [
-
-	self
-		log: anErrorMessage
-		to: stderr
-		withLevel: 'ERROR'
-		during: aBlock
-]
-
-{ #category : #logging }
-LeveledLogger >> info: aMessage [
-
-	self log: aMessage to: stdout withLevel: 'INFO'
-]
-
-{ #category : #logging }
-LeveledLogger >> info: anErrorMessage during: aBlock [
-
-	self
-		log: anErrorMessage
-		to: stdout
-		withLevel: 'INFO'
-		during: aBlock
-]
-
-{ #category : #logging }
-LeveledLogger >> info: anInformationMessage loggingErrorsDuring: aBlock [
-
-	^ self
-		log: anInformationMessage
-		to: stdout
-		withLevel: 'INFO'
-		during: [ aBlock
-				on: Error
-				do: [ :signal | 
-					self error: signal messageText.
-					signal pass
-					]
-			]
-]
-
 { #category : #initialization }
 LeveledLogger >> initializeOutputTo: anOutputStream errorsTo: anErrorStream [
 
@@ -90,20 +42,68 @@ LeveledLogger >> log: aMessage to: anOutputStream withLevel: aLogLevel during: a
 	[ aBlock value.
 	self log: aMessage , '... [OK]' to: anOutputStream withLevel: aLogLevel
 	]
-		ifCurtailed: [ self error: aMessage , '... [FAILED]' ]
+		ifCurtailed: [ self logAsError: aMessage , '... [FAILED]' ]
 ]
 
 { #category : #logging }
-LeveledLogger >> warning: anErrorMessage [
+LeveledLogger >> logAsError: aMessage [
 
-	self log: anErrorMessage to: stderr withLevel: 'WARNING'
+	self log: aMessage to: stderr withLevel: 'ERROR'
 ]
 
 { #category : #logging }
-LeveledLogger >> warning: anErrorMessage during: aBlock [
+LeveledLogger >> logAsError: aMessage during: aBlock [
 
 	self
-		log: anErrorMessage
+		log: aMessage
+		to: stderr
+		withLevel: 'ERROR'
+		during: aBlock
+]
+
+{ #category : #logging }
+LeveledLogger >> logAsInfo: aMessage [
+
+	self log: aMessage to: stdout withLevel: 'INFO'
+]
+
+{ #category : #logging }
+LeveledLogger >> logAsInfo: aMessage during: aBlock [
+
+	self
+		log: aMessage
+		to: stdout
+		withLevel: 'INFO'
+		during: aBlock
+]
+
+{ #category : #logging }
+LeveledLogger >> logAsInfo: anInformationMessage handlingErrorsDuring: aBlock [
+
+	^ self
+		log: anInformationMessage
+		to: stdout
+		withLevel: 'INFO'
+		during: [ aBlock
+				on: Error
+				do: [ :signal | 
+					self logAsError: signal messageText.
+					signal pass
+					]
+			]
+]
+
+{ #category : #logging }
+LeveledLogger >> logAsWarning: aMessage [
+
+	self log: aMessage to: stderr withLevel: 'WARNING'
+]
+
+{ #category : #logging }
+LeveledLogger >> logAsWarning: aMessage during: aBlock [
+
+	self
+		log: aMessage
 		to: stdout
 		withLevel: 'WARNING'
 		during: aBlock

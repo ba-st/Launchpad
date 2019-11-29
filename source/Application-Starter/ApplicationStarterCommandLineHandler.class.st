@@ -65,7 +65,7 @@ ApplicationStarterCommandLineHandler class >> description [
 ApplicationStarterCommandLineHandler class >> dumpStackAndReport: aSignal [
 
 	^ CurrentLogger value
-		error: ( 'Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: aSignal messageText )
+		logAsError: ( 'Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: aSignal messageText )
 		during: [ ErrorStackSerializer serializeStackOf: aSignal to: self defaultStackDumpFile ]
 ]
 
@@ -143,7 +143,7 @@ ApplicationStarterCommandLineHandler >> exceptionsToHandle [
 ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
 
 	self isDebugModeEnabled
-		ifTrue: [ CurrentLogger value error: aMessage ]
+		ifTrue: [ CurrentLogger value logAsError: aMessage ]
 		ifFalse: [ super exitFailure: aMessage ]
 ]
 
@@ -163,7 +163,7 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 	configuration keys sorted
 		do: [ :configurationKey | 
 			CurrentLogger value
-				info:
+				logAsInfo:
 					( '<1s>: <2p>'
 						expandMacrosWith: configurationKey asString
 						with: ( configuration at: configurationKey ) )
