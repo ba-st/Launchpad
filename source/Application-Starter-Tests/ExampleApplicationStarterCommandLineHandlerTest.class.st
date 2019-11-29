@@ -21,7 +21,7 @@ ExampleApplicationStarterCommandLineHandlerTest >> setUp [
 ExampleApplicationStarterCommandLineHandlerTest >> tearDown [
 
 	Smalltalk logFileName: currentLogFileName.
-	ExampleApplicationStarterCommandLineHandler new defaultStackDumpFile ensureDelete.
+	ExampleApplicationStarterCommandLineHandler defaultStackDumpFile ensureDelete.
 	super tearDown
 ]
 
@@ -46,7 +46,7 @@ ExampleApplicationStarterCommandLineHandlerTest >> testActivationWithFail [
 	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--add=5' . '--fail'}.
 	handler := ExampleApplicationStarterCommandLineHandler new commandLine: arguments.
 	self should: [ handler activate ] raise: Exit.
-	self deny: handler defaultStackDumpFile exists
+	self deny: handler class defaultStackDumpFile exists
 ]
 
 { #category : #tests }
@@ -58,5 +58,5 @@ ExampleApplicationStarterCommandLineHandlerTest >> testActivationWithSignalError
 		withArguments: {'example' . '--seed=1' . '--add=5' . '--raise-error'}.
 	handler := ExampleApplicationStarterCommandLineHandler commandLine: arguments.
 	self should: [ handler activate ] raise: Exit.
-	self assert: handler defaultStackDumpFile exists
+	self assert: handler class defaultStackDumpFile exists
 ]

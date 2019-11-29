@@ -53,8 +53,8 @@ MandatoryArgument >> argumentFrom: aCommandLineHandler [
 		cull:
 			( aCommandLineHandler
 				optionAt: name
-				ifAbsent: [ aCommandLineHandler
-						logError: ( '<1s> option not provided. You must provide one.' expandMacrosWith: name ).
+				ifAbsent: [ CurrentLogger value
+						logAsError: ( '<1s> option not provided. You must provide one.' expandMacrosWith: name ).
 					aCommandLineHandler exitFailure: ( '<1s> option not present' expandMacrosWith: name )
 					] )
 ]
