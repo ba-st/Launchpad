@@ -160,14 +160,8 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 	| configuration |
 
 	configuration := self configuration.
-	configuration keys sorted
-		do: [ :configurationKey | 
-			CurrentLogger value
-				logAsInfo:
-					( '<1s>: <2p>'
-						expandMacrosWith: configurationKey asString
-						with: ( configuration at: configurationKey ) )
-			]
+	self configurationDefinition
+		do: [ :definition | definition logIn: CurrentLogger value using: configuration ]
 ]
 
 { #category : #activation }

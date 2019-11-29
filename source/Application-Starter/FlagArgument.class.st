@@ -19,7 +19,7 @@ The parsed value will be accessible on the handler as
 "
 Class {
 	#name : #FlagArgument,
-	#superclass : #Object,
+	#superclass : #CommandLineArgument,
 	#instVars : [
 		'name',
 		'valueWhenPresent'
