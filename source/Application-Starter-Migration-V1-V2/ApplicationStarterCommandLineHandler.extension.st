@@ -62,9 +62,9 @@ ApplicationStarterCommandLineHandler >> logError: anErrorMessage [
 		deprecated: 'Please use CurrentLogger value error: instead'
 		on: '2019-11-15'
 		in: 'v2'
-		transformWith: '`@receiver logError: ̀@message' -> '`CurrentLogger value error: `@message'.
+		transformWith: '`@receiver logError: ̀@message' -> '`CurrentLogger value logAsError: `@message'.
 
-	CurrentLogger value error: anErrorMessage
+	CurrentLogger value logAsError: anErrorMessage
 ]
 
 { #category : #'*Application-Starter-Migration-V1-V2' }
@@ -76,9 +76,9 @@ ApplicationStarterCommandLineHandler >> logError: anErrorMessage during: aBlock 
 		in: 'v2'
 		transformWith:
 			'`@receiver logError: ̀@message during: ̀@block'
-				-> '`CurrentLogger value error: `@message during: `@block'.
+				-> '`CurrentLogger value logAsError: `@message during: `@block'.
 
-	CurrentLogger value error: anErrorMessage during: aBlock
+	CurrentLogger value logAsError: anErrorMessage during: aBlock
 ]
 
 { #category : #'*Application-Starter-Migration-V1-V2' }
@@ -88,9 +88,9 @@ ApplicationStarterCommandLineHandler >> logInfo: aMessage [
 		deprecated: 'Please use CurrentLogger value info: instead'
 		on: '2019-11-15'
 		in: 'v2'
-		transformWith: '`@receiver logInfo: ̀@message' -> '`CurrentLogger value info: `@message'.
+		transformWith: '`@receiver logInfo: ̀@message' -> '`CurrentLogger value logAsInfo: `@message'.
 
-	CurrentLogger value info: aMessage
+	CurrentLogger value logAsInfo: aMessage
 ]
 
 { #category : #'*Application-Starter-Migration-V1-V2' }
@@ -102,9 +102,9 @@ ApplicationStarterCommandLineHandler >> logInfo: anErrorMessage during: aBlock [
 		in: 'v2'
 		transformWith:
 			'`@receiver logInfo: ̀@message during: ̀@block'
-				-> '`CurrentLogger value info: `@message during: `@block'.
+				-> '`CurrentLogger value logAsInfo: `@message during: `@block'.
 
-	CurrentLogger value info: anErrorMessage during: aBlock
+	CurrentLogger value logAsInfo: anErrorMessage during: aBlock
 ]
 
 { #category : #'*Application-Starter-Migration-V1-V2' }
@@ -125,9 +125,9 @@ ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage [
 		deprecated: 'Please use CurrentLogger value warning: instead'
 		on: '2019-11-15'
 		in: 'v2'
-		transformWith: '`@receiver logWarning: ̀@message' -> '`CurrentLogger value warning: `@message'.
+		transformWith: '`@receiver logWarning: ̀@message' -> '`CurrentLogger value logAsWarning: `@message'.
 
-	CurrentLogger value warning: anErrorMessage
+	CurrentLogger value logAsWarning: anErrorMessage
 ]
 
 { #category : #'*Application-Starter-Migration-V1-V2' }
@@ -139,7 +139,7 @@ ApplicationStarterCommandLineHandler >> logWarning: anErrorMessage during: aBloc
 		in: 'v2'
 		transformWith:
 			'`@receiver logWarning: ̀@message during: ̀@block'
-				-> '`CurrentLogger value warning: `@message during: `@block'.
+				-> '`CurrentLogger value logAsWarning: `@message during: `@block'.
 
-	CurrentLogger value warning: anErrorMessage during: aBlock
+	CurrentLogger value logAsWarning: anErrorMessage during: aBlock
 ]
