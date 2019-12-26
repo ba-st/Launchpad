@@ -10,4 +10,4 @@ matrix:
   fast_finish: true
 script:
 - smalltalkci .smalltalk.ston
-- ./scripts/test.sh
+- cd scripts && ./test.sh
