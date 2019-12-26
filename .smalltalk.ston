@@ -1,15 +1,15 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'ApplicationStarter',
+      #baseline : 'Launchpad',
       #directory : 'source',
-      #load : [ 'Development' ],
+      #load : [ 'CI' ],
       #platforms : [  #pharo ]
     }
   ],
   #testing : {
     #coverage : {
-       #packages : [ 'ApplicationStarter*' ]
+       #packages : [ 'Launchpad*' ]
     }
   }
 }
