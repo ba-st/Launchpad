@@ -1,7 +1,7 @@
 Class {
 	#name : #ErrorStackSerializer,
 	#superclass : #Object,
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #private }

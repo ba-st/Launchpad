@@ -4,7 +4,7 @@ A SensitiveArgumentTest is a test class for testing the behavior of SensitiveArg
 Class {
 	#name : #SensitiveArgumentTest,
 	#superclass : #TestCase,
-	#category : #'Application-Starter-Tests'
+	#category : #'Launchpad-Tests'
 }
 
 { #category : #tests }

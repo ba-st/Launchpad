@@ -1,7 +1,7 @@
 Class {
 	#name : #CurrentLogger,
 	#superclass : #DynamicVariable,
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #accessing }

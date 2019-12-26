@@ -32,7 +32,7 @@ Class {
 		'default',
 		'converter'
 	],
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #'Instance Creation' }

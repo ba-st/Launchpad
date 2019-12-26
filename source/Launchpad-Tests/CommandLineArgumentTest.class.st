@@ -4,7 +4,7 @@ A MandatoryArgumentTest is a test class for testing the behavior of MandatoryArg
 Class {
 	#name : #CommandLineArgumentTest,
 	#superclass : #TestCase,
-	#category : #'Application-Starter-Tests'
+	#category : #'Launchpad-Tests'
 }
 
 { #category : #tests }

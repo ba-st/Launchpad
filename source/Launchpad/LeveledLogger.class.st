@@ -5,7 +5,7 @@ Class {
 		'stdout',
 		'stderr'
 	],
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #accessing }

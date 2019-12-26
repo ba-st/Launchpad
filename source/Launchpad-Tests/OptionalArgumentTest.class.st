@@ -4,7 +4,7 @@ An OptionalArgumentTest is a test class for testing the behavior of OptionalArgu
 Class {
 	#name : #OptionalArgumentTest,
 	#superclass : #TestCase,
-	#category : #'Application-Starter-Tests'
+	#category : #'Launchpad-Tests'
 }
 
 { #category : #test }

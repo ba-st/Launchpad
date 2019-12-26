@@ -1,6 +1,6 @@
 Extension { #name : #MemoryFileWriteStream }
 
-{ #category : #'*Application-Starter-Pharo7' }
+{ #category : #'*Launchpad-Pharo7' }
 MemoryFileWriteStream >> next: anInteger putAll: aCollection startingAt: startIndex [
 
 	"Store the next anInteger elements from the given collection."

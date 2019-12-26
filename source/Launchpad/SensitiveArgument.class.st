@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'argument'
 	],
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #'instance creation' }

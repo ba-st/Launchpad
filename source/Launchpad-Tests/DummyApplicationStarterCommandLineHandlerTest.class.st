@@ -11,7 +11,7 @@ Class {
 		'inMemoryStderr',
 		'inMemoryStdout'
 	],
-	#category : #'Application-Starter-Tests'
+	#category : #'Launchpad-Tests'
 }
 
 { #category : #private }

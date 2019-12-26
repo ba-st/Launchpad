@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'configurationCache'
 	],
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #accessing }

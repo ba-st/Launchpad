@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'memoryLogPathConfiguredFromTest'
 	],
-	#category : #'Application-Starter-Tests'
+	#category : #'Launchpad-Tests'
 }
 
 { #category : #accessing }

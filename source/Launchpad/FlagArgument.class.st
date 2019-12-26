@@ -24,7 +24,7 @@ Class {
 		'name',
 		'valueWhenPresent'
 	],
-	#category : #'Application-Starter'
+	#category : #Launchpad
 }
 
 { #category : #'instance creation' }

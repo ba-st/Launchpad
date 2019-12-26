@@ -1,6 +1,6 @@
 Extension { #name : #ZnBufferedWriteStream }
 
-{ #category : #'*Application-Starter-Pharo7' }
+{ #category : #'*Launchpad-Pharo7' }
 ZnBufferedWriteStream >> nextBytesPutAll: aCollection [
 
 	"Append the bytes of aCollection to the sequence of bytes accessible 

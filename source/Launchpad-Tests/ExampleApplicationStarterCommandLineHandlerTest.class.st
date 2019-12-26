@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'currentLogFileName'
 	],
-	#category : #'Application-Starter-Tests'
+	#category : #'Launchpad-Tests'
 }
 
 { #category : #running }

@@ -1,7 +1,7 @@
 Class {
 	#name : #ExampleApplicationStarterCommandLineHandler,
 	#superclass : #ApplicationStarterCommandLineHandler,
-	#category : #'Application-Starter-Examples'
+	#category : #'Launchpad-Examples'
 }
 
 { #category : #accessing }
