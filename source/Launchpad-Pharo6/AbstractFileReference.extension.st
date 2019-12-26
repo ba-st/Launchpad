@@ -1,6 +1,6 @@
 Extension { #name : #AbstractFileReference }
 
-{ #category : #'*Application-Starter-Pharo6' }
+{ #category : #'*Launchpad-Pharo6' }
 AbstractFileReference >> binaryWriteStreamDo: aBlock [
 
 	| stream |

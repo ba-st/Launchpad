@@ -1,6 +1,6 @@
 Extension { #name : #MemoryHandle }
 
-{ #category : #'*Application-Starter-Pharo6' }
+{ #category : #'*Launchpad-Pharo6' }
 MemoryHandle >> writeStream [
 
 	"Return a writestream on my contents.
