@@ -1,8 +1,8 @@
 # How To
 
 You can see an example on:
-[Example Handler](../source/Application-Starter-Examples/ExampleApplicationStarterCommandLineHandler.class.st) and it's
-[Test](../source/Application-Starter-Tests/ExampleApplicationStarterCommandLineHandlerTest.class.st)
+[Example Handler](../source/Launchpad-Examples/ExampleApplicationStarterCommandLineHandler.class.st) and it's
+[Test](../source/Launchpad-Tests/ExampleApplicationStarterCommandLineHandlerTest.class.st)
 
 ## Defining the handler
 
@@ -16,9 +16,9 @@ Then implement the required methods:
   - These are logged to console when the application starts,
   and are accessible under `self configuration` on the command line handler.
   - See the comments on the arguments for more information:
-    - [FlagArgument](../source/Application-Starter/FlagArgument.class.st)
-    - [MandatoryArgument](../source/Application-Starter/MandatoryArgument.class.st)
-    - [OptionalArgument](../source/Application-Starter/OptionalArgument.class.st)
+    - [FlagArgument](../source/Launchpad/FlagArgument.class.st)
+    - [MandatoryArgument](../source/Launchpad/MandatoryArgument.class.st)
+    - [OptionalArgument](../source/Launchpad/OptionalArgument.class.st)
 - `logPrefix` a string to prepend to the logs and fuel files.
 - `commandName` (class side) used to activate this handler from the command line.
 - `description` (class side) used to describe this handler when `./pharo <image> list` is called.
@@ -34,9 +34,9 @@ By default both are disabled.
 
 ## Launching your application using the handler
 
-_Assuming the [Example Handler](../source/Application-Starter-Examples/ExampleApplicationStarterCommandLineHandler.class.st) is being used_
+_Assuming the [Example Handler](../source/Launchpad-Examples/ExampleApplicationStarterCommandLineHandler.class.st) is being used_
 
-The [Example Handler](../source/Application-Starter-Examples/ExampleApplicationStarterCommandLineHandler.class.st) allows 5 possible arguments:
+The [Example Handler](../source/Launchpad-Examples/ExampleApplicationStarterCommandLineHandler.class.st) allows 5 possible arguments:
 
 - `--fail` a flag to demonstrate what happens when the handler exits with an expected error (just exit).
 - `--raise-error` a flag to demonstrate what happens when the handler exits with an unexpected error (create a fuel stack file).

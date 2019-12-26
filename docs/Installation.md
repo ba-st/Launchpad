@@ -2,12 +2,12 @@
 
 ## Basic Installation
 
-You can load **ApplicationStarter** evaluating:
+You can load **Launchpad** evaluating:
 
 ```smalltalk
 Metacello new
- baseline: 'ApplicationStarter';
- repository: 'github://ba-st/ApplicationStarter:master/source';
+ baseline: 'Launchpad';
+ repository: 'github://ba-st/Launchpad:master/source';
  load.
 ```
 
@@ -15,17 +15,17 @@ Metacello new
 
 ## Using as dependency
 
-In order to include **ApplicationStarter** as part of your project, you should reference the package in your product baseline:
+In order to include **Launchpad** as part of your project, you should reference the package in your product baseline:
 
 ```smalltalk
 setUpDependencies: spec
 
  spec
-  baseline: 'ApplicationStarter'
+  baseline: 'Launchpad'
    with: [ spec
-    repository: 'github://ba-st/ApplicationStarter:v{XX}/source';
+    repository: 'github://ba-st/Launchpad:v{XX}/source';
     loads: #('Deployment') ];
-  import: 'ApplicationStarter'.
+  import: 'Launchpad'.
 ```
 
 > Replace `{XX}` with the version you want to depend on
@@ -37,5 +37,5 @@ baseline: spec
  spec
   for: #common
   do: [ self setUpDependencies: spec.
-   spec package: 'My-Package' with: [ spec requires: #('ApplicationStarter') ] ]
+   spec package: 'My-Package' with: [ spec requires: #('Launchpad') ] ]
 ```
