@@ -10,7 +10,7 @@ Class {
 { #category : #tests }
 CommandLineArgumentTest >> handlerWith: anArgument [
 
-	^ ApplicationStarterCommandLineHandler new
+	^ LaunchpadCommandLineHandler new
 		commandLine: ( CommandLineArguments withArguments: ( Array with: anArgument ) )
 ]
 

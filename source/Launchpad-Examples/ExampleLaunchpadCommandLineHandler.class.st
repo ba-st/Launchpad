@@ -1,11 +1,11 @@
 Class {
-	#name : #ExampleApplicationStarterCommandLineHandler,
-	#superclass : #ApplicationStarterCommandLineHandler,
+	#name : #ExampleLaunchpadCommandLineHandler,
+	#superclass : #LaunchpadCommandLineHandler,
 	#category : #'Launchpad-Examples'
 }
 
 { #category : #accessing }
-ExampleApplicationStarterCommandLineHandler class >> commandName [
+ExampleLaunchpadCommandLineHandler class >> commandName [
 
 	" Overwrite this method to provide a short name for this command handler.
 	You may pass the commandName as first argument to the image to select this handler"
@@ -14,7 +14,7 @@ ExampleApplicationStarterCommandLineHandler class >> commandName [
 ]
 
 { #category : #'private - defaults' }
-ExampleApplicationStarterCommandLineHandler class >> defaultLogFile [
+ExampleLaunchpadCommandLineHandler class >> defaultLogFile [
 
 	"We override this to be able to test it, it's not required to be overriden"
 
@@ -28,7 +28,7 @@ ExampleApplicationStarterCommandLineHandler class >> defaultLogFile [
 ]
 
 { #category : #accessing }
-ExampleApplicationStarterCommandLineHandler class >> description [
+ExampleLaunchpadCommandLineHandler class >> description [
 
 	"This method should return a short one-line description of the command"
 
@@ -36,19 +36,19 @@ ExampleApplicationStarterCommandLineHandler class >> description [
 ]
 
 { #category : #'private - accessing' }
-ExampleApplicationStarterCommandLineHandler class >> logPrefix [
+ExampleLaunchpadCommandLineHandler class >> logPrefix [
 
 	^ 'example'
 ]
 
 { #category : #accessing }
-ExampleApplicationStarterCommandLineHandler >> add [
+ExampleLaunchpadCommandLineHandler >> add [
 
 	^ self configuration at: 'add'
 ]
 
 { #category : #'private - activation' }
-ExampleApplicationStarterCommandLineHandler >> basicActivate [
+ExampleLaunchpadCommandLineHandler >> basicActivate [
 
 	( self configuration at: 'fail' )
 		ifTrue: [ self
@@ -63,7 +63,7 @@ ExampleApplicationStarterCommandLineHandler >> basicActivate [
 ]
 
 { #category : #'private - accessing' }
-ExampleApplicationStarterCommandLineHandler >> configurationDefinition [
+ExampleLaunchpadCommandLineHandler >> configurationDefinition [
 
 	^ OrderedCollection new
 		add: ( FlagArgument named: 'fail' );
@@ -75,13 +75,13 @@ ExampleApplicationStarterCommandLineHandler >> configurationDefinition [
 ]
 
 { #category : #accessing }
-ExampleApplicationStarterCommandLineHandler >> seed [
+ExampleLaunchpadCommandLineHandler >> seed [
 
 	^ self configuration at: 'seed'
 ]
 
 { #category : #accessing }
-ExampleApplicationStarterCommandLineHandler >> sum [
+ExampleLaunchpadCommandLineHandler >> sum [
 
 	^ self seed + self add
 ]

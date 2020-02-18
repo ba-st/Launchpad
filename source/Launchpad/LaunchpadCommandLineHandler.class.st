@@ -1,5 +1,5 @@
 Class {
-	#name : #ApplicationStarterCommandLineHandler,
+	#name : #LaunchpadCommandLineHandler,
 	#superclass : #CommandLineHandler,
 	#instVars : [
 		'configurationCache'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-ApplicationStarterCommandLineHandler class >> commandName [
+LaunchpadCommandLineHandler class >> commandName [
 
 	" Overwrite this method to provide a short name for this command handler.
 	You may pass the commandName as first argument to the image to select this handler"
@@ -17,13 +17,13 @@ ApplicationStarterCommandLineHandler class >> commandName [
 ]
 
 { #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler class >> currentTimeStampString [
+LaunchpadCommandLineHandler class >> currentTimeStampString [
 
 	^ ( DateAndTime current asUTC printString copyWithoutAll: ':' ) copyReplaceAll: '+0000' with: 'Z'
 ]
 
 { #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler class >> defaultLogFile [
+LaunchpadCommandLineHandler class >> defaultLogFile [
 
 	| timestamp fileName |
 
@@ -35,7 +35,7 @@ ApplicationStarterCommandLineHandler class >> defaultLogFile [
 ]
 
 { #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler class >> defaultLogsPath [
+LaunchpadCommandLineHandler class >> defaultLogsPath [
 
 	"Sorry for this, but pharo is not consistent across versions with the concept of working directory.
 	Bn old versions it was considered that the working directory is that of the image, which is incorrect.
@@ -48,13 +48,13 @@ ApplicationStarterCommandLineHandler class >> defaultLogsPath [
 ]
 
 { #category : #'private - defaults' }
-ApplicationStarterCommandLineHandler class >> defaultStackDumpFile [
+LaunchpadCommandLineHandler class >> defaultStackDumpFile [
 
 	^ self defaultLogFile withExtension: 'fuel'
 ]
 
 { #category : #accessing }
-ApplicationStarterCommandLineHandler class >> description [
+LaunchpadCommandLineHandler class >> description [
 
 	"This method should return a short one-line description of the command"
 
@@ -62,7 +62,7 @@ ApplicationStarterCommandLineHandler class >> description [
 ]
 
 { #category : #'private - logging' }
-ApplicationStarterCommandLineHandler class >> dumpStackAndReport: aSignal [
+LaunchpadCommandLineHandler class >> dumpStackAndReport: aSignal [
 
 	^ CurrentLogger value
 		logAsError: ( 'Dumping Stack Due to Unexpected Error: <1s>' expandMacrosWith: aSignal messageText )
@@ -70,13 +70,13 @@ ApplicationStarterCommandLineHandler class >> dumpStackAndReport: aSignal [
 ]
 
 { #category : #accessing }
-ApplicationStarterCommandLineHandler class >> isAbstract [
+LaunchpadCommandLineHandler class >> isAbstract [
 
-	^ self = ApplicationStarterCommandLineHandler
+	^ self = LaunchpadCommandLineHandler
 ]
 
 { #category : #'private - accessing' }
-ApplicationStarterCommandLineHandler class >> logPrefix [
+LaunchpadCommandLineHandler class >> logPrefix [
 
 	"A prefix for the log files, can be an empty string"
 
@@ -84,7 +84,7 @@ ApplicationStarterCommandLineHandler class >> logPrefix [
 ]
 
 { #category : #activation }
-ApplicationStarterCommandLineHandler >> activate [
+LaunchpadCommandLineHandler >> activate [
 
 	self class defaultLogsPath ensureCreateDirectory.
 	Smalltalk logFileName: self class defaultLogFile pathString.
@@ -100,7 +100,7 @@ ApplicationStarterCommandLineHandler >> activate [
 ]
 
 { #category : #'private - activation' }
-ApplicationStarterCommandLineHandler >> basicActivate [
+LaunchpadCommandLineHandler >> basicActivate [
 
 	"Here you should define the code to start up your application, all the configuration passed by command line can be accessed on the `self configuration` dictionary."
 
@@ -108,7 +108,7 @@ ApplicationStarterCommandLineHandler >> basicActivate [
 ]
 
 { #category : #'private - accessing' }
-ApplicationStarterCommandLineHandler >> configuration [
+LaunchpadCommandLineHandler >> configuration [
 
 	configurationCache
 		ifNil: [ configurationCache := self configurationDefinition
@@ -123,7 +123,7 @@ ApplicationStarterCommandLineHandler >> configuration [
 ]
 
 { #category : #'private - accessing' }
-ApplicationStarterCommandLineHandler >> configurationDefinition [
+LaunchpadCommandLineHandler >> configurationDefinition [
 
 	"A collection of the arguments for this handler, wich can be MandatoryArgument, OptionalArgument or FlagArgument.
 	Answer #() if you don't have arguments, but in that case you probably do not need to use this handler :)"
@@ -132,7 +132,7 @@ ApplicationStarterCommandLineHandler >> configurationDefinition [
 ]
 
 { #category : #'private - accessing' }
-ApplicationStarterCommandLineHandler >> exceptionsToHandle [
+LaunchpadCommandLineHandler >> exceptionsToHandle [
 
 	^ self isDebugModeEnabled
 		ifTrue: [ ExceptionSet new ]
@@ -140,7 +140,7 @@ ApplicationStarterCommandLineHandler >> exceptionsToHandle [
 ]
 
 { #category : #utilities }
-ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
+LaunchpadCommandLineHandler >> exitFailure: aMessage [
 
 	self isDebugModeEnabled
 		ifTrue: [ CurrentLogger value logAsError: aMessage ]
@@ -148,14 +148,14 @@ ApplicationStarterCommandLineHandler >> exitFailure: aMessage [
 ]
 
 { #category : #'private - accessing arguments' }
-ApplicationStarterCommandLineHandler >> isDebugModeEnabled [
+LaunchpadCommandLineHandler >> isDebugModeEnabled [
 
 	<ignoreForCoverage>
 	^ self hasOption: 'debug-mode'
 ]
 
 { #category : #'private - activation' }
-ApplicationStarterCommandLineHandler >> logConfiguration [
+LaunchpadCommandLineHandler >> logConfiguration [
 
 	| configuration |
 
@@ -165,7 +165,7 @@ ApplicationStarterCommandLineHandler >> logConfiguration [
 ]
 
 { #category : #activation }
-ApplicationStarterCommandLineHandler >> suspendUiIfRequired [
+LaunchpadCommandLineHandler >> suspendUiIfRequired [
 
 	<ignoreForCoverage>
 	( self hasOption: 'suspend-ui' )

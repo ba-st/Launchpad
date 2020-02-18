@@ -2,7 +2,7 @@
 A DummyApplicationStarterCommandLineHandlerTest is a test class for testing the behavior of DummyApplicationStarterCommandLineHandler
 "
 Class {
-	#name : #DummyApplicationStarterCommandLineHandlerTest,
+	#name : #DummyLaunchpadCommandLineHandlerTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'currentLogFileName',
@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #private }
-DummyApplicationStarterCommandLineHandlerTest >> assert: anOutputStream matches: lines [
+DummyLaunchpadCommandLineHandlerTest >> assert: anOutputStream matches: lines [
 
 	anOutputStream contents lines
 		with: lines
@@ -23,7 +23,7 @@ DummyApplicationStarterCommandLineHandlerTest >> assert: anOutputStream matches:
 ]
 
 { #category : #private }
-DummyApplicationStarterCommandLineHandlerTest >> assertPreconditions [
+DummyLaunchpadCommandLineHandlerTest >> assertPreconditions [
 
 	self
 		deny: activated;
@@ -32,18 +32,18 @@ DummyApplicationStarterCommandLineHandlerTest >> assertPreconditions [
 ]
 
 { #category : #private }
-DummyApplicationStarterCommandLineHandlerTest >> handlerWithAll: arguments evaluating: aBlock [
+DummyLaunchpadCommandLineHandlerTest >> handlerWithAll: arguments evaluating: aBlock [
 
 	| handler |
 
-	handler := DummyApplicationStarterCommandLineHandler new
+	handler := DummyLaunchpadCommandLineHandler new
 		commandLine: ( CommandLineArguments withArguments: arguments ).
 	handler activationBlock: [ activated := true. aBlock value ].
 	^ handler
 ]
 
 { #category : #running }
-DummyApplicationStarterCommandLineHandlerTest >> redirectStdoutAndStderrToMemoryDuring: aBlock [
+DummyLaunchpadCommandLineHandlerTest >> redirectStdoutAndStderrToMemoryDuring: aBlock [
 
 	CurrentLogger
 		value: ( LeveledLogger outputTo: inMemoryStdout writeStream errorsTo: inMemoryStderr writeStream )
@@ -51,11 +51,11 @@ DummyApplicationStarterCommandLineHandlerTest >> redirectStdoutAndStderrToMemory
 ]
 
 { #category : #running }
-DummyApplicationStarterCommandLineHandlerTest >> setUp [
+DummyLaunchpadCommandLineHandlerTest >> setUp [
 
 	super setUp.
 	memoryFileSystem := FileSystem memory.
-	DummyApplicationStarterCommandLineHandler defaultLogsPath: memoryFileSystem / 'logs'.
+	DummyLaunchpadCommandLineHandler defaultLogsPath: memoryFileSystem / 'logs'.
 	inMemoryStdout := memoryFileSystem / 'stdout'.
 	inMemoryStderr := memoryFileSystem / 'stderr'.
 	currentLogFileName := Smalltalk logFileName.
@@ -63,14 +63,14 @@ DummyApplicationStarterCommandLineHandlerTest >> setUp [
 ]
 
 { #category : #running }
-DummyApplicationStarterCommandLineHandlerTest >> tearDown [
+DummyLaunchpadCommandLineHandlerTest >> tearDown [
 
 	Smalltalk logFileName: currentLogFileName.
 	super tearDown
 ]
 
 { #category : #tests }
-DummyApplicationStarterCommandLineHandlerTest >> testActivation [
+DummyLaunchpadCommandLineHandlerTest >> testActivation [
 
 	self
 		redirectStdoutAndStderrToMemoryDuring: [ | handler |
@@ -97,7 +97,7 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivation [
 ]
 
 { #category : #tests }
-DummyApplicationStarterCommandLineHandlerTest >> testActivationWithErrorInDebugMode [
+DummyLaunchpadCommandLineHandlerTest >> testActivationWithErrorInDebugMode [
 
 	self
 		redirectStdoutAndStderrToMemoryDuring: [ 
@@ -126,7 +126,7 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithErrorInDebugM
 ]
 
 { #category : #tests }
-DummyApplicationStarterCommandLineHandlerTest >> testActivationWithErrorWithoutDebugMode [
+DummyLaunchpadCommandLineHandlerTest >> testActivationWithErrorWithoutDebugMode [
 
 	self
 		redirectStdoutAndStderrToMemoryDuring: [ | handler |
@@ -157,7 +157,7 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithErrorWithoutD
 ]
 
 { #category : #tests }
-DummyApplicationStarterCommandLineHandlerTest >> testActivationWithoutMandatoryArguments [
+DummyLaunchpadCommandLineHandlerTest >> testActivationWithoutMandatoryArguments [
 
 	self
 		redirectStdoutAndStderrToMemoryDuring: [ | handler |
@@ -173,7 +173,7 @@ DummyApplicationStarterCommandLineHandlerTest >> testActivationWithoutMandatoryA
 ]
 
 { #category : #tests }
-DummyApplicationStarterCommandLineHandlerTest >> testActivationWithoutOptionalArguments [
+DummyLaunchpadCommandLineHandlerTest >> testActivationWithoutOptionalArguments [
 
 	self
 		redirectStdoutAndStderrToMemoryDuring: [ | handler |

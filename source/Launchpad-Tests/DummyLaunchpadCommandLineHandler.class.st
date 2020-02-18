@@ -1,6 +1,6 @@
 Class {
-	#name : #DummyApplicationStarterCommandLineHandler,
-	#superclass : #ApplicationStarterCommandLineHandler,
+	#name : #DummyLaunchpadCommandLineHandler,
+	#superclass : #LaunchpadCommandLineHandler,
 	#instVars : [
 		'activationBlock'
 	],
@@ -11,49 +11,49 @@ Class {
 }
 
 { #category : #accessing }
-DummyApplicationStarterCommandLineHandler class >> commandName [
+DummyLaunchpadCommandLineHandler class >> commandName [
 
 	^ 'dummy'
 ]
 
 { #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler class >> defaultLogsPath [
+DummyLaunchpadCommandLineHandler class >> defaultLogsPath [
 
 	^ memoryLogPathConfiguredFromTest
 ]
 
 { #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler class >> defaultLogsPath: aPath [
+DummyLaunchpadCommandLineHandler class >> defaultLogsPath: aPath [
 
 	memoryLogPathConfiguredFromTest := aPath
 ]
 
 { #category : #accessing }
-DummyApplicationStarterCommandLineHandler class >> description [
+DummyLaunchpadCommandLineHandler class >> description [
 
 	^ 'this is a dummy command line handler for tests'
 ]
 
 { #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler class >> logPrefix [
+DummyLaunchpadCommandLineHandler class >> logPrefix [
 
 	^ 'dummy'
 ]
 
 { #category : #initialization }
-DummyApplicationStarterCommandLineHandler >> activationBlock: aBlock [
+DummyLaunchpadCommandLineHandler >> activationBlock: aBlock [
 
 	activationBlock := aBlock
 ]
 
 { #category : #'private - activation' }
-DummyApplicationStarterCommandLineHandler >> basicActivate [
+DummyLaunchpadCommandLineHandler >> basicActivate [
 
 	activationBlock value
 ]
 
 { #category : #'private - accessing' }
-DummyApplicationStarterCommandLineHandler >> configurationDefinition [
+DummyLaunchpadCommandLineHandler >> configurationDefinition [
 
 	^ OrderedCollection new
 		add: ( MandatoryArgument named: #mandatory );
@@ -63,20 +63,20 @@ DummyApplicationStarterCommandLineHandler >> configurationDefinition [
 ]
 
 { #category : #initialization }
-DummyApplicationStarterCommandLineHandler >> initialize [
+DummyLaunchpadCommandLineHandler >> initialize [
 
 	super initialize.
 	self activationBlock: [  ]
 ]
 
 { #category : #initialization }
-DummyApplicationStarterCommandLineHandler >> stderr: anOutputStream [
+DummyLaunchpadCommandLineHandler >> stderr: anOutputStream [
 
 	stderr := VTermOutputDriver on: anOutputStream
 ]
 
 { #category : #initialization }
-DummyApplicationStarterCommandLineHandler >> stdout: anOutputStream [
+DummyLaunchpadCommandLineHandler >> stdout: anOutputStream [
 
 	stdout := VTermOutputDriver on: anOutputStream
 ]
