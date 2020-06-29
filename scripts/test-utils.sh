@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ -z ${SMALLTALK_CI_VM} ] ; then
+if [ -z "${SMALLTALK_CI_VM}" ] ; then
 	echo "Missing SMALLTALK_CI_VM, defaulting to ./pharo"
 	SMALLTALK_CI_VM=./pharo
 fi
-if [ -z ${SMALLTALK_CI_IMAGE} ] ; then
+if [ -z "${SMALLTALK_CI_IMAGE}" ] ; then
 	echo "Missing SMALLTALK_CI_IMAGE, defaulting to Pharo.image"
 	SMALLTALK_CI_IMAGE=Pharo.image
 fi
