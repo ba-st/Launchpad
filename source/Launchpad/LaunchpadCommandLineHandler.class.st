@@ -169,5 +169,5 @@ LaunchpadCommandLineHandler >> suspendUiIfRequired [
 
 	<ignoreForCoverage>
 	( self hasOption: 'suspend-ui' )
-		ifTrue: [ UIManager default uiProcess suspend ]
+		ifTrue: [ UIManager default uiProcess ifNotNil: #suspend ]
 ]
