@@ -6,7 +6,7 @@ You can see an example on:
 
 ## Defining the handler
 
-Start off by subclassing `ApplicationStarterCommandLineHandler`.
+Start off by subclassing `LaunchpadCommandLineHandler`.
 Then implement the required methods:
 
 - `basicActivate` this method should contain the logic to start your application.
@@ -34,9 +34,9 @@ By default both are disabled.
 
 ## Launching your application using the handler
 
-_Assuming the [Example Handler](../source/Launchpad-Examples/ExampleApplicationStarterCommandLineHandler.class.st) is being used_
+_Assuming the [Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st) is being used_
 
-The [Example Handler](../source/Launchpad-Examples/ExampleApplicationStarterCommandLineHandler.class.st) allows 5 possible arguments:
+The [Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st) allows 5 possible arguments:
 
 - `--fail` a flag to demonstrate what happens when the handler exits with an expected error (just exit).
 - `--raise-error` a flag to demonstrate what happens when the handler exits with an unexpected error (create a fuel stack file).
@@ -96,7 +96,7 @@ On the other hand, if we omit `--seed` which is optional, the output would be:
 [2019-05-31T03:06:56.962318-03:00] [INFO] add: 40
 [2019-05-31T03:06:56.963318-03:00] [INFO] fail: false
 [2019-05-31T03:06:56.964318-03:00] [INFO] raise-error: false
-[2019-05-31T03:06:56.965318-03:00] [WRANING]  seed option not provided. Defaulting to 0"
+[2019-05-31T03:06:56.965318-03:00] [WARNING]  seed option not provided. Defaulting to 0"
 [2019-05-31T03:06:56.965318-03:00] [INFO] The sum of 0 and 40 is 40
 ```
 
@@ -124,7 +124,7 @@ Command line handler failed
 Using `--raise-error` which simulates an unexpected error and generates a fuel dump file.
 Details on how can you use that dump are described in [Debugging](Debugging.md).
 
-You should also see a .fuel file on logs/, this is usually a `<logPrefix>-<timestamp>.fuel` but for testing purpouses, the example uses `<logPrefix>-<date>.fuel`.
+You should also see a .fuel file on logs/, this is usually a `<logPrefix>-<timestamp>.fuel` but for testing purposes, the example uses `<logPrefix>-<date>.fuel`.
 
 ```bash
 ./pharo Pharo.image example --add=40 --raise-error
