@@ -19,9 +19,8 @@ jobs:
       - run: smalltalkci -s ${{ matrix.smalltalk }}
         timeout-minutes: 15
       - run: echo "::set-env name=SCI_COVERAGE_FILE_LOCATION::${HOME}/.smalltalkCI/_builds/coveralls_results.json"
-      - run: echo "::set-env name=SMALLTALK_CI_VM::${HOME}/.smalltalkCI/_builds/vm/pharo"
+      - run: echo "::set-env name=SMALLTALK_CI_VM::${HOME}/.smalltalkCI/_builds/vm"
       - run: echo "::set-env name=SMALLTALK_CI_IMAGE::${HOME}/.smalltalkCI/_builds/TravisCI.image"
-      - run: ls -la ${HOME}/.smalltalkCI/_builds/vm/
       - run: cd scripts && ./test.sh
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1.0.6
