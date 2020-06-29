@@ -2,7 +2,7 @@
 An ExampleApplicationStarterCommandLineHandlerTest is a test class for testing the behavior of ExampleApplicationStarterCommandLineHandler
 "
 Class {
-	#name : #ExampleApplicationStarterCommandLineHandlerTest,
+	#name : #ExampleLaunchpadCommandLineHandlerTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'currentLogFileName'
@@ -11,27 +11,27 @@ Class {
 }
 
 { #category : #running }
-ExampleApplicationStarterCommandLineHandlerTest >> setUp [
+ExampleLaunchpadCommandLineHandlerTest >> setUp [
 
 	super setUp.
 	currentLogFileName := Smalltalk logFileName
 ]
 
 { #category : #running }
-ExampleApplicationStarterCommandLineHandlerTest >> tearDown [
+ExampleLaunchpadCommandLineHandlerTest >> tearDown [
 
 	Smalltalk logFileName: currentLogFileName.
-	ExampleApplicationStarterCommandLineHandler defaultStackDumpFile ensureDelete.
+	ExampleLaunchpadCommandLineHandler defaultStackDumpFile ensureDelete.
 	super tearDown
 ]
 
 { #category : #tests }
-ExampleApplicationStarterCommandLineHandlerTest >> testActivation [
+ExampleLaunchpadCommandLineHandlerTest >> testActivation [
 
 	| arguments handler |
 
 	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--add=5'}.
-	handler := ExampleApplicationStarterCommandLineHandler new commandLine: arguments.
+	handler := ExampleLaunchpadCommandLineHandler new commandLine: arguments.
 	self shouldnt: [ handler activate ] raise: Exit.
 	self assert: handler seed equals: 1.
 	self assert: handler add equals: 5.
@@ -39,24 +39,24 @@ ExampleApplicationStarterCommandLineHandlerTest >> testActivation [
 ]
 
 { #category : #tests }
-ExampleApplicationStarterCommandLineHandlerTest >> testActivationWithFail [
+ExampleLaunchpadCommandLineHandlerTest >> testActivationWithFail [
 
 	| arguments handler |
 
 	arguments := CommandLineArguments withArguments: {'example' . '--seed=1' . '--add=5' . '--fail'}.
-	handler := ExampleApplicationStarterCommandLineHandler new commandLine: arguments.
+	handler := ExampleLaunchpadCommandLineHandler new commandLine: arguments.
 	self should: [ handler activate ] raise: Exit.
 	self deny: handler class defaultStackDumpFile exists
 ]
 
 { #category : #tests }
-ExampleApplicationStarterCommandLineHandlerTest >> testActivationWithSignalError [
+ExampleLaunchpadCommandLineHandlerTest >> testActivationWithSignalError [
 
 	| arguments handler |
 
 	arguments := CommandLineArguments
 		withArguments: {'example' . '--seed=1' . '--add=5' . '--raise-error'}.
-	handler := ExampleApplicationStarterCommandLineHandler commandLine: arguments.
+	handler := ExampleLaunchpadCommandLineHandler commandLine: arguments.
 	self should: [ handler activate ] raise: Exit.
 	self assert: handler class defaultStackDumpFile exists
 ]

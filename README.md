@@ -13,8 +13,10 @@
 </p>
 
 [![GitHub release](https://img.shields.io/github/release/ba-st/Launchpad.svg)](https://github.com/ba-st/Launchpad/releases/latest)
-[![Build Status](https://travis-ci.com/ba-st/Launchpad.svg?branch=release-candidate)](https://travis-ci.com/ba-st/Launchpad)
-[![Coverage Status](https://coveralls.io/repos/github/ba-st/Launchpad/badge.svg?branch=release-candidate)](https://coveralls.io/github/ba-st/Launchpad?branch=release-candidate)
+[![Build Status](https://github.com/ba-st/Launchpad/workflows/Build/badge.svg?branch=release-candidate)](https://github.com/ba-st/Launchpad/actions?query=workflow%3ABuild)
+[![Coverage Status](https://codecov.io/github/ba-st/Launchpad/coverage.svg?branch=release-candidate)](https://codecov.io/gh/ba-st/Launchpad/branch/release-candidate)
+[![Pharo 7.0](https://img.shields.io/badge/Pharo-7.0-informational)](https://pharo.org)
+[![Pharo 8.0](https://img.shields.io/badge/Pharo-8.0-informational)](https://pharo.org)
 
 Useful when you want to start up your image from the command line, using parameters, this provides a framework to use: mandatory and optional arguments, logging and error handling.
 
