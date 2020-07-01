@@ -1,8 +1,8 @@
 # How To
 
 You can see an example on:
-[Example Handler](../source/Launchpad-Examples/ExampleApplicationStarterCommandLineHandler.class.st) and it's
-[Test](../source/Launchpad-Tests/ExampleApplicationStarterCommandLineHandlerTest.class.st)
+[Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st) and it's
+[Test](../source/Launchpad-Tests/ExampleLaunchpadCommandLineHandlerTest.class.st)
 
 ## Defining the handler
 
