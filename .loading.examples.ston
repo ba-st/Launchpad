@@ -3,14 +3,11 @@ SmalltalkCISpec {
     SCIMetacelloLoadSpec {
       #baseline : 'Launchpad',
       #directory : 'source',
-      #load : [ 'CI' ],
+      #load : [ 'Examples' ],
       #platforms : [  #pharo ]
     }
   ],
   #testing : {
-    #coverage : {
-      #packages : [ 'Launchpad*' ],
-      #format: #lcov
-    }
+    #failOnZeroTests : false
   }
 }
