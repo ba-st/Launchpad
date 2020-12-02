@@ -7,7 +7,7 @@ You can load **Launchpad** evaluating:
 ```smalltalk
 Metacello new
  baseline: 'Launchpad';
- repository: 'github://ba-st/Launchpad:master/source';
+ repository: 'github://ba-st/Launchpad:release-candidate/source';
  load.
 ```
 
