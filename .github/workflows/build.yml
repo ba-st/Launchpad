@@ -19,9 +19,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 15
-      - run: echo "::set-env name=SMALLTALK_CI_VM::${HOME}/.smalltalkCI/_builds/vm"
-      - run: echo "::set-env name=SMALLTALK_CI_IMAGE::${HOME}/.smalltalkCI/_builds/TravisCI.image"
-      - run: cd scripts && ./test.sh
+      - name: Run Shell Tests
+        run: cd scripts && ./test.sh
+        env:
+          SMALLTALK_CI_VM: ${{env.HOME}}/.smalltalkCI/_builds/vm
+          SMALLTALK_CI_IMAGE: ${{env.HOME}}/.smalltalkCI/_builds/TravisCI.image
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
