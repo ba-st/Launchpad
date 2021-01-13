@@ -33,12 +33,6 @@ BaselineOfLaunchpad >> baseline: spec [
 BaselineOfLaunchpad >> setUpCompatibilityPackages: spec [
 
 	spec
-		for: #'pharo6.x'
-		do: [ spec
-				package: 'Launchpad-Pharo6';
-				group: 'Core' with: 'Launchpad-Pharo6'
-			].
-	spec
 		for: #'pharo7.x'
 		do: [ spec
 				package: 'Launchpad-Pharo7';
