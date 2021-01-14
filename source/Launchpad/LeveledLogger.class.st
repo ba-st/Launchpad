@@ -31,7 +31,7 @@ LeveledLogger >> initializeOutputTo: anOutputStream errorsTo: anErrorStream [
 LeveledLogger >> log: aMessage to: anOutputStream withLevel: aLogLevel [
 
 	anOutputStream
-		nextPutAll: ( '[<1p>] [<2s>] <3s><n>' expandMacrosWith: DateAndTime current with: aLogLevel with: aMessage );
+		nextPutAll: ( '[<1p>] [<2s>] <3s><n>' expandMacrosWith: DateAndTime now with: aLogLevel with: aMessage );
 		flush
 ]
 
