@@ -16,7 +16,7 @@ ExampleLaunchpadCommandLineHandler class >> commandName [
 { #category : #'private - defaults' }
 ExampleLaunchpadCommandLineHandler class >> defaultLogFile [
 
-	"We override this to be able to test it, it's not required to be overriden"
+	"We override this to be able to test it, it's not required to be overridden"
 
 	| timestamp fileName |
 

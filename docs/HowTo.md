@@ -1,18 +1,19 @@
 # How To
 
 You can see an example on:
-[Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st) and it's
-[Test](../source/Launchpad-Tests/ExampleLaunchpadCommandLineHandlerTest.class.st)
+[Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st)
+and it's [Test](../source/Launchpad-Tests/ExampleLaunchpadCommandLineHandlerTest.class.st)
 
 ## Defining the handler
 
-Start off by subclassing `LaunchpadCommandLineHandler`.
+Start off by subclassifying `LaunchpadCommandLineHandler`.
 Then implement the required methods:
 
 - `basicActivate` this method should contain the logic to start your application.
   - It's wrapped in a block handling `Error` which handles the program termination,
   see [Debugging](Debugging.md) for more information.
-- `configurationDefinitions` a collection of arguments available to the command line handler.
+- `configurationDefinitions` a collection of arguments available to the command
+  line handler.
   - These are logged to console when the application starts,
   and are accessible under `self configuration` on the command line handler.
   - See the comments on the arguments for more information:
@@ -21,25 +22,32 @@ Then implement the required methods:
     - [OptionalArgument](../source/Launchpad/OptionalArgument.class.st)
 - `logPrefix` a string to prepend to the logs and fuel files.
 - `commandName` (class side) used to activate this handler from the command line.
-- `description` (class side) used to describe this handler when `./pharo <image> list` is called.
+- `description` (class side) used to describe this handler when
+  `./pharo <image> list` is called.
 
 ### Implicit arguments
 
 There are 2 flags which are defined on the superclass and always present:
 
-- `--suspend-ui` suspends the UI process to improve performance on headless applications. (Teapot servers are a common use case)
-- `--debug-mode` suppresses exit on error and enables debugging, useful when you are trying to debug the handler. Available to the handler under `self isDebugModeEnabled`.
+- `--suspend-ui` suspends the UI process to improve performance on headless
+  applications. (Teapot servers are a common use case)
+- `--debug-mode` suppresses exit on error and enables debugging, useful when you
+  are trying to debug the handler. Available to the handler under `self isDebugModeEnabled`.
 
 By default both are disabled.
 
 ## Launching your application using the handler
 
-_Assuming the [Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st) is being used_
+_Assuming the [Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st)
+is being used_
 
-The [Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st) allows 5 possible arguments:
+The [Example Handler](../source/Launchpad-Examples/ExampleLaunchpadCommandLineHandler.class.st)
+allows 5 possible arguments:
 
-- `--fail` a flag to demonstrate what happens when the handler exits with an expected error (just exit).
-- `--raise-error` a flag to demonstrate what happens when the handler exits with an unexpected error (create a fuel stack file).
+- `--fail` a flag to demonstrate what happens when the handler exits with an
+  expected error (just exit).
+- `--raise-error` a flag to demonstrate what happens when the handler exits with
+  an unexpected error (create a fuel stack file).
 - `--seed` an optional argument which is interpreted as a Number defaults to 0.
 - `--add` mandatory argument which is interpreted as a Number.
 
@@ -57,10 +65,14 @@ Let's split that and explain each section:
 - `Pharo.image` is our current image
 - `example` is the `commandName` we defined on the class side of the example handler.
     Without this, the handler is not activated and the image does nothing in particular.
-- `--seed=2` our optional argument, this could be absent, and then `self configuration at: 'seed'` would be 0.
-    Because the handler uses `#asNumber`, the string `'2'` is converted to the number `2`.
-- `--add=40` out mandatory argument, without this, the program will log an error and exit (no dump file).
-    Because the handler uses `#asNumber`, the string `'40'` is converted to the number `4`.
+- `--seed=2` our optional argument, this could be absent, and then
+  `self configuration at: 'seed'` would be 0.
+  Because the handler uses `#asNumber`, the string `'2'` is converted to the
+  number `2`.
+- `--add=40` out mandatory argument, without this, the program will log an error
+  and exit (no dump file).
+  Because the handler uses `#asNumber`, the string `'40'` is converted to the
+  number `4`.
 
 This would log:
 
@@ -121,10 +133,12 @@ Command line handler failed
 
 ### Unexpected errors
 
-Using `--raise-error` which simulates an unexpected error and generates a fuel dump file.
+Using `--raise-error` which simulates an unexpected error and generates a fuel
+dump file.
 Details on how can you use that dump are described in [Debugging](Debugging.md).
 
-You should also see a .fuel file on logs/, this is usually a `<logPrefix>-<timestamp>.fuel` but for testing purposes, the example uses `<logPrefix>-<date>.fuel`.
+You should also see a .fuel file on logs/, this is usually a
+`<logPrefix>-<timestamp>.fuel` but for testing purposes, the example uses `<logPrefix>-<date>.fuel`.
 
 ```bash
 ./pharo Pharo.image example --add=40 --raise-error

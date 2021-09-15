@@ -2,9 +2,9 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'Launchpad',
-      #directory : 'source',
-      #load : [ 'Core' ],
-      #platforms : [  #pharo ]
+      #directory : '../source',
+      #load : [ 'Examples' ],
+      #platforms : [ #pharo ]
     }
   ],
   #testing : {

@@ -15,7 +15,8 @@ Metacello new
 
 ## Using as dependency
 
-In order to include **Launchpad** as part of your project, you should reference the package in your product baseline:
+In order to include **Launchpad** as part of your project, you should reference
+the package in your product baseline:
 
 ```smalltalk
 setUpDependencies: spec

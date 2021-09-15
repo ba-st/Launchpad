@@ -125,7 +125,7 @@ LaunchpadCommandLineHandler >> configuration [
 { #category : #'private - accessing' }
 LaunchpadCommandLineHandler >> configurationDefinition [
 
-	"A collection of the arguments for this handler, wich can be MandatoryArgument, OptionalArgument or FlagArgument.
+	"A collection of the arguments for this handler, which can be MandatoryArgument, OptionalArgument or FlagArgument.
 	Answer #() if you don't have arguments, but in that case you probably do not need to use this handler :)"
 
 	self subclassResponsibility
