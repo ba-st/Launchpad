@@ -4,28 +4,65 @@ set -euo pipefail
 # shellcheck source=test-utils.sh
 source test-utils.sh
 
-executeWithArguments --add=5
-assertInfo "add: 5"
-assertInfo "seed: 0"
-assertInfo "raise-error: false"
-assertInfo "The sum of 0 and 5 is 5"
-assertWarning "seed option not provided. Defaulting to 0"
-assertDumpFileIsAbsent
+# global options
+executeWithArguments launchpad --version
+executeWithArguments launchpad --help
+executeWithArguments launchpad -h
+executeWithArguments launchpad
+assertError "Missing command or option."
 
-executeWithArguments --seed=5
-assertError "add option not provided. You must provide one."
-assertDumpFileIsAbsent
+# list subcommand
+executeWithArguments launchpad list
+executeWithArguments launchpad list --help
+executeWithArguments launchpad list -h
+executeWithArguments launchpad list --verbose
+executeWithArguments launchpad list -v
 
-executeWithArguments --add=5 --seed=4
-assertInfo "add: 5"
-assertInfo "seed: 4"
-assertInfo "raise-error: false"
-assertInfo "The sum of 4 and 5 is 9"
-assertDumpFileIsAbsent
+# explain subcommand
+executeWithArguments launchpad explain
+assertError "Missing application name or option."
+executeWithArguments launchpad explain --help
+executeWithArguments launchpad explain -h
+executeWithArguments launchpad explain greeter
+executeWithArguments launchpad explain broken
 
-executeWithArguments --add=5 --seed=4 --raise-error
-assertInfo "add: 5"
-assertInfo "seed: 4"
-assertInfo "raise-error: true"
-assertError "Dumping Stack Due to Unexpected Error: This was a forced error, which should dump a stack file on runtime"
-assertDumpFileIsPresent
+# start subcommand
+executeWithArguments launchpad start
+assertError "Missing application name or option."
+executeWithArguments launchpad start --help
+executeWithArguments launchpad start -h
+
+#start greeter app
+executeWithArguments launchpad start greeter
+assertInfo "Obtaining configuration..."
+assertError '"Name" parameter not provided. You must provide one.'
+
+executeWithArguments launchpad start greeter --name=John
+assertInfo "Obtaining configuration..."
+assertWarning '"Title" parameter not provided. Using default.'
+assertInfo "Name: John"
+assertInfo "Title:"
+assertInfo "Obtaining configuration... [DONE]"
+assertStandardOutputIncludesText "Hi John!"
+
+executeWithArguments launchpad start greeter --name=Jones --tile=Mr.
+assertInfo "Obtaining configuration..."
+assertInfo "Name: Jones"
+assertInfo "Title: Mr."
+assertInfo "Obtaining configuration... [DONE]"
+assertStandardOutputIncludesText "Hi Mr. Jones!"
+
+executeWithArguments launchpad start --debug-mode greeter
+assertStandardErrorIncludesText 'RequiredConfigurationNotFound: "Name" parameter not present.'
+
+#start broken app
+executeWithArguments launchpad start broken
+assertInfo "Obtaining configuration..."
+assertInfo "Obtaining configuration... [DONE]"
+
+executeWithArguments launchpad start broken --raise-error
+assertInfo "Obtaining configuration..."
+assertInfo "Obtaining configuration... [DONE]"
+assertError "Unexpected startup error: Doh!"
+assertError 'Dumping stack due to unexpected error: "Doh!"'
+assertStandardErrorIncludesText "--- The full stack ---"
