@@ -17,19 +17,7 @@ BaselineOfLaunchpad >> baseline: spec [
 			group: 'Development' with: 'Tests';
 			group: 'CI' with: 'Tests';
 			group: 'default' with: 'Development'
-		].
-	self setUpCompatibilityPackages: spec
-]
-
-{ #category : #baselines }
-BaselineOfLaunchpad >> setUpCompatibilityPackages: spec [
-
-	spec
-		for: #'pharo7.x'
-		do: [ spec
-				package: 'Launchpad-Pharo7';
-				group: 'Core' with: 'Launchpad-Pharo7'
-			]
+		]
 ]
 
 { #category : #initialization }
