@@ -22,9 +22,9 @@ the package in your product baseline:
 setUpDependencies: spec
 
  spec
-  baseline: 'Launchpad' 
+  baseline: 'Launchpad'
     with: [ spec repository: 'github://github://ba-st/Launchpad:v{XX}' ];
-  project: 'Launchpad-Deployment' 
+  project: 'Launchpad-Deployment'
     copyFrom: 'Launchpad' with: [ spec loads: 'Deployment' ]
 ```
 
@@ -38,6 +38,6 @@ baseline: spec
   for: #common
   do: [ self setUpDependencies: spec.
    spec
-    package: 'My-Package' 
+    package: 'My-Package'
       with: [ spec requires: #('Launchpad-Deployment') ] ]
 ```
