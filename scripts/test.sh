@@ -42,14 +42,14 @@ assertInfo "Obtaining configuration..."
 assertWarning '"Title" parameter not provided. Using default.'
 assertInfo "Name: John"
 assertInfo "Title:"
-assertInfo "Obtaining configuration... [DONE]"
+assertInfo "Obtaining configuration... \[DONE\]"
 assertStandardOutputIncludesText "Hi John!"
 
-executeWithArguments launchpad start greeter --name=Jones --tile=Mr.
+executeWithArguments launchpad start greeter --name=Jones --title=Mr.
 assertInfo "Obtaining configuration..."
 assertInfo "Name: Jones"
 assertInfo "Title: Mr."
-assertInfo "Obtaining configuration... [DONE]"
+assertInfo "Obtaining configuration... \[DONE\]"
 assertStandardOutputIncludesText "Hi Mr. Jones!"
 
 executeWithArguments launchpad start --debug-mode greeter
@@ -58,11 +58,11 @@ assertStandardErrorIncludesText 'RequiredConfigurationNotFound: "Name" parameter
 #start broken app
 executeWithArguments launchpad start broken
 assertInfo "Obtaining configuration..."
-assertInfo "Obtaining configuration... [DONE]"
+assertInfo "Obtaining configuration... \[DONE\]"
 
 executeWithArguments launchpad start broken --raise-error
 assertInfo "Obtaining configuration..."
-assertInfo "Obtaining configuration... [DONE]"
+assertInfo "Obtaining configuration... \[DONE\]"
 assertError "Unexpected startup error: Doh!"
 assertError 'Dumping stack due to unexpected error: "Doh!"'
-assertStandardErrorIncludesText "--- The full stack ---"
+assertStandardErrorIncludesText "The full stack"

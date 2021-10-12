@@ -23,7 +23,7 @@ function assertOutputIncludesMessage() {
 	local level=$2
 	local message=$3
 
-	if [ "$(grep -c "^\[[0-9T.:+-]*\] \[$level\] $message" "$output")" -eq 0 ]; then
+	if [ "$(grep -c "\[$level\] $message" "$output")" -eq 0 ]; then
 		echo "Expected std$1 to have: [$level] '$message' when invoked with $LAST_ARGUMENTS"
 		exit 1
 	fi
