@@ -16,8 +16,8 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription d
 
 	^ self named: aName
 		  describedBy: aDescription
-		  inside: #(  )
 		  defaultingTo: aDefaultValue
+		  convertingWith: #yourself
 ]
 
 { #category : #'instance creation' }

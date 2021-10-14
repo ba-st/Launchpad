@@ -336,7 +336,8 @@ ApplicationConfigurationTest >> testReloadingEnvironmentVariableSettings [
 
 	configuration := self newApplicationConfiguration.
 
-	provider := ConfigurationFromEnvironmentProvider new.
+	provider := ConfigurationFromEnvironmentProvider chainedWith:
+		            ( self commandLineProviderOver: #(  ) ).
 
 	self should: [ ApplicationConfiguration forAll: configuration parameters providedBy: provider ]
 		raise: RequiredConfigurationNotFound.

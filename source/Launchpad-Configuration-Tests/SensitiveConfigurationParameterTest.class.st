@@ -24,6 +24,17 @@ SensitiveConfigurationParameterTest >> testAccessing [
 ]
 
 { #category : #tests }
+SensitiveConfigurationParameterTest >> testConverting [
+
+	| parameter |
+
+	parameter := ( MandatoryConfigurationParameter named: 'Public URL'
+		               describedBy: 'The service''s public URL' ) asSensitive.
+
+	self assert: parameter asSensitive identicalTo: parameter
+]
+
+{ #category : #tests }
 SensitiveConfigurationParameterTest >> testPrintAsCommandLineArgumentTemplate [
 
 	| parameter |
