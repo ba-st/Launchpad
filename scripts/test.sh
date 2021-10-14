@@ -63,6 +63,5 @@ assertInfo "Obtaining configuration... \[DONE\]"
 executeWithArguments launchpad start broken --raise-error
 assertInfo "Obtaining configuration..."
 assertInfo "Obtaining configuration... \[DONE\]"
-assertError "Unexpected startup error: Doh!"
-assertError 'Dumping stack due to unexpected error: "Doh!"'
+assertError 'Unexpected startup error: "Doh!"'
 assertStandardErrorIncludesText "The full stack"
