@@ -17,6 +17,13 @@ ConfigurationParameter class >> assertNotEmpty: aName and: aDescription [
 		buildAndCheck
 ]
 
+{ #category : #testing }
+ConfigurationParameter class >> isAbstract [
+
+	<ignoreForCoverage>
+	^ self = ConfigurationParameter
+]
+
 { #category : #accessing }
 ConfigurationParameter >> asAttributeName: string [
 

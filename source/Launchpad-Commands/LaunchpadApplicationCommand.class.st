@@ -7,6 +7,7 @@ Class {
 { #category : #testing }
 LaunchpadApplicationCommand class >> isAbstract [
 
+	<ignoreForCoverage>
 	^ self = LaunchpadApplicationCommand
 ]
 

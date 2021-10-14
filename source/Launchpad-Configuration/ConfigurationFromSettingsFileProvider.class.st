@@ -13,6 +13,7 @@ ConfigurationFromSettingsFileProvider class >> canHandle: aFileReference [
 { #category : #testing }
 ConfigurationFromSettingsFileProvider class >> isAbstract [
 
+	<ignoreForCoverage>
 	^ self = ConfigurationFromSettingsFileProvider
 ]
 

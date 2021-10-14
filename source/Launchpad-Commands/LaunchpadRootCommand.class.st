@@ -20,7 +20,8 @@ LaunchpadRootCommand class >> commandName [
 { #category : #initialization }
 LaunchpadRootCommand class >> initialize [
 
-	self version: (VersionFromRepositoryResolver new valueFor: #BaselineOfLaunchpad)
+	<ignoreForCoverage>
+	self version: ( VersionFromRepositoryResolver new valueFor: #BaselineOfLaunchpad )
 ]
 
 { #category : #accessing }
@@ -44,7 +45,7 @@ LaunchpadRootCommand class >> version: aVersion [
 { #category : #accessing }
 LaunchpadRootCommand >> description [
 
-	^ 'Launchpad provides a command-line handler used to start, list, and explain the available applications contained in the image.'
+	^ 'A command-line interface to start, list, and explain the applications available within the image.'
 ]
 
 { #category : #evaluating }

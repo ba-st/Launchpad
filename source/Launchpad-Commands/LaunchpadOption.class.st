@@ -5,6 +5,13 @@ Class {
 }
 
 { #category : #testing }
+LaunchpadOption class >> isAbstract [
+
+	<ignoreForCoverage>
+	^ self = LaunchpadOption
+]
+
+{ #category : #testing }
 LaunchpadOption >> canHandle: argument [
 
 	^ argument = ( '--' , self name )

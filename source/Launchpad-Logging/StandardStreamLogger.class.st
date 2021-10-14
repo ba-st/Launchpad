@@ -7,6 +7,13 @@ Class {
 	#category : #'Launchpad-Logging'
 }
 
+{ #category : #testing }
+StandardStreamLogger class >> isAbstract [
+
+	<ignoreForCoverage>
+	^ self = StandardStreamLogger
+]
+
 { #category : #'instance creation' }
 StandardStreamLogger class >> onStandardError [
 

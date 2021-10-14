@@ -4,6 +4,13 @@ Class {
 	#category : #'Launchpad-Applications'
 }
 
+{ #category : #testing }
+LaunchpadApplicationRunningMode class >> isAbstract [
+
+	<ignoreForCoverage>
+	^ self = LaunchpadApplicationRunningMode
+]
+
 { #category : #utilities }
 LaunchpadApplicationRunningMode >> exitFailure [
 

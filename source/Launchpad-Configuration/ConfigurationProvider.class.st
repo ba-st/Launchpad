@@ -4,6 +4,13 @@ Class {
 	#category : #'Launchpad-Configuration'
 }
 
+{ #category : #testing }
+ConfigurationProvider class >> isAbstract [
+
+	<ignoreForCoverage>
+	^ self =  ConfigurationProvider
+]
+
 { #category : #initialization }
 ConfigurationProvider >> reloadConfiguration [
 

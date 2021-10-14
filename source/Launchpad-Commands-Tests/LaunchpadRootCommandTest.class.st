@@ -61,7 +61,7 @@ LaunchpadRootCommandTest >> expectedExplainHelpOutput [
 { #category : #private }
 LaunchpadRootCommandTest >> expectedHelpOutput [
 
-	^ 'NAME<n>		launchpad - A minimal application launcher<n>SYNOPSYS<n>		launchpad [--version] [--help|-h] %<command><n>DESCRIPTION<n>		Launchpad provides a command-line handler used to start, list, and explain the available applications contained in the image.<n>OPTIONS<n>		--version<n>			Print the version and exit.<n>		-h, --help<n>			Print this help message and exit.<n>COMMANDS<n>		start<n>			Start the selected application<n>		list<n>			List available applications<n>		explain<n>			Give details about the selected application<n>'
+	^ 'NAME<n>		launchpad - A minimal application launcher<n>SYNOPSYS<n>		launchpad [--version] [--help|-h] %<command><n>DESCRIPTION<n>		A command-line interface to start, list, and explain the applications available within the image.<n>OPTIONS<n>		--version<n>			Print the version and exit.<n>		-h, --help<n>			Print this help message and exit.<n>COMMANDS<n>		start<n>			Start the selected application<n>		list<n>			List available applications<n>		explain<n>			Give details about the selected application<n>'
 		  expandMacros
 ]
 
@@ -153,7 +153,7 @@ LaunchpadRootCommandTest >> testAccessing [
 		assert: command summary equals: 'A minimal application launcher';
 		assert: command description
 		equals:
-			'Launchpad provides a command-line handler used to start, list, and explain the available applications contained in the image.'.
+			'A command-line interface to start, list, and explain the applications available within the image.'.
 
 	options := command options.
 	self
@@ -773,7 +773,7 @@ LaunchpadRootCommandTest >> testPrintHelpOn [
 SYNOPSYS
 		launchpad [--version] [--help|-h] <command>
 DESCRIPTION
-		Launchpad provides a command-line handler used to start, list, and explain the available applications contained in the image.
+		A command-line interface to start, list, and explain the applications available within the image.
 OPTIONS
 		--version
 			Print the version and exit.

@@ -95,6 +95,11 @@ BaselineOfLaunchpad >> setUpTestPackages: spec [
 		group: 'Tests' with: 'Launchpad-Configuration-Tests'.
 
 	spec
+		package: 'Launchpad-Application-Tests'
+		with: [ spec requires: #( 'Launchpad-Application' 'Buoy-SUnit' ) ];
+		group: 'Tests' with: 'Launchpad-Application-Tests'.
+
+	spec
 		package: 'Launchpad-Tracing-Tests' with: [ spec requires: 'Launchpad-Tracing' ];
 		group: 'Tests' with: 'Launchpad-Tracing-Tests'.
 

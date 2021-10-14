@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #tests }
+LaunchpadCommandLineHandlerTest >> testDescription [
+
+	self assert: LaunchpadCommandLineHandler description
+		equals: 'A minimal application launcher'
+]
+
+{ #category : #tests }
 LaunchpadCommandLineHandlerTest >> testHandlingHelpOption [
 
 	| commandLine |
