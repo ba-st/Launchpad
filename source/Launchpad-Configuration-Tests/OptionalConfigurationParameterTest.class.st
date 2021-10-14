@@ -49,7 +49,7 @@ OptionalConfigurationParameterTest >> testAccessingInSection [
 
 	parameter := OptionalConfigurationParameter named: 'Port'
 		             describedBy: 'The service''s listening port'
-		             inSection: 'HTTP'
+		             inside: #( 'HTTP' )
 		             defaultingTo: 8080.
 
 	self

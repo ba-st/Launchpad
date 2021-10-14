@@ -50,9 +50,9 @@ SensitiveConfigurationParameter >> printOn: stream [
 ]
 
 { #category : #resolving }
-SensitiveConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnresolvable: aBlock [
+SensitiveConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
-	^ parameter resolveValueUsing: aConfigurationProvider ifUnresolvable: aBlock
+	^ parameter resolveValueUsing: aConfigurationProvider ifUnable: aBlock
 ]
 
 { #category : #accessing }

@@ -76,8 +76,7 @@ LaunchpadBrokenApplication >> basicStartWithin: context [
 LaunchpadBrokenApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider [
 
 	super initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider.
-	stackTraceDumper := StackTraceTextDumper on: [ :dumpAction | 
-		                    dumpAction value: self standardErrorStream ]
+	stackTraceDumper := self newStackTraceDumperOnStandardError
 ]
 
 { #category : #'error handling' }

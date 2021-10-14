@@ -1,6 +1,6 @@
 Class {
 	#name : #LaunchpadExplainApplicationCommand,
-	#superclass : #LaunchpadSubcommand,
+	#superclass : #LaunchpadApplicationCommand,
 	#instVars : [
 		'options'
 	],
@@ -16,26 +16,11 @@ LaunchpadExplainApplicationCommand >> description [
 { #category : #evaluating }
 LaunchpadExplainApplicationCommand >> evaluateWithin: context [
 
-	| nextArgument |
-
-	nextArgument := context nextCommandLineArgumentIfNone: [ 
-		                LaunchpadLogRecord emitError: 'Missing application name or option.'.
-		                context exitFailure
-		                ].
-	options detect: [ :option | option canHandle: nextArgument ]
-		ifFound: [ :option | option evaluateWithin: context handling: nextArgument ]
-		ifNone: [ 
-			| application |
-
-			application := LaunchpadApplication applicationFor: nextArgument ifNone: [ 
-				               LaunchpadLogRecord emitError:
-					               ( '<1s> unknown <2?option:application>: <3s>' expandMacrosWith: self name
-						                 with: ( nextArgument beginsWith: '-' )
-						                 with: nextArgument ).
-				               context exitFailure
-				               ].
-			self explain: application within: context
-			]
+	self handleOptionsAndWithNextArgumentIn: context do: [ :argument | 
+		LaunchpadApplication applicationFor: argument
+			ifFound: [ :application | self explain: application within: context ]
+			ifNone: [ context emitErrorAndExit: ( self unknownOptionOrApplicationMessageFor: argument ) ]
+		]
 ]
 
 { #category : #private }

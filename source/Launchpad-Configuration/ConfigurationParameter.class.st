@@ -4,6 +4,19 @@ Class {
 	#category : #'Launchpad-Configuration'
 }
 
+{ #category : #'private - asserting' }
+ConfigurationParameter class >> assertNotEmpty: aName and: aDescription [
+
+	AssertionCheckerBuilder new
+		raising: InstanceCreationFailed;
+		checking: [ :asserter | 
+			asserter
+				enforce: [ aName notEmpty ] because: 'A parameter must have a name';
+				enforce: [ aDescription notEmpty ] because: 'A parameter must have a summary'
+			];
+		buildAndCheck
+]
+
 { #category : #accessing }
 ConfigurationParameter >> asAttributeName: string [
 
@@ -106,7 +119,7 @@ ConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream [
 ]
 
 { #category : #resolving }
-ConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnresolvable: aBlock [
+ConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ self subclassResponsibility
 ]

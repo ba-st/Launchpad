@@ -97,6 +97,31 @@ ApplicationConfiguration >> asJsonOn: stream [
 		  nextPut: values
 ]
 
+{ #category : #private }
+ApplicationConfiguration >> assert: section isNotInConflictWithParameterNamed: name [
+
+	"Sections in the configuration are instances of NeoJSONObject, if we get 
+	another kind of object it's because there's a parameter with the same name"
+
+	AssertionChecker enforce: [ section isKindOf: NeoJSONObject ]
+		because: [ 'Section conflicting with parameter: "<1s>"' expandMacrosWith: name ]
+		raising: ConflictingObjectFound
+]
+
+{ #category : #private }
+ApplicationConfiguration >> containingSectionFor: parameter startingAt: resolvedValues [
+
+	| currentSection |
+
+	currentSection := resolvedValues.
+	parameter sections do: [ :name | 
+		currentSection := currentSection at: ( parameter asAttributeName: name ) asSymbol
+			                  ifAbsentPut: [ NeoJSONObject new ].
+		self assert: currentSection isNotInConflictWithParameterNamed: name
+		].
+	^ currentSection
+]
+
 { #category : #'reflective operations' }
 ApplicationConfiguration >> doesNotUnderstand: message [
 
@@ -111,7 +136,7 @@ ApplicationConfiguration >> initializeForAll: aParameterCollection providedBy: a
 	self resolveParameterValues
 ]
 
-{ #category : #initialization }
+{ #category : #private }
 ApplicationConfiguration >> missingConfigurationFor: parameter [
 
 	LaunchpadLogRecord emitError:
@@ -136,33 +161,35 @@ ApplicationConfiguration >> reload [
 { #category : #initialization }
 ApplicationConfiguration >> resolveParameterValues [
 
-	| currentSection resolvedValues |
+	| section resolvedValues |
 
 	resolvedValues := NeoJSONObject new.
 	parameters do: [ :parameter | 
-		currentSection := resolvedValues.
-		parameter sectionsAsAttributeNames do: [ :section | 
-			currentSection := currentSection at: section asSymbol ifAbsentPut: [ NeoJSONObject new ] ].
-		AssertionChecker enforce: [ currentSection isKindOf: NeoJSONObject ]
-			because: [ 'Conflicting parameter: "<1s>"' expandMacrosWith: parameter name ]
-			raising: ConflictingObjectFound.
-		currentSection
-			at: parameter attributeName asSymbol
-			ifPresent: [ 
-				ConflictingObjectFound signal:
-					( 'Conflicting parameter: "<1s>"' expandMacrosWith: parameter name ) ]
+		section := self containingSectionFor: parameter startingAt: resolvedValues.
+		section at: parameter attributeName asSymbol
+			ifPresent: [ self signalAsConflictingParameter: parameter ]
 			ifAbsentPut: [ 
-			parameter resolveValueUsing: provider ifUnresolvable: [ self missingConfigurationFor: parameter ] ]
+			parameter resolveValueUsing: provider ifUnable: [ self missingConfigurationFor: parameter ] ]
 		].
-	
-	 "The update is performed atomically in case the resolution fails, for example during a configuration reload attempt"
-	values := resolvedValues
+	self synchronizeValuesWith: resolvedValues
 ]
 
 { #category : #'reflective operations' }
 ApplicationConfiguration >> respondsTo: selector [
 
 	^ ( super respondsTo: selector ) or: [ values includesKey: selector ]
+]
+
+{ #category : #private }
+ApplicationConfiguration >> signalAsConflictingParameter: parameter [
+
+	ConflictingObjectFound signal: ( 'Conflicting parameter: "<1s>"' expandMacrosWith: parameter name )
+]
+
+{ #category : #private }
+ApplicationConfiguration >> synchronizeValuesWith: resolvedValues [
+
+	values := resolvedValues
 ]
 
 { #category : #accessing }

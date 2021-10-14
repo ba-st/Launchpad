@@ -31,15 +31,6 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription d
 ]
 
 { #category : #'instance creation' }
-OptionalConfigurationParameter class >> named: aName describedBy: aDescription inSection: aSection defaultingTo: aDefaultValue [
-
-	^ self named: aName
-		  describedBy: aDescription
-		  inside: ( Array with: aSection )
-		  defaultingTo: aDefaultValue
-]
-
-{ #category : #'instance creation' }
 OptionalConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection defaultingTo: aDefaultValue [
 
 	^ self named: aName
@@ -52,6 +43,7 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 { #category : #'instance creation' }
 OptionalConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection defaultingTo: aDefaultValue convertingWith: aConverterAction [
 
+	self assertNotEmpty: aName and: aDescription.
 	^ self new initializeNamed: aName
 		  describedBy: aDescription
 		  inside: aSectionCollection
@@ -101,7 +93,7 @@ OptionalConfigurationParameter >> printOn: stream [
 ]
 
 { #category : #resolving }
-OptionalConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnresolvable: aBlock [
+OptionalConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ aConfigurationProvider valueFor: self ifFound: converter ifNone: [ 
 		  LaunchpadLogRecord emitWarning:

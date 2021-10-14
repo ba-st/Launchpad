@@ -21,14 +21,12 @@ ConfigurationFromEnvironmentProviderTest >> testMandatoryConfigurationParameterV
 
 	parameter := MandatoryConfigurationParameter named: 'Launchpad Hostname'
 		             describedBy: 'Hostname to connect.'
-		             inSection: 'Buenos Aires Smalltalk'.
+		             inside: #( 'Buenos Aires Smalltalk' ).
 
 	provider := ConfigurationFromEnvironmentProvider new.
 
 	self set: parameter environmentVariableName to: 'localhost' during: [ 
-		self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
-			equals: 'localhost'
-		]
+		self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] ) equals: 'localhost' ]
 ]
 
 { #category : #tests }
@@ -38,11 +36,11 @@ ConfigurationFromEnvironmentProviderTest >> testMandatoryConfigurationParameterV
 
 	parameter := MandatoryConfigurationParameter named: 'Launchpad Hostname'
 		             describedBy: 'Hostname to connect.'
-		             inSection: 'Buenos Aires Smalltalk'.
+		             inside: #( 'Buenos Aires Smalltalk' ).
 
 	provider := ConfigurationFromEnvironmentProvider new.
 
-	self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ 'example.com' ] )
+	self assert: ( parameter resolveValueUsing: provider ifUnable: [ 'example.com' ] )
 		equals: 'example.com'
 ]
 
@@ -53,13 +51,13 @@ ConfigurationFromEnvironmentProviderTest >> testOptionalConfigurationParameterVa
 
 	parameter := OptionalConfigurationParameter named: 'Launchpad Hostname'
 		             describedBy: 'Hostname to connect.'
-		             inSection: 'Buenos Aires Smalltalk'
+		             inside: #( 'Buenos Aires Smalltalk' )
 		             defaultingTo: 'localhost'.
 
 	provider := ConfigurationFromEnvironmentProvider new.
 
 	self set: parameter environmentVariableName to: 'https://example.com' during: [ 
-		self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+		self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] )
 			equals: 'https://example.com'
 		]
 ]
@@ -71,13 +69,12 @@ ConfigurationFromEnvironmentProviderTest >> testOptionalConfigurationParameterVa
 
 	parameter := OptionalConfigurationParameter named: 'Launchpad Hostname'
 		             describedBy: 'Hostname to connect.'
-		             inSection: 'Buenos Aires Smalltalk'
+		             inside: #( 'Buenos Aires Smalltalk' )
 		             defaultingTo: 'localhost'.
 
 	provider := ConfigurationFromEnvironmentProvider new.
 
-	self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
-		equals: 'localhost'
+	self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] ) equals: 'localhost'
 ]
 
 { #category : #tests }
@@ -87,14 +84,12 @@ ConfigurationFromEnvironmentProviderTest >> testSensitiveMandatoryConfigurationP
 
 	parameter := ( MandatoryConfigurationParameter named: 'Launchpad Hostname'
 		               describedBy: 'Hostname to connect.'
-		               inSection: 'Buenos Aires Smalltalk' ) asSensitive.
+		               inside: #( 'Buenos Aires Smalltalk' ) ) asSensitive.
 
 	provider := ConfigurationFromEnvironmentProvider new.
 
 	self set: parameter environmentVariableName to: 'localhost' during: [ 
-		self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
-			equals: 'localhost'
-		]
+		self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] ) equals: 'localhost' ]
 ]
 
 { #category : #tests }
@@ -104,13 +99,30 @@ ConfigurationFromEnvironmentProviderTest >> testSensitiveOptionalConfigurationPa
 
 	parameter := ( OptionalConfigurationParameter named: 'Launchpad Hostname'
 		               describedBy: 'Hostname to connect.'
-		               inSection: 'Buenos Aires Smalltalk'
+		               inside: #( 'Buenos Aires Smalltalk' )
 		               defaultingTo: 'localhost' ) asSensitive.
 
 	provider := ConfigurationFromEnvironmentProvider new.
 
 	self set: parameter environmentVariableName to: 'https://example.com' during: [ 
-		self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+		self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] )
 			equals: 'https://example.com'
 		]
+]
+
+{ #category : #tests }
+ConfigurationFromEnvironmentProviderTest >> testValueResolutionDelegatesToNextInChainWhenMissing [
+
+	| provider parameter |
+
+	parameter := MandatoryConfigurationParameter named: 'Launchpad Hostname'
+		             describedBy: 'Hostname to connect.'
+		             inside: #( 'Buenos Aires Smalltalk' ).
+
+	provider := ConfigurationFromEnvironmentProvider chainedWith:
+		            ( ConfigurationFromCommandLineProvider over: ( CommandLineArguments withArguments:
+				                #( '--buenos-aires-smalltalk.launchpad-hostname=api.example.com' ) ) ).
+
+	self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] )
+		equals: 'api.example.com'
 ]

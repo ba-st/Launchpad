@@ -7,13 +7,13 @@ Class {
 { #category : #accessing }
 LaunchpadCommandLineHandler class >> commandName [
 
-	^ LaunchpadMainCommand commandName
+	^ LaunchpadRootCommand commandName
 ]
 
 { #category : #accessing }
 LaunchpadCommandLineHandler class >> description [
 
-	^ LaunchpadMainCommand summary
+	^ LaunchpadRootCommand summary
 ]
 
 { #category : #activation }
@@ -28,5 +28,5 @@ LaunchpadCommandLineHandler >> activate [
 
 	context := LaunchpadCommandLineProcessingContext handling: commandLine writingTo: self stdout.
 	context usePlatformLineEnding.
-	LaunchpadMainCommand new evaluateWithin: context
+	LaunchpadRootCommand new evaluateWithin: context
 ]

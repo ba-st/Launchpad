@@ -153,16 +153,17 @@ ApplicationConfigurationTest >> testCantCreateConfigurationWhenParameterConflict
 
 	| parameters provider |
 
-	parameters := Array with: ( MandatoryConfigurationParameter named: 'Port' describedBy: '' )
+	parameters := Array with:
+		              ( MandatoryConfigurationParameter named: 'Port' describedBy: 'Local Port' )
 		              with:
-		              ( MandatoryConfigurationParameter named: 'External'
-			                describedBy: ''
-			                inSection: 'Port' ) asSensitive.
+			              ( MandatoryConfigurationParameter named: 'External'
+				                describedBy: 'External Port'
+				                inside: #( 'Port' ) ) asSensitive.
 	provider := self commandLineProviderOver: #( '--port=8086' ).
 
 	self should: [ ApplicationConfiguration forAll: parameters providedBy: provider ]
 		raise: ConflictingObjectFound
-		withMessageText: 'Conflicting parameter: "External"'
+		withMessageText: 'Section conflicting with parameter: "Port"'
 ]
 
 { #category : #tests }
@@ -170,8 +171,11 @@ ApplicationConfigurationTest >> testCantCreateConfigurationWithOverlappingParame
 
 	| parameters provider |
 
-	parameters := Array with: ( MandatoryConfigurationParameter named: 'Port' describedBy: '' )
-		              with: ( MandatoryConfigurationParameter named: 'Port' describedBy: '' ) asSensitive.
+	parameters := Array with:
+		              ( MandatoryConfigurationParameter named: 'Port' describedBy: 'Listening port' )
+		              with:
+		              ( MandatoryConfigurationParameter named: 'Port' describedBy: 'Listening port' )
+			              asSensitive.
 	provider := self commandLineProviderOver: #( '--port=8086' ).
 
 	self should: [ ApplicationConfiguration forAll: parameters providedBy: provider ]
@@ -213,6 +217,34 @@ ApplicationConfigurationTest >> testLoadingJsonSettings [
 		assert: configuration publicURL equals: 'https://api.example.com' asUrl;
 		assert: configuration communications http port equals: 8086;
 		assert: configuration communications http scheme equals: 'https'
+]
+
+{ #category : #tests }
+ApplicationConfigurationTest >> testLogging [
+
+	| configuration parameters provider logger |
+
+	parameters := Array with: ( MandatoryConfigurationParameter named: 'Port' describedBy: 'Port' )
+		              with:
+		              ( MandatoryConfigurationParameter named: 'Token' describedBy: 'Auth Token' )
+			              asSensitive
+		              with:
+		              ( OptionalConfigurationParameter named: 'Scheme'
+			                describedBy: 'Scheme'
+			                defaultingTo: 'https' ).
+
+	provider := self commandLineProviderOver: #( '--port=8086' '--token=xxx' ).
+
+	configuration := ApplicationConfiguration forAll: parameters providedBy: provider.
+
+	logger := MemoryLogger new runDuring: [ 
+		          parameters do: [ :parameter | parameter logValueIn: configuration ] ].
+
+	self
+		assert: logger recordings size equals: 3;
+		assert: ( logger recordings first printString endsWith: '[INFO] Port: 8086' );
+		assert: ( logger recordings second printString endsWith: '[INFO] Token: **********' );
+		assert: ( logger recordings third printString endsWith: '[INFO] Scheme: https' )
 ]
 
 { #category : #tests }
@@ -295,6 +327,24 @@ ApplicationConfigurationTest >> testReloadingEmptyConfiguration [
 		assert: configuration communications http port equals: 8086;
 		assert: configuration communications http scheme equals: 'https';
 		assert: configuration serviceDiscovery consulAgentLocation equals: 'localhost'
+]
+
+{ #category : #tests }
+ApplicationConfigurationTest >> testReloadingEnvironmentVariableSettings [
+
+	| configuration provider |
+
+	configuration := self newApplicationConfiguration.
+
+	provider := ConfigurationFromEnvironmentProvider new.
+
+	self should: [ ApplicationConfiguration forAll: configuration parameters providedBy: provider ]
+		raise: RequiredConfigurationNotFound.
+
+	provider reloadConfiguration.
+
+	self should: [ ApplicationConfiguration forAll: configuration parameters providedBy: provider ]
+		raise: RequiredConfigurationNotFound
 ]
 
 { #category : #tests }

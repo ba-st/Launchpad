@@ -25,6 +25,12 @@ ConfigurationFromEnvironmentProvider >> initializeChainedWith: aConfigurationPro
 	nextProvider := aConfigurationProvider
 ]
 
+{ #category : #initialization }
+ConfigurationFromEnvironmentProvider >> reloadConfiguration [
+
+	^ nextProvider reloadConfiguration
+]
+
 { #category : #resolving }
 ConfigurationFromEnvironmentProvider >> valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock [
 

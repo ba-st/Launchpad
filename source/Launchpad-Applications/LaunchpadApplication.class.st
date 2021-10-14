@@ -10,9 +10,10 @@ Class {
 }
 
 { #category : #accessing }
-LaunchpadApplication class >> applicationFor: commandName ifNone: aFailBlock [
+LaunchpadApplication class >> applicationFor: commandName ifFound: aFoundBlock ifNone: aFailBlock [
 
 	^ self availableApplications detect: [ :application | application commandName = commandName ]
+		  ifFound: aFoundBlock
 		  ifNone: aFailBlock
 ]
 
@@ -59,8 +60,7 @@ LaunchpadApplication class >> printHelpOn: stream [
 			( '<1s> [<2s>] - <3s>' expandMacrosWith: self commandName
 				  with: self version
 				  with: self description );
-		synopsysSectionFor: self commandName
-		withArguments: [ :printer | self printCommandArgumentsOn: stream ];
+		synopsysSectionFor: self commandName with: [ self printCommandArgumentsOn: stream ];
 		parametersAndEnvironmentSectionDescribing: self configurationParameters
 ]
 
@@ -92,14 +92,6 @@ LaunchpadApplication >> configuration [
 	^ configurationCache
 ]
 
-{ #category : #'error handling' }
-LaunchpadApplication >> dumpStackTraceFor: anError [
-
-	LaunchpadLogRecord emitError:
-		( 'Dumping stack due to unexpected error: "<1s>"' expandMacrosWith: anError messageText ).
-	self stackTraceDumper dumpStackTraceFor: anError
-]
-
 { #category : #initialization }
 LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider [
 
@@ -124,25 +116,19 @@ LaunchpadApplication >> stackTraceDumper [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #'private - activation' }
-LaunchpadApplication >> standardErrorStream [
-
-	^ ZnNewLineWriterStream on: ( ZnCharacterWriteStream on: Stdio stderr encoding: 'utf8' )
-]
-
 { #category : #activation }
 LaunchpadApplication >> startWithin: context [
 
 	mode
-		handlingErrorsDuring: [ 
+		value: [ 
 			self
 				logConfigurationWithin: context;
 				basicStartWithin: context
 			]
 		onErrorDo: [ :error | 
 			LaunchpadLogRecord emitError:
-				( 'Unexpected startup error: <1s>' expandMacrosWith: error messageText ).
-			self dumpStackTraceFor: error.
+				( 'Unexpected startup error: "<1s>"' expandMacrosWith: error messageText ).
+			self stackTraceDumper dumpStackTraceFor: error.
 			context exitFailure
 			]
 ]

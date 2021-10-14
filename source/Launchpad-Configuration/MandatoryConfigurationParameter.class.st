@@ -26,12 +26,6 @@ MandatoryConfigurationParameter class >> named: aName describedBy: aDescription 
 ]
 
 { #category : #'instance creation' }
-MandatoryConfigurationParameter class >> named: aName describedBy: aDescription inSection: aSection [
-
-	^ self named: aName describedBy: aDescription inside: ( Array with: aSection )
-]
-
-{ #category : #'instance creation' }
 MandatoryConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection [
 
 	^ self named: aName
@@ -42,6 +36,8 @@ MandatoryConfigurationParameter class >> named: aName describedBy: aDescription 
 
 { #category : #'instance creation' }
 MandatoryConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection convertingWith: aConverterAction [
+
+	self assertNotEmpty: aName and: aDescription.
 
 	^ self new initializeNamed: aName
 		  describedBy: aDescription
@@ -90,7 +86,7 @@ MandatoryConfigurationParameter >> printOn: stream [
 ]
 
 { #category : #resolving }
-MandatoryConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnresolvable: aBlock [
+MandatoryConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ aConfigurationProvider valueFor: self ifFound: converter ifNone: aBlock
 ]

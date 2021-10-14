@@ -7,5 +7,5 @@ Class {
 { #category : #'error handling' }
 NullStackTraceDumper >> dumpStackTraceFor: anError [
 
-	LaunchpadLogRecord emitWarning: 'Stack trace dumping skipped'
+	LaunchpadLogRecord emitWarning: 'Ignoring stack trace dumping'
 ]

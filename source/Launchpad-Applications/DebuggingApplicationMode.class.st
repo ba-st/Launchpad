@@ -13,11 +13,11 @@ DebuggingApplicationMode >> exitFailure [
 { #category : #utilities }
 DebuggingApplicationMode >> exitSuccess [
 
-	LaunchpadLogRecord emitInfo: 'Exit application successfuly'
+	LaunchpadLogRecord emitInfo: 'Exit application'
 ]
 
 { #category : #utilities }
-DebuggingApplicationMode >> handlingErrorsDuring: aBlock onErrorDo: errorHandler [
+DebuggingApplicationMode >> value: aBlock onErrorDo: errorHandler [
 
 	^ aBlock value
 ]

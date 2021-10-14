@@ -1,6 +1,6 @@
 Class {
 	#name : #LaunchpadListApplicationsCommand,
-	#superclass : #LaunchpadSubcommand,
+	#superclass : #LaunchpadApplicationCommand,
 	#instVars : [
 		'options'
 	],
@@ -35,17 +35,9 @@ LaunchpadListApplicationsCommand >> evaluateInVerboseModeWithin: context [
 { #category : #evaluating }
 LaunchpadListApplicationsCommand >> evaluateWithin: context [
 
-	| nextArgument |
-
-	nextArgument := context nextCommandLineArgumentIfNone: [ 
-		                self listAvailableApplicationsWithin: context ].
-	options detect: [ :option | option canHandle: nextArgument ]
-		ifFound: [ :option | option evaluateWithin: context handling: nextArgument ]
-		ifNone: [ 
-			LaunchpadLogRecord emitError:
-				( '<1s> unknown option: <2s>' expandMacrosWith: self name with: nextArgument ).
-			context exitFailure
-			]
+	self handleOptionsAndWithNextArgumentIn: context do: [ :argument | 
+		context emitErrorAndExit:
+			( '<1s> unknown option: <2s>' expandMacrosWith: self name with: argument ) ]
 ]
 
 { #category : #initialization }
@@ -71,6 +63,12 @@ LaunchpadListApplicationsCommand >> listAvailableApplicationsWithin: context [
 LaunchpadListApplicationsCommand >> name [
 
 	^ 'list'
+]
+
+{ #category : #private }
+LaunchpadListApplicationsCommand >> nextCommandLineArgumentIn: context [
+
+	^ context nextCommandLineArgumentIfNone: [ self listAvailableApplicationsWithin: context ]
 ]
 
 { #category : #accessing }

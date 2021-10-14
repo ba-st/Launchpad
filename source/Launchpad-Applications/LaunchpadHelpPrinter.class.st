@@ -120,13 +120,13 @@ LaunchpadHelpPrinter >> sectionNamed: sectionName containing: contents [
 ]
 
 { #category : #'printing - sections' }
-LaunchpadHelpPrinter >> synopsysSectionFor: commandName withArguments: aBlock [
+LaunchpadHelpPrinter >> synopsysSectionFor: commandName with: aBlock [
 
 	stream
 		nextPutAll: 'SYNOPSYS';
 		cr;
 		tab: 2;
 		nextPutAll: commandName.
-	aBlock cull: self.
+	aBlock value.
 	stream cr
 ]

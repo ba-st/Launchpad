@@ -47,7 +47,7 @@ MandatoryConfigurationParameterTest >> testAccessingInSection [
 
 	parameter := MandatoryConfigurationParameter named: 'Public URL'
 		             describedBy: 'The service''s public URL'
-		             inSection: 'Stargate'.
+		             inside: #( 'Stargate' ).
 
 	self
 		assert: parameter name equals: 'Public URL';

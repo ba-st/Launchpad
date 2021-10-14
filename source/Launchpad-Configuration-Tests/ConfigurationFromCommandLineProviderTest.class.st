@@ -23,7 +23,7 @@ ConfigurationFromCommandLineProviderTest >> testMandatoryConfigurationParameterV
 
 	provider := self providerOver: #( '--other=parameter' '--hostname=localhost' ).
 
-	self assert: ( mandatoryParameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+	self assert: ( mandatoryParameter resolveValueUsing: provider ifUnable: [ self fail ] )
 		equals: 'localhost'
 ]
 
@@ -37,7 +37,7 @@ ConfigurationFromCommandLineProviderTest >> testMandatoryConfigurationParameterV
 
 	provider := self providerOver: #(  ).
 
-	self assert: ( mandatoryParameter resolveValueUsing: provider ifUnresolvable: [ 'example.com' ] )
+	self assert: ( mandatoryParameter resolveValueUsing: provider ifUnable: [ 'example.com' ] )
 		equals: 'example.com'
 ]
 
@@ -52,7 +52,7 @@ ConfigurationFromCommandLineProviderTest >> testOptionalConfigurationParameterVa
 
 	provider := self providerOver: #( '--hostname=https://example.com' ).
 
-	self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+	self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] )
 		equals: 'https://example.com'
 ]
 
@@ -67,7 +67,7 @@ ConfigurationFromCommandLineProviderTest >> testOptionalConfigurationParameterVa
 
 	provider := self providerOver: #(  ).
 
-	self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+	self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] )
 		equals: 'localhost'
 ]
 
@@ -81,7 +81,7 @@ ConfigurationFromCommandLineProviderTest >> testSensitiveMandatoryConfigurationP
 
 	provider := self providerOver: #( '--hostname=localhost' ).
 
-	self assert: ( mandatoryParameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+	self assert: ( mandatoryParameter resolveValueUsing: provider ifUnable: [ self fail ] )
 		equals: 'localhost'
 ]
 
@@ -96,6 +96,6 @@ ConfigurationFromCommandLineProviderTest >> testSensitiveOptionalConfigurationPa
 
 	provider := self providerOver: #(  ).
 
-	self assert: ( parameter resolveValueUsing: provider ifUnresolvable: [ self fail ] )
+	self assert: ( parameter resolveValueUsing: provider ifUnable: [ self fail ] )
 		equals: 'localhost'
 ]

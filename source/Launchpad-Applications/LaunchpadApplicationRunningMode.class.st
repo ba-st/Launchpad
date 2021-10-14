@@ -17,7 +17,7 @@ LaunchpadApplicationRunningMode >> exitSuccess [
 ]
 
 { #category : #utilities }
-LaunchpadApplicationRunningMode >> handlingErrorsDuring: aBlock onErrorDo: errorHandler [
+LaunchpadApplicationRunningMode >> value: aBlock onErrorDo: errorHandler [
 
-	self subclassResponsibility
+	^ self subclassResponsibility
 ]

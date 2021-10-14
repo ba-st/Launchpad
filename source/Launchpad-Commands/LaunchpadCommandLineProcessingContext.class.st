@@ -21,6 +21,13 @@ LaunchpadCommandLineProcessingContext >> configurationProviderChainedWith: aConf
 ]
 
 { #category : #utilities }
+LaunchpadCommandLineProcessingContext >> emitErrorAndExit: message [
+
+	LaunchpadLogRecord emitError: message.
+	self exitFailure
+]
+
+{ #category : #utilities }
 LaunchpadCommandLineProcessingContext >> exitFailure [
 
 	Exit signalFailure

@@ -29,6 +29,6 @@ ConfigurationFromSettingsFileProvider class >> loading: aFileReference chainedWi
 		  ifFound: [ :factory | factory loading: aFileReference chainedWith: aConfigurationProvider ]
 		  ifNone: [ 
 			  ObjectNotFound signal:
-				  ( 'Invalid format for settings file: "<1s>"' expandMacrosWith: aFileReference printString )
+				  ( 'Invalid format for settings file: "<1s>"' expandMacrosWith: aFileReference basename )
 			  ]
 ]

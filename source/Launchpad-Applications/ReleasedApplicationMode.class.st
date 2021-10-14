@@ -17,7 +17,7 @@ ReleasedApplicationMode >> exitSuccess [
 ]
 
 { #category : #utilities }
-ReleasedApplicationMode >> handlingErrorsDuring: aBlock onErrorDo: errorHandler [
+ReleasedApplicationMode >> value: aBlock onErrorDo: errorHandler [
 
 	^ aBlock on: Error do: errorHandler
 ]

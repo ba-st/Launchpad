@@ -29,7 +29,7 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 		project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
 
 	spec
-		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:master' ];
+		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.0.0' ];
 		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
 	spec
@@ -66,13 +66,20 @@ BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 ]
 
 { #category : #baselines }
-BaselineOfLaunchpad >> setUpPackages: spec [
+BaselineOfLaunchpad >> setUpExamplePackages: spec [
 
-	self setUpDeploymentPackages: spec.
 	spec
 		package: 'Launchpad-Examples' with: [ spec requires: 'Deployment' ];
-		group: 'Examples' with: #( 'Deployment' 'Launchpad-Examples' ).
-	self setUpTestPackages: spec
+		group: 'Examples' with: #( 'Deployment' 'Launchpad-Examples' )
+]
+
+{ #category : #baselines }
+BaselineOfLaunchpad >> setUpPackages: spec [
+
+	self
+		setUpDeploymentPackages: spec;
+		setUpExamplePackages: spec;
+		setUpTestPackages: spec
 ]
 
 { #category : #initialization }
