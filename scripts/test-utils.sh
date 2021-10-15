@@ -10,22 +10,20 @@ if [ -z "${SMALLTALK_CI_IMAGE}" ] ; then
 	SMALLTALK_CI_IMAGE=Pharo.image
 fi
 
-DUMP_FILE=logs/example-$(date --iso).fuel
-
 function executeWithArguments() {
 	rm -rf stdout stderr logs
 	LAST_ARGUMENTS=$*
-	"$SMALLTALK_CI_VM" "$SMALLTALK_CI_IMAGE" example "$@" --quit > out 2> err || true
+	"$SMALLTALK_CI_VM" "$SMALLTALK_CI_IMAGE" "$@" > out 2> err || true
 	[ -f stdout ] && mv stdout out || touch out
 	[ -f stderr ] && mv stderr err || touch err
 }
-
+ 
 function assertOutputIncludesMessage() {
 	local output=$1
 	local level=$2
 	local message=$3
 
-	if [ "$(grep -c "^\[[0-9T.:+-]*\] \[$level\] $message" "$output")" -eq 0 ]; then
+	if [ "$(grep -c "\[$level\] $message" "$output")" -eq 0 ]; then
 		echo "Expected std$1 to have: [$level] '$message' when invoked with $LAST_ARGUMENTS"
 		exit 1
 	fi
@@ -41,16 +39,20 @@ function assertError() {
 	assertOutputIncludesMessage err ERROR "$1"
 }
 
-function assertDumpFileIsPresent() {
-	if [ ! -f "$DUMP_FILE" ]; then
-		echo "The stack dump file $DUMP_FILE should be created when invoked with $LAST_ARGUMENTS"
-		exit 1
-	fi
+function assertOutputIncludesText() {
+  local text=$1
+  local output=$2
+
+  if [ "$(grep -c "$text" "$output")" -eq 0 ]; then
+    echo "Expected '$text' when invoked with $LAST_ARGUMENTS"
+    exit 1
+  fi 
 }
 
-function assertDumpFileIsAbsent() {
-	if [ -f "$DUMP_FILE" ]; then
-		echo "The stack dump file $DUMP_FILE should not exist when invoked with $LAST_ARGUMENTS"
-		exit 1
-	fi
+function assertStandardOutputIncludesText() {
+  assertOutputIncludesText "$1" out
+}
+
+function assertStandardErrorIncludesText() {
+  assertOutputIncludesText "$1" err
 }
