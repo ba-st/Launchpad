@@ -75,14 +75,14 @@ LaunchpadStartApplicationCommand >> setDebugMode [
 { #category : #private }
 LaunchpadStartApplicationCommand >> start: anApplication within: context [
 
-	| configurationProvider |
+	| configurationProvider applicationToStart |
 
 	configurationProvider := context configurationProviderChainedWith:
 		                         ( ConfigurationFromEnvironmentProvider chainedWith:
 			                           baseConfigurationProvider ).
-
-	( anApplication runningIn: applicationMode configuredBy: configurationProvider ) startWithin:
-		context
+	applicationToStart := anApplication runningIn: applicationMode configuredBy: configurationProvider.
+	LaunchpadApplication setAsCurrentlyRunning: applicationToStart.
+	applicationToStart startWithin: context
 ]
 
 { #category : #accessing }
