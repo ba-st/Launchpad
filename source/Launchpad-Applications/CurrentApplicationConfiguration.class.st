@@ -1,9 +1,6 @@
 Class {
 	#name : #CurrentApplicationConfiguration,
 	#superclass : #DynamicVariable,
-	#classVars : [
-		'\t\t'
-	],
 	#category : #'Launchpad-Applications'
 }
 
