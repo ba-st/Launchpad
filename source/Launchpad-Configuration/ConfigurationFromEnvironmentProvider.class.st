@@ -34,8 +34,12 @@ ConfigurationFromEnvironmentProvider >> reloadConfiguration [
 { #category : #resolving }
 ConfigurationFromEnvironmentProvider >> valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock [
 
-	^ OSPlatform current environment at: aConfigurationParameter environmentVariableName
+	^ OSPlatform current
+		  environmentAt: aConfigurationParameter environmentVariableName
 		  ifPresent: aPresentBlock
 		  ifAbsent: [ 
-		  nextProvider valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock ]
+			  nextProvider
+				  valueFor: aConfigurationParameter
+				  ifFound: aPresentBlock
+				  ifNone: aFailBlock ]
 ]

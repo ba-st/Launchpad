@@ -68,7 +68,7 @@ LaunchpadBrokenApplication >> basicStartWithin: context [
 
 	| nextArgument |
 
-	nextArgument := context nextCommandLineArgumentIfNone: [ mode exitFailure ].
+	nextArgument := context nextCommandLineArgumentIfNone: [ self exitFailure ].
 	nextArgument = self class raiseErrorOption ifTrue: [ Error signal: 'Doh!' ]
 ]
 

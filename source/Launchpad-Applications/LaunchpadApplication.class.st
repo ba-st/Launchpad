@@ -6,6 +6,9 @@ Class {
 		'configurationProvider',
 		'mode'
 	],
+	#classVars : [
+		'CurrentlyRunningApplicationBinding'
+	],
 	#category : #'Launchpad-Applications'
 }
 
@@ -38,9 +41,22 @@ LaunchpadApplication class >> configurationParameters [
 ]
 
 { #category : #accessing }
+LaunchpadApplication class >> currentlyRunning [
+
+	^ CurrentlyRunningApplicationBinding content
+]
+
+{ #category : #accessing }
 LaunchpadApplication class >> description [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+LaunchpadApplication class >> initialize [
+
+	<ignoreForCoverage>
+	self resetCurrentlyRunning
 ]
 
 { #category : #printing }
@@ -64,10 +80,33 @@ LaunchpadApplication class >> printHelpOn: stream [
 		parametersAndEnvironmentSectionDescribing: self configurationParameters
 ]
 
+{ #category : #accessing }
+LaunchpadApplication class >> resetCurrentlyRunning [
+
+	CurrentlyRunningApplicationBinding := Binding undefinedExplainedBy:
+		                                      'There''s no current application running.'
+]
+
 { #category : #'instance creation' }
 LaunchpadApplication class >> runningIn: anApplicationMode configuredBy: aConfigurationProvider [
 
 	^ self new initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider
+]
+
+{ #category : #accessing }
+LaunchpadApplication class >> setAsCurrentlyRunning: application [
+
+	CurrentlyRunningApplicationBinding := Binding to: application
+]
+
+{ #category : #accessing }
+LaunchpadApplication class >> setAsCurrentlyRunning: application during: aBlock [
+
+	| previousBinding |
+
+	previousBinding := CurrentlyRunningApplicationBinding.
+	CurrentlyRunningApplicationBinding := Binding to: application.
+	aBlock ensure: [ CurrentlyRunningApplicationBinding := previousBinding ]
 ]
 
 { #category : #accessing }
@@ -92,6 +131,20 @@ LaunchpadApplication >> configuration [
 	^ configurationCache
 ]
 
+{ #category : #utilities }
+LaunchpadApplication >> exitFailure [ 
+
+	self class resetCurrentlyRunning.
+	mode exitFailure 
+]
+
+{ #category : #utilities }
+LaunchpadApplication >> exitSuccess [
+
+	self class resetCurrentlyRunning.
+	mode exitSuccess 
+]
+
 { #category : #initialization }
 LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider [
 
@@ -106,7 +159,7 @@ LaunchpadApplication >> logConfigurationWithin: context [
 		[ 
 		self class configurationParameters do: [ :parameter | parameter logValueIn: self configuration ] ] 
 			on: RequiredConfigurationNotFound
-			do: [ :error | mode exitFailure ]
+			do: [ :error | self exitFailure ]
 		]
 ]
 
@@ -129,6 +182,6 @@ LaunchpadApplication >> startWithin: context [
 			LaunchpadLogRecord emitError:
 				( 'Unexpected startup error: "<1s>"' expandMacrosWith: error messageText ).
 			self stackTraceDumper dumpStackTraceFor: error.
-			context exitFailure
+			self exitFailure
 			]
 ]

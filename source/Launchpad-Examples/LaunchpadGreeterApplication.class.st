@@ -41,7 +41,7 @@ LaunchpadGreeterApplication >> basicStartWithin: context [
 				( 'Hi <1s><2?: ><3s>!' expandMacrosWith: self title with: self title isEmpty with: self name );
 			cr
 		].
-	mode exitSuccess
+	self exitSuccess
 ]
 
 { #category : #accessing }

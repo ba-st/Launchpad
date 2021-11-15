@@ -29,7 +29,7 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 		project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
 
 	spec
-		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.0.0' ];
+		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.0.1' ];
 		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
 	spec
