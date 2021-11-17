@@ -21,7 +21,8 @@ vast/bin/esnx \
     launchpad <arguments>
 ```
 
-For the sake of simplicity, from now on we will omit in the examples the VM and image parameters:
+For the sake of simplicity, from now on we will omit in the examples the VM and
+image parameters:
 
 ```bash
 launchpad [--version] [--help|-h] <command>
@@ -192,7 +193,7 @@ $ launchpad start greeter --name=John
   [INFO] Obtaining configuration...
   [WARNING] "Title" parameter not provided. Using default.
   [INFO] Name: John
-  [INFO] Title: 
+  [INFO] Title:
   [INFO] Obtaining configuration... [DONE]
 Hi John!
 ```
