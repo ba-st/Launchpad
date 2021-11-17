@@ -26,7 +26,7 @@
    as project name
 6. Click *Ok*
 7. Select the repository in the main Iceberg window
-8. Open the contextual menu and select 
+8. Open the contextual menu and select
   *Metacello -> Install baseline of Launchpad ...*
 9. Type `Development` and click *Ok*
 

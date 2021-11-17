@@ -127,7 +127,7 @@ camel-case format.
 For example:
 
 ```smalltalk
-{ 
+{
   MandatoryConfigurationParameter
     named: 'Port'
     describedBy: 'Listening port'
