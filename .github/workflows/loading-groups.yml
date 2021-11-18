@@ -1,4 +1,4 @@
-name: Group Loading
+name: Baseline Groups
 
 on: [push,pull_request,workflow_dispatch]
 

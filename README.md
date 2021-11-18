@@ -7,7 +7,7 @@ within the image.
 
 [![Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml)
 [![Coverage Status](https://codecov.io/github/ba-st/Launchpad/coverage.svg?branch=release-candidate)](https://codecov.io/gh/ba-st/Launchpad/branch/release-candidate)
-[![Group Loading](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml)
+[![Baseline Groups](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml)
 [![Markdown Lint](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml)
 
 [![GitHub release](https://img.shields.io/github/release/ba-st/Launchpad.svg)](https://github.com/ba-st/Launchpad/releases/latest)
