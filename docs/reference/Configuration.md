@@ -1,6 +1,6 @@
 # Applications Configuration
 
-Many applications require configuration parameters provided by some external
+Usually applications require configuration parameters provided by some external
 source. Launchpad provides abstractions for dealing with the definition of the
 application parameters and their values.
 
