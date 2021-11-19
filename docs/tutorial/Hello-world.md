@@ -71,7 +71,7 @@ stackTraceDumper
 ```smalltalk
 basicStartWithin: context
 
-  context outputStreamDo: [ :out | 
+  context outputStreamDo: [ :out |
     out
       nextPutAll: 'Hello world!';
       cr ].
