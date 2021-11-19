@@ -121,7 +121,7 @@ Configuration parameters can also be provided by reading a settings file.
 Supported formats are JSON and INI.
 
 When using the JSON format, parameters in the same section are nested in the file
-structure. Parameter and sections names are converter to JSON keys in lower
+structure. Parameter and sections names are converted to JSON keys in lower
 camel-case format.
 
 For example:
@@ -159,7 +159,7 @@ Section names to INI sections conversion follows these rules:
 - For each section name, replace non-alphanumeric characters with `-`.
 - If several sections contain the parameter, join each one using a `.`.
 
-Parameter names are converter to keys in lower camel-case format.
+Parameter names are converted to keys in lower camel-case format.
 
 So, the previous example needs to be:
 
