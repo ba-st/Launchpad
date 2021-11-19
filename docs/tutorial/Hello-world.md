@@ -141,7 +141,7 @@ configurationParameters
 ```smalltalk
 basicStartWithin: context
 
-  context outputStreamDo: [ :out | 
+  context outputStreamDo: [ :out |
     out
       nextPutAll: 'Hello';
       space;
@@ -218,7 +218,7 @@ configurationParameters
 ```smalltalk
 basicStartWithin: context
 
-  context outputStreamDo: [ :out | 
+  context outputStreamDo: [ :out |
     out
       nextPutAll: 'Hello';
       space;
