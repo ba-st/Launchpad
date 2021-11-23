@@ -6,7 +6,7 @@ The classic hello world!
 ## Preparation
 
 To start, you will need a Pharo image with Launchpad loaded.
-Follow the instructions [here](../how-to/how-to-load-in-pharo).
+Follow the instructions [here](../how-to/how-to-load-in-pharo.md).
 
 This tutorial assumes some familiarity with [Pharo](https://pharo.org/). If it is
 your first time using Pharo, you can start [here](https://pharo.org/documentation).

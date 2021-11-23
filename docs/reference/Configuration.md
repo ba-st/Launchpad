@@ -47,7 +47,7 @@ Launchpad will evaluate the configuration providers in the following order:
 
 `Command-line -> Environment -> Settings-file`
 
-For more details about parameter resolution take a look [here](../docs/explanation/Configuration-resolution.md).
+For more details about parameter resolution take a look [here](../explanation/Configuration-resolution.md).
 
 ### Reading configuration from the command-line
 

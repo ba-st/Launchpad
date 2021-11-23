@@ -10,7 +10,7 @@ applications available within the image, including:
 - Textual and binary stack trace generation
 
 To learn about the project, [install it](how-to/how-to-load-in-pharo.md) and
-follow the [beginners tutorial](tutorial/Hello-World.md).
+follow the [beginners tutorial](tutorial/Hello-world.md).
 
 Once you grasped the basics, lookup for details in the reference docs:
 
@@ -29,5 +29,5 @@ or expand your understanding over specific topics:
 
 To use the project as a dependency of your project, take a look at:
 
-- [How to use Launchpad as a dependency](how-to/how-to-user-as-dependency-in-pharo.md)
+- [How to use Launchpad as a dependency](how-to/how-to-use-as-dependency-in-pharo.md)
 - [Baseline groups reference](reference/Baseline-groups.md)
