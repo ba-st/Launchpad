@@ -23,6 +23,12 @@ LaunchpadApplicationRunningMode >> exitSuccess [
 	self subclassResponsibility
 ]
 
+{ #category : #testing }
+LaunchpadApplicationRunningMode >> isDebugMode [
+
+	^ self subclassResponsibility
+]
+
 { #category : #utilities }
 LaunchpadApplicationRunningMode >> value: aBlock onErrorDo: errorHandler [
 

@@ -152,6 +152,12 @@ LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aCo
 	configurationProvider := aConfigurationProvider
 ]
 
+{ #category : #testing }
+LaunchpadApplication >> isDebugModeEnabled [
+
+	^ mode isDebugMode
+]
+
 { #category : #'private - activation' }
 LaunchpadApplication >> logConfigurationWithin: context [
 

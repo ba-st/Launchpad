@@ -16,7 +16,7 @@ within the image.
 
 Quick links
 
-- [**Explore the docs**](docs/)
+- [**Explore the docs**](docs/README.md)
 - [Report a defect](https://github.com/ba-st/Launchpad/issues/new?labels=Type%3A+Defect)
 - [Request a feature](https://github.com/ba-st/Launchpad/issues/new?labels=Type%3A+Feature)
 
@@ -35,8 +35,7 @@ Launchpad provides abstractions to architect your application:
 
 ## Installation
 
-To load the project in a Pharo image, or declare it as a dependency of your own
-project follow this [instructions](docs/Installation.md).
+To load the project in a Pharo image follow this [instructions](docs/how-to/how-to-load-in-pharo.md).
 
 ## Contributing
 

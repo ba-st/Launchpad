@@ -35,6 +35,12 @@ DebuggingApplicationModeTest >> testExitSuccess [
 		raise: Exit
 ]
 
+{ #category : #test }
+DebuggingApplicationModeTest >> testIsDebugMode [
+
+	self assert: DebuggingApplicationMode new isDebugMode
+]
+
 { #category : #tests }
 DebuggingApplicationModeTest >> testValueOnErrorDo [
 

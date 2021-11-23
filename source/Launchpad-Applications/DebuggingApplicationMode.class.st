@@ -16,6 +16,12 @@ DebuggingApplicationMode >> exitSuccess [
 	LaunchpadLogRecord emitInfo: 'Exit application'
 ]
 
+{ #category : #testing }
+DebuggingApplicationMode >> isDebugMode [
+
+	^ true
+]
+
 { #category : #utilities }
 DebuggingApplicationMode >> value: aBlock onErrorDo: errorHandler [
 

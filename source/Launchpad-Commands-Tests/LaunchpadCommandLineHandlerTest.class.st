@@ -30,10 +30,11 @@ LaunchpadCommandLineHandlerTest >> testHandlingHelpOption [
 LaunchpadCommandLineHandlerTest >> testStartingApplication [
 
 	| commandLine |
+	commandLine := CommandLineArguments withArguments:
+		               #( 'launchpad' 'start' 'greeter' '--name=John' ).
 
-	commandLine := CommandLineArguments withArguments: #( 'launchpad' 'start' 'greeter' '--name=John' ).
-
-	self should: [ LaunchpadCommandLineHandler activateWith: commandLine ]
+	self
+		should: [ LaunchpadCommandLineHandler activateWith: commandLine ]
 		raise: Exit
 		withExceptionDo: [ :exit | self assert: exit isSuccess ]
 ]
