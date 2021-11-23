@@ -34,9 +34,7 @@ LaunchpadCommandLineHandlerTest >> testStartingApplication [
 		               #( 'launchpad' 'start' 'greeter' '--name=John' ).
 
 	self
-		should: [ 
-			LaunchpadCommandLineHandler activateWith: commandLine.
-			self deny: LaunchpadApplication currentlyRunning isDebugModeEnabled ]
+		should: [ LaunchpadCommandLineHandler activateWith: commandLine ]
 		raise: Exit
 		withExceptionDo: [ :exit | self assert: exit isSuccess ]
 ]
