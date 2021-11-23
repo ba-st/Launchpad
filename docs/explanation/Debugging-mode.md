@@ -2,7 +2,7 @@
 
 Launchpad-based applications run in one of two modes:
 
-- **Release**: it's the default mode when starting an application.
+- **Release**: the default mode when starting an application.
 
   In this mode, Launchpad will handle any `Error` produced during the start-up
   phase, generate a stack trace, and quit the image with an error code.
