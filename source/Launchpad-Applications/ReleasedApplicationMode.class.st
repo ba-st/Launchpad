@@ -16,6 +16,12 @@ ReleasedApplicationMode >> exitSuccess [
 	Exit signalSuccess
 ]
 
+{ #category : #testing }
+ReleasedApplicationMode >> isDebugMode [
+
+	^ false
+]
+
 { #category : #utilities }
 ReleasedApplicationMode >> value: aBlock onErrorDo: errorHandler [
 

@@ -24,6 +24,12 @@ ReleasedApplicationModeTest >> testExitSuccess [
 ]
 
 { #category : #test }
+ReleasedApplicationModeTest >> testIsDebugMode [
+
+	self deny: ReleasedApplicationMode new isDebugMode
+]
+
+{ #category : #test }
 ReleasedApplicationModeTest >> testValueOnErrorDo [
 
 	| errorWasHandled |
