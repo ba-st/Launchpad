@@ -190,7 +190,7 @@ ApplicationConfigurationTest >> testDoNotWarnOnOptionalParametersWhenUsingDefaul
 
 	parameter := ( OptionalConfigurationParameter named: 'Scheme'
 		               describedBy: 'Scheme'
-		               defaultingTo: 'https' ) doNotWarnWhenUsingTheDefault.
+		               defaultingTo: 'https' ) doNotWarnWhenUsingDefault.
 
 	provider := NullConfigurationProvider new.
 

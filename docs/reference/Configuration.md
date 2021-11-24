@@ -15,7 +15,7 @@ This specification is made by instantiating some of the configuration parameter 
   external configuration defaulting to some specific value. This kind of
   parameter is created by instantiating `OptionalConfigurationParameter`.
   Optional parameters will emit a warning when using the default value. If you
-  want to override this behavior send `doNotWarnWhenUsingTheDefault` to the
+  want to override this behavior send `doNotWarnWhenUsingDefault` to the
   parameter instance.
 - **Sensitive**: Sensitive parameters can be mandatory or optional (they are
   created by decorating some of the other parameter types by sending the message

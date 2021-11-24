@@ -53,7 +53,7 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 ]
 
 { #category : #configuring }
-OptionalConfigurationParameter >> doNotWarnWhenUsingTheDefault [
+OptionalConfigurationParameter >> doNotWarnWhenUsingDefault [
 
 	emitWarningAction := [  ]
 ]
