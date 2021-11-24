@@ -24,7 +24,7 @@ Class {
 		'name',
 		'valueWhenPresent'
 	],
-	#category : #'Launchpad-MigrationFromV3-Launchpad-MigrationFromV3'
+	#category : #'Launchpad-MigrationFromV3'
 }
 
 { #category : #'instance creation' }

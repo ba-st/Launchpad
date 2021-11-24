@@ -4,7 +4,7 @@ A Sensitive argument will decorate another argument changing the logging so no s
 Class {
 	#name : #SensitiveArgument,
 	#superclass : #CommandLineArgument,
-	#category : #'Launchpad-MigrationFromV3-Launchpad-MigrationFromV3'
+	#category : #'Launchpad-MigrationFromV3'
 }
 
 { #category : #'instance creation' }

@@ -4,7 +4,7 @@ A command line argument must provide a command name and way to get the argument 
 Class {
 	#name : #CommandLineArgument,
 	#superclass : #Object,
-	#category : #'Launchpad-MigrationFromV3-Launchpad-MigrationFromV3'
+	#category : #'Launchpad-MigrationFromV3'
 }
 
 { #category : #testing }

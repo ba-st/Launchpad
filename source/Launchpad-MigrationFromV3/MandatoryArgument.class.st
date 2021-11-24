@@ -31,7 +31,7 @@ Class {
 		'name',
 		'converter'
 	],
-	#category : #'Launchpad-MigrationFromV3-Launchpad-MigrationFromV3'
+	#category : #'Launchpad-MigrationFromV3'
 }
 
 { #category : #'Instance Creation' }

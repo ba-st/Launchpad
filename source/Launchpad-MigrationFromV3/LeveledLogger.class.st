@@ -1,7 +1,7 @@
 Class {
 	#name : #LeveledLogger,
 	#superclass : #Object,
-	#category : #'Launchpad-MigrationFromV3-Launchpad-MigrationFromV3'
+	#category : #'Launchpad-MigrationFromV3'
 }
 
 { #category : #accessing }
