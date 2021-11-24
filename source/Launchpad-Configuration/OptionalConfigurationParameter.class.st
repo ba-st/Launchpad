@@ -6,7 +6,8 @@ Class {
 		'summary',
 		'sections',
 		'converter',
-		'default'
+		'default',
+		'emitWarningAction'
 	],
 	#category : #'Launchpad-Configuration'
 }
@@ -51,6 +52,12 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 		  convertingWith: aConverterAction
 ]
 
+{ #category : #configuring }
+OptionalConfigurationParameter >> doNotWarnWhenUsingTheDefault [
+
+	emitWarningAction := [  ]
+]
+
 { #category : #initialization }
 OptionalConfigurationParameter >> initializeNamed: aName describedBy: aDescription inside: aSectionCollection defaultingTo: aDefaultValue convertingWith: aConverterAction [
 
@@ -58,7 +65,11 @@ OptionalConfigurationParameter >> initializeNamed: aName describedBy: aDescripti
 	summary := aDescription.
 	sections := aSectionCollection.
 	default := aDefaultValue.
-	converter := aConverterAction
+	converter := aConverterAction.
+	emitWarningAction := [ 
+	                 LaunchpadLogRecord emitWarning:
+		                 ( '"<1s>" parameter not provided. Using default.' expandMacrosWith: self name )
+	                 ]
 ]
 
 { #category : #accessing }
@@ -96,8 +107,7 @@ OptionalConfigurationParameter >> printOn: stream [
 OptionalConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ aConfigurationProvider valueFor: self ifFound: converter ifNone: [ 
-		  LaunchpadLogRecord emitWarning:
-			  ( '"<1s>" parameter not provided. Using default.' expandMacrosWith: self name ).
+		  emitWarningAction value.
 		  default
 		  ]
 ]

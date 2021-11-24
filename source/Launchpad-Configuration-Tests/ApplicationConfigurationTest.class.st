@@ -184,6 +184,23 @@ ApplicationConfigurationTest >> testCantCreateConfigurationWithOverlappingParame
 ]
 
 { #category : #tests }
+ApplicationConfigurationTest >> testDoNotWarnOnOptionalParametersWhenUsingDefault [
+
+	| configuration parameter provider logger |
+
+	parameter := ( OptionalConfigurationParameter named: 'Scheme'
+		               describedBy: 'Scheme'
+		               defaultingTo: 'https' ) doNotWarnWhenUsingTheDefault.
+
+	provider := NullConfigurationProvider new.
+
+	logger := MemoryLogger new runDuring: [ 
+		          configuration := ApplicationConfiguration forAll: { parameter } providedBy: provider ].
+
+	self assert: logger recordings isEmpty
+]
+
+{ #category : #tests }
 ApplicationConfigurationTest >> testLoadingIniBasedSettings [
 
 	| configuration iniFile provider |
@@ -437,4 +454,22 @@ ApplicationConfigurationTest >> testValueForParameterInSection [
 	configuration := ApplicationConfiguration forAll: ( Array with: parameter ) providedBy: provider.
 
 	self assert: ( configuration valueFor: parameter ) equals: 8086
+]
+
+{ #category : #tests }
+ApplicationConfigurationTest >> testWarningOnOptionalParametersWhenUsingTheDefault [
+
+	| configuration parameter logger |
+
+	parameter := OptionalConfigurationParameter named: 'Scheme'
+		             describedBy: 'Scheme'
+		             defaultingTo: 'https'.
+
+	logger := MemoryLogger new runDuring: [ 
+		          configuration := ApplicationConfiguration forAll: { parameter }
+			                           providedBy: NullConfigurationProvider new
+		          ].
+
+	self withTheOnlyOneIn: logger recordings do: [ :record | 
+		self assert: ( record printString endsWith: '"Scheme" parameter not provided. Using default.' ) ]
 ]
