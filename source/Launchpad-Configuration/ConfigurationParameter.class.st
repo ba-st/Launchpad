@@ -110,7 +110,7 @@ ConfigurationParameter >> environmentVariableName [
 ConfigurationParameter >> logValueIn: configuration [
 
 	LaunchpadLogRecord emitInfo:
-		( '<1s>: <2s>' expandMacrosWith: self name with: ( configuration valueFor: self ) )
+		( '<1s>: <2s>' expandMacrosWith: self name with: ( configuration valueFor: self ) asString )
 ]
 
 { #category : #accessing }

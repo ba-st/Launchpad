@@ -265,6 +265,38 @@ ApplicationConfigurationTest >> testLogging [
 ]
 
 { #category : #tests }
+ApplicationConfigurationTest >> testLoggingWhenUsingConverters [
+
+	| configuration parameters provider logger |
+
+	parameters := Array
+		              with:
+		              ( MandatoryConfigurationParameter named: 'Port'
+			                describedBy: 'Port'
+			                convertingWith: #asNumber )
+		              with: ( MandatoryConfigurationParameter named: 'Token'
+				                describedBy: 'Auth Token'
+				                convertingWith: #asByteArray ) asSensitive
+		              with: ( OptionalConfigurationParameter named: 'Target port'
+				                describedBy: 'Target port'
+				                defaultingTo: 9999
+				                convertingWith: #asNumber ).
+
+	provider := self commandLineProviderOver: #( '--port=8086' '--token=xxx' ).
+
+	configuration := ApplicationConfiguration forAll: parameters providedBy: provider.
+
+	logger := MemoryLogger new runDuring: [ 
+		          parameters do: [ :parameter | parameter logValueIn: configuration ] ].
+
+	self
+		assert: logger recordings size equals: 3;
+		assert: ( logger recordings first printString endsWith: '[INFO] Port: 8086' );
+		assert: ( logger recordings second printString endsWith: '[INFO] Token: **********' );
+		assert: ( logger recordings third printString endsWith: '[INFO] Target port: 9999' )
+]
+
+{ #category : #tests }
 ApplicationConfigurationTest >> testMissingParameterValue [
 
 	| parameter |
