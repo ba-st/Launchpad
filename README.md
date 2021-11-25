@@ -16,7 +16,7 @@ within the image.
 
 ## Quick Start
 
-## Load all in one
+### Load all in one
 
 ```Smalltalk
   Metacello new
