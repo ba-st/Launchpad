@@ -14,7 +14,18 @@ within the image.
 [![Pharo 8.0](https://img.shields.io/badge/Pharo-8.0-informational)](https://pharo.org)
 [![Pharo 9.0](https://img.shields.io/badge/Pharo-9.0-informational)](https://pharo.org)
 
-Quick links
+## Quick Start
+
+## Load all in one
+
+```Smalltalk
+  Metacello new
+      baseline:'Launchpad';
+      repository: 'github://ba-st/Launchpad:release-candidate/source';
+      load
+```
+
+## Quick links
 
 - [**Explore the docs**](docs/README.md)
 - [Report a defect](https://github.com/ba-st/Launchpad/issues/new?labels=Type%3A+Defect)
