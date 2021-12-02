@@ -25,12 +25,6 @@ SensitiveConfigurationParameter >> initializeOver: aConfigurationParameter [
 	parameter := aConfigurationParameter
 ]
 
-{ #category : #logging }
-SensitiveConfigurationParameter >> logValueIn: configuration [
-
-	LaunchpadLogRecord emitInfo: ( '<1s>: **********' expandMacrosWith: self name )
-]
-
 { #category : #accessing }
 SensitiveConfigurationParameter >> name [
 
@@ -65,4 +59,10 @@ SensitiveConfigurationParameter >> sections [
 SensitiveConfigurationParameter >> summary [
 
 	^ parameter summary
+]
+
+{ #category : #logging }
+SensitiveConfigurationParameter >> valueToLogFrom: configuration [
+
+	^ '**********'
 ]

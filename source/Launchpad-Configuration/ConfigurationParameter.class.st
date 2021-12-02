@@ -110,7 +110,7 @@ ConfigurationParameter >> environmentVariableName [
 ConfigurationParameter >> logValueIn: configuration [
 
 	LaunchpadLogRecord emitInfo:
-		( '<1s>: <2s>' expandMacrosWith: self name with: ( configuration valueFor: self ) asString )
+		( '<1s>: <2s>' expandMacrosWith: self name with: ( self valueToLogFrom: configuration ) asString )
 ]
 
 { #category : #accessing }
@@ -147,4 +147,10 @@ ConfigurationParameter >> sectionsAsAttributeNames [
 ConfigurationParameter >> summary [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #logging }
+ConfigurationParameter >> valueToLogFrom: configuration [
+
+	^ configuration valueFor: self
 ]
