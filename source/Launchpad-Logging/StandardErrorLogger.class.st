@@ -11,3 +11,10 @@ StandardErrorLogger class >> instance [
 		  initializeOn: Stdio stderr;
 		  yourself
 ]
+
+{ #category : #initialization }
+StandardErrorLogger >> initializeOn: standardStream [
+
+	self name: 'stderr'.
+	super initializeOn: standardStream
+]
