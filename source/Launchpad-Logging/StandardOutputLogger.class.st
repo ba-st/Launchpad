@@ -11,3 +11,10 @@ StandardOutputLogger class >> instance [
 		  initializeOn: Stdio stdout;
 		  yourself
 ]
+
+{ #category : #initialization }
+StandardOutputLogger >> initializeOn: standardStream [
+
+	self name: 'stdout'.
+	super initializeOn: standardStream
+]
