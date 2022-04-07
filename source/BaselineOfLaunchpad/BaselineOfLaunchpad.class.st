@@ -14,10 +14,17 @@ BaselineOfLaunchpad >> baseline: spec [
 			setUpPackages: spec.
 
 		spec
-			group: 'Development' with: 'Tests';
+			group: 'Development' with: #( 'Tests' 'Tools' );
 			group: 'CI' with: 'Tests';
-			group: 'default' with: 'Development'
-		]
+			group: 'default' with: 'Development' ].
+
+	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ]
+]
+
+{ #category : #accessing }
+BaselineOfLaunchpad >> projectClass [
+
+	^ MetacelloCypressBaselineProject
 ]
 
 { #category : #initialization }
@@ -26,10 +33,11 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 	spec
 		baseline: 'Buoy' with: [ spec repository: 'github://ba-st/Buoy:v6' ];
 		project: 'Buoy-Deployment' copyFrom: 'Buoy' with: [ spec loads: 'Deployment' ];
-		project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
+		project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ];
+		project: 'Buoy-Tools' copyFrom: 'Buoy' with: [ spec loads: 'Tools' ].
 
 	spec
-		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.0.1' ];
+		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.1.1' ];
 		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
 	spec
@@ -79,7 +87,19 @@ BaselineOfLaunchpad >> setUpPackages: spec [
 	self
 		setUpDeploymentPackages: spec;
 		setUpExamplePackages: spec;
-		setUpTestPackages: spec
+		setUpTestPackages: spec.
+		
+	spec group: 'Tools' with: 'Buoy-Tools'
+]
+
+{ #category : #baselines }
+BaselineOfLaunchpad >> setUpPharo10Packages: spec [
+
+	spec
+		package: 'Launchpad-Development-Tools' with: [ 
+			spec requires:
+					#( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
+		group: 'Tools' with: 'Launchpad-Development-Tools'
 ]
 
 { #category : #initialization }
