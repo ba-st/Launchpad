@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'configurationCache',
 		'configurationProvider',
-		'mode'
+		'mode',
+		'commandServer'
 	],
 	#classVars : [
 		'CurrentlyRunningApplicationBinding'
@@ -88,9 +89,12 @@ LaunchpadApplication class >> resetCurrentlyRunning [
 ]
 
 { #category : #'instance creation' }
-LaunchpadApplication class >> runningIn: anApplicationMode configuredBy: aConfigurationProvider [
+LaunchpadApplication class >> runningIn: anApplicationMode configuredBy: aConfigurationProvider controlledBy: aCommandServer [
 
-	^ self new initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider
+	^ self new
+		  initializeRunningIn: anApplicationMode
+		  configuredBy: aConfigurationProvider
+		  controlledBy: aCommandServer
 ]
 
 { #category : #accessing }
@@ -115,10 +119,16 @@ LaunchpadApplication class >> version [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'private - activation' }
+{ #category : #'private - activation/deactivation' }
 LaunchpadApplication >> basicStartWithin: context [
 
 	self subclassResponsibility
+]
+
+{ #category : #'private - activation/deactivation' }
+LaunchpadApplication >> basicStop [
+
+	commandServer stop
 ]
 
 { #category : #accessing }
@@ -146,10 +156,11 @@ LaunchpadApplication >> exitSuccess [
 ]
 
 { #category : #initialization }
-LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider [
+LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider controlledBy: aCommandServer [
 
 	mode := anApplicationMode.
-	configurationProvider := aConfigurationProvider
+	configurationProvider := aConfigurationProvider.
+	commandServer := aCommandServer
 ]
 
 { #category : #testing }
@@ -158,7 +169,7 @@ LaunchpadApplication >> isDebugModeEnabled [
 	^ mode isDebugMode
 ]
 
-{ #category : #'private - activation' }
+{ #category : #'private - activation/deactivation' }
 LaunchpadApplication >> logConfigurationWithin: context [
 
 	LaunchpadLogRecord emitInfo: 'Obtaining configuration' during: [ 
@@ -175,11 +186,12 @@ LaunchpadApplication >> stackTraceDumper [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #activation }
+{ #category : #'activation/deactivation' }
 LaunchpadApplication >> startWithin: context [
 
 	mode
 		value: [ 
+			commandServer start.
 			self
 				logConfigurationWithin: context;
 				basicStartWithin: context
@@ -190,4 +202,15 @@ LaunchpadApplication >> startWithin: context [
 			self stackTraceDumper dumpStackTraceFor: error.
 			self exitFailure
 			]
+]
+
+{ #category : #'activation/deactivation' }
+LaunchpadApplication >> stop [
+
+	mode value: [ self basicStop ] onErrorDo: [ :error | 
+		LaunchpadLogRecord emitError:
+			( 'Unexpected shutdown error: "<1s>"' expandMacrosWith: error messageText ).
+		self stackTraceDumper dumpStackTraceFor: error.
+		self exitFailure
+		]
 ]

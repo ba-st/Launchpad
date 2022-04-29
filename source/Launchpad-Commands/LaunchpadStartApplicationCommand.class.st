@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'options',
 		'baseConfigurationProvider',
-		'applicationMode'
+		'applicationMode',
+		'commandServer'
 	],
 	#category : #'Launchpad-Commands'
 }
@@ -24,6 +25,20 @@ Application configuration is made by the command-line via <parameters>, using en
 Execute launchpad explain <app> to get a list of valid configuration parameters.'
 ]
 
+{ #category : #configuring }
+LaunchpadStartApplicationCommand >> enableTCPCommandServerListeningOn: listeningPort [
+
+	LaunchpadLogRecord emitInfo: ( 'Receiving commands over TCP/<1p>' expandMacrosWith: listeningPort ).
+	commandServer := TCPCommandServer listeningOn: listeningPort.
+	commandServer registerCommandNamed: 'SHUTDOWN' executing: [ 
+		[ 
+		LaunchpadApplication currentlyRunning
+			stop;
+			exitSuccess
+		] forkAt: Processor timingPriority named: 'Launchpad shutdown process'
+		]
+]
+
 { #category : #evaluating }
 LaunchpadStartApplicationCommand >> evaluateWithin: context [
 
@@ -38,11 +53,14 @@ LaunchpadStartApplicationCommand >> evaluateWithin: context [
 LaunchpadStartApplicationCommand >> initialize [
 
 	super initialize.
-	options := Array with: ( LaunchpadHelpOption for: self )
+	options := Array
+		           with: ( LaunchpadHelpOption for: self )
 		           with: ( LaunchpadDebugModeOption for: self )
-		           with: ( LaunchpadSettingsFileOption for: self ).
+		           with: ( LaunchpadSettingsFileOption for: self )
+		           with: ( LaunchpadTCPCommandServerOption for: self ).
 	baseConfigurationProvider := NullConfigurationProvider new.
-	applicationMode := ReleasedApplicationMode new
+	applicationMode := ReleasedApplicationMode new.
+	commandServer := NullCommandServer new
 ]
 
 { #category : #accessing }
@@ -80,7 +98,10 @@ LaunchpadStartApplicationCommand >> start: anApplication within: context [
 	configurationProvider := context configurationProviderChainedWith:
 		                         ( ConfigurationFromEnvironmentProvider chainedWith:
 			                           baseConfigurationProvider ).
-	applicationToStart := anApplication runningIn: applicationMode configuredBy: configurationProvider.
+	applicationToStart := anApplication
+		                      runningIn: applicationMode
+		                      configuredBy: configurationProvider
+		                      controlledBy: commandServer.
 	LaunchpadApplication setAsCurrentlyRunning: applicationToStart.
 	applicationToStart startWithin: context
 ]

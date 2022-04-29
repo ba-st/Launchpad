@@ -73,9 +73,12 @@ LaunchpadBrokenApplication >> basicStartWithin: context [
 ]
 
 { #category : #initialization }
-LaunchpadBrokenApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider [
+LaunchpadBrokenApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider controlledBy: aCommandServer [
 
-	super initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider.
+	super
+		initializeRunningIn: anApplicationMode
+		configuredBy: aConfigurationProvider
+		controlledBy: aCommandServer.
 	stackTraceDumper := self newStackTraceDumperOnStandardError
 ]
 

@@ -11,9 +11,11 @@ Class {
 LaunchpadApplicationTest >> testIsDebugModeEnabled [
 
 	| application |
+
 	application := LaunchpadBrokenApplication
 		               runningIn: DebuggingApplicationMode new
-		               configuredBy: NullConfigurationProvider new.
+		               configuredBy: NullConfigurationProvider new
+		               controlledBy: NullCommandServer new.
 	self assert: application isDebugModeEnabled
 ]
 
@@ -21,8 +23,10 @@ LaunchpadApplicationTest >> testIsDebugModeEnabled [
 LaunchpadApplicationTest >> testIsDebugModeNotEnabled [
 
 	| application |
+
 	application := LaunchpadBrokenApplication
 		               runningIn: ReleasedApplicationMode new
-		               configuredBy: NullConfigurationProvider new.
+		               configuredBy: NullConfigurationProvider new
+		               controlledBy: NullCommandServer new.
 	self deny: application isDebugModeEnabled
 ]
