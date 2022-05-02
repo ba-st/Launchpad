@@ -778,6 +778,32 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 		assert: logger recordings isEmpty
 ]
 
+{ #category : #'tests - handling start subcommand' }
+LaunchpadRootCommandTest >> testHandlingStopBrokenApplicationWhileRunning [
+
+	| semaphore |
+
+	semaphore := Semaphore new.
+
+	[ 
+	[ self handle: #( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
+		on: Error
+		do: [ :error | 
+			semaphore wait.
+			error return
+			]
+	] forkAt: Processor userInterruptPriority named: 'Launching broken application'.
+
+	LaunchpadApplication currentlyRunning stop.
+	semaphore signal.
+
+	self assert: logger recordings size equals: 2.
+	logger recordings
+		with: #( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]' )
+		do: [ :recording :expectedOutput | 
+		self assert: ( recording printString endsWith: expectedOutput ) ]
+]
+
 { #category : #'tests - handling main command' }
 LaunchpadRootCommandTest >> testHandlingVersionOption [
 
