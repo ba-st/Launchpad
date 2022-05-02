@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+pid=0
+
+if [[ -z $LAUNCHPAD__COMMAND_SERVER_PORT ]]; then
+  LAUNCHPAD__COMMAND_SERVER_PORT=22222
+fi
+
+# SIGTERM-handler
+termination_handler() {
+  exit_status=0
+  if [ $pid -ne 0 ]; then
+    echo 'SIGTERM received, shutting down the application'
+    echo "SHUTDOWN" | nc localhost $LAUNCHPAD__COMMAND_SERVER_PORT
+    wait "$pid"
+    exit_status=$?
+  fi
+  exit "$exit_status"
+}
+
+trap 'termination_handler' SIGTERM
+exec launchpad start --enable-tcp-command-server=$LAUNCHPAD__COMMAND_SERVER_PORT "$@" &
+pid="$!"
+wait "$pid"
