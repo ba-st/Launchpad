@@ -34,8 +34,16 @@ function executeWithArguments() {
 	rm -rf stdout stderr logs out err
 	LAST_ARGUMENTS=$*
 	"$@" > out 2> err || true
-	[ -f stdout ] && mv stdout out || touch out
-	[ -f stderr ] && mv stderr err || touch err
+  if [ -f stdout ]; then
+    mv stdout out
+  else
+    touch out
+  fi
+	if [ -f stderr ]; then
+    mv stderr err
+  else
+    touch err
+  fi
 }
 
 function assertOutputIncludesMessage() {
