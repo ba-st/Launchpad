@@ -31,19 +31,9 @@ function print_error() {
 }
 
 function executeWithArguments() {
-	rm -rf stdout stderr logs out err
+	rm -rf logs out err
 	LAST_ARGUMENTS=$*
 	"$@" > out 2> err || true
-	if [ -f stdout ]; then
-		mv stdout out
-	else
-		touch out
-	fi
-	if [ -f stderr ]; then
-		mv stderr err
-	else
-		touch err
-	fi
 }
 
 function assertOutputIncludesMessage() {

@@ -26,7 +26,7 @@ in all the required methods and ultimately accessible by the application in its
 `basicStartWithin:` method.
 
 After that, a `LaunchpadRootCommand` is created and evaluated within the context.
-First this command tries to handle any root option and then find which subcommand
+First this command tries to handle any root option and then find which sub-command
 to evaluate. Once the `start` sub-command is found, `LaunchpadStartApplicationCommand`
 takes control.
 

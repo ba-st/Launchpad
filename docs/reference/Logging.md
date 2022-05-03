@@ -6,7 +6,7 @@ For a summary of Beacon take a look at [this blog post](http://www.humane-assess
 Launchpad produces logging information by signaling `LaunchpadLogRecord` instances,
 including a log level that can be `INFO`, `WARNING`, or `ERROR`.
 To emit your logs, you can reuse `LaunchpadLogRecord` by sending one of the
-emit messages:
+`emit` messages:
 
 - `emitInfo:` and `emitInfo:during:` will produce informational signals.
 - `emitWarning:` will produce warning signals.

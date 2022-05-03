@@ -19,6 +19,6 @@ termination_handler() {
 }
 
 trap 'termination_handler' SIGTERM
-exec launchpad start --enable-tcp-command-server=$LAUNCHPAD__COMMAND_SERVER_PORT "$@" &
+launchpad start --enable-tcp-command-server=$LAUNCHPAD__COMMAND_SERVER_PORT "$@" &
 pid="$!"
 wait "$pid"

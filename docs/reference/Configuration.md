@@ -7,7 +7,7 @@ application parameters and their values.
 ## Configuration parameter types
 
 Each application needs to specify which parameters are required to work.
-This specification is made by instantiating some of the configuration parameter classes:
+This specification is made by instantiating some configuration parameter classes:
 
 - **Mandatory**: A mandatory configuration parameter must have a value provided
   externally. This kind of parameter is created by instantiating `MandatoryConfigurationParameter`.
@@ -18,7 +18,7 @@ This specification is made by instantiating some of the configuration parameter 
   want to override this behavior send `doNotWarnWhenUsingDefault` to the
   parameter instance.
 - **Sensitive**: Sensitive parameters can be mandatory or optional (they are
-  created by decorating some of the other parameter types by sending the message
+  created by decorating some other parameter types by sending the message
   `asSensitive`). Its purpose is to avoid outputting the value in any log to
   avoid leaking sensitive data.
 
@@ -44,7 +44,7 @@ The following providers are available:
   values from the OS environment.
 - `ConfigurationFromSettingsFileProvider` tries to read the configuration parameter
   values by parsing the files specified using the `settings-file` option
-  of the `start` subcommand. See the [reference](CLI.md).
+  of the `start` sub-command. See the [reference](CLI.md).
 
 Launchpad will evaluate the configuration providers in the following order:
 

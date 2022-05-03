@@ -62,7 +62,7 @@ launchpad [--version] [--help|-h] <command>
                         Give details about the selected application
   ```
 
-### `launchpad` subcommands
+### `launchpad` sub-commands
 
 - `list` List available applications
 - `explain` Give details about the selected application
@@ -70,7 +70,7 @@ launchpad [--version] [--help|-h] <command>
 
 ## Launchpad `list`
 
-The `list` subcommand will list the available applications within the image.
+The `list` sub-command will list the available applications within the image.
 
 ```bash
 launchpad list [--verbose|-v] [--help|-h]
@@ -113,7 +113,7 @@ broken greeter
 
 ## Launchpad `explain`
 
-The `explain` subcommand will give details about the selected application,
+The `explain` sub-command will give details about the selected application,
 including the description, version, supported parameters, command-line options
 and environment variables.
 
@@ -121,8 +121,8 @@ and environment variables.
 launchpad explain [--help|-h] <app>
 ```
 
-This subcommand requires a valid `<app>` handle to be provided so it will know which
-application is needing explanation. The valid application handles can be obtained
+This sub-command requires a valid `<app>` handle to be provided, so it will know
+which application is needing explanation. The valid application handles can be obtained
 by using the `list` command.
 
 ```bash
@@ -177,13 +177,13 @@ $ launchpad explain bad
 
 ## Launchpad `start`
 
-The `start` subcommand will start the selected application.
+The `start` sub-command will start the selected application.
 
 ```bash
 launchpad start [--help|-h] [--debug-mode] [--settings-file=<filename>] <app> [<parameters>]
 ```
 
-This subcommand requires a valid `<app>` handle to be provided so it will know
+This sub-command requires a valid `<app>` handle to be provided, so it will know
 which application to start. The valid application handles can be obtained by
 using the `list` command. Once an application is started the control is passed to
 it to perform whatever is intended.
