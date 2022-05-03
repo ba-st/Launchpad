@@ -7,53 +7,53 @@ readonly ANSI_BLUE="\\033[34m"
 readonly ANSI_RESET="\\033[0m"
 
 function print_info() {
-  if [ -t 1 ]; then
-    printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\\n" "$1"
-  else
-    echo "$1"
-  fi
+	if [ -t 1 ]; then
+		printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\\n" "$1"
+	else
+		echo "$1"
+	fi
 }
 
 function print_success() {
-  if [ -t 1 ]; then
-    printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\\n" "$1"
-  else
-    echo "$1"
-  fi
+	if [ -t 1 ]; then
+		printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\\n" "$1"
+	else
+		echo "$1"
+	fi
 }
 
 function print_error() {
-  if [ -t 1 ]; then
-    printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\\n" "$1" 1>&2
-  else
-    echo "$1" 1>&2
-  fi
+	if [ -t 1 ]; then
+		printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\\n" "$1" 1>&2
+	else
+		echo "$1" 1>&2
+	fi
 }
 
 function executeWithArguments() {
 	rm -rf stdout stderr logs out err
 	LAST_ARGUMENTS=$*
 	"$@" > out 2> err || true
-  if [ -f stdout ]; then
-    mv stdout out
-  else
-    touch out
-  fi
+	if [ -f stdout ]; then
+		mv stdout out
+	else
+		touch out
+	fi
 	if [ -f stderr ]; then
-    mv stderr err
-  else
-    touch err
-  fi
+		mv stderr err
+	else
+		touch err
+	fi
 }
 
 function assertOutputIncludesMessage() {
 	local message=$1
-  local output=$2
+	local output=$2
 
 	if [ "$(grep -c "$message" "$output")" -eq 0 ]; then
 		print_error "Expected std$output to have: '$message' when invoked with $LAST_ARGUMENTS"
-    print_info "Output contents"
-    cat "$output"
+		print_info "Output contents"
+		cat "$output"
 		exit 1
 	fi
 }
