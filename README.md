@@ -6,13 +6,16 @@ A command-line interface to start, list, and explain the applications available
 within the image.
 
 [![Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml)
+[![Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml)
 [![Coverage Status](https://codecov.io/github/ba-st/Launchpad/coverage.svg?branch=release-candidate)](https://codecov.io/gh/ba-st/Launchpad/branch/release-candidate)
 [![Baseline Groups](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml)
+[![Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
 [![Markdown Lint](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml)
 
 [![GitHub release](https://img.shields.io/github/release/ba-st/Launchpad.svg)](https://github.com/ba-st/Launchpad/releases/latest)
 [![Pharo 8.0](https://img.shields.io/badge/Pharo-8.0-informational)](https://pharo.org)
 [![Pharo 9.0](https://img.shields.io/badge/Pharo-9.0-informational)](https://pharo.org)
+[![Pharo 10](https://img.shields.io/badge/Pharo-10-informational)](https://pharo.org)
 
 ## Quick links
 

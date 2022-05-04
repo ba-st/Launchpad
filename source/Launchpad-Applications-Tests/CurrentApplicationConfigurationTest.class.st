@@ -12,10 +12,13 @@ CurrentApplicationConfigurationTest >> testAccessingConfigurationOfRunningApplic
 
 	| application |
 
-	application := LaunchpadBrokenApplication runningIn: DebuggingApplicationMode new
-		               configuredBy: NullConfigurationProvider new.
+	application := LaunchpadBrokenApplication
+		               runningIn: DebuggingApplicationMode new
+		               configuredBy: NullConfigurationProvider new
+		               controlledBy: NullCommandServer new.
 
-	LaunchpadApplication setAsCurrentlyRunning: application
+	LaunchpadApplication
+		setAsCurrentlyRunning: application
 		during: [ self assert: CurrentApplicationConfiguration value equals: application configuration ]
 ]
 

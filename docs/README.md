@@ -18,6 +18,7 @@ Once you grasped the basics, lookup for details in the reference docs:
 - [Configuration](reference/Configuration.md)
 - [Logging](reference/Logging.md)
 - [Tracing](reference/Tracing.md)
+- [Docker support](reference/Docker.md)
 
 or expand your understanding over specific topics:
 

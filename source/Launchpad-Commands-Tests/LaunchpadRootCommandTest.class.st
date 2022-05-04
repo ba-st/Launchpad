@@ -75,7 +75,7 @@ LaunchpadRootCommandTest >> expectedListHelpOutput [
 { #category : #private }
 LaunchpadRootCommandTest >> expectedStartHelpOutput [
 
-	^ 'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>'
+	^ 'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-tcp-command-server=%<listeningPort>] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>'
 		  expandMacros			
 ]
 
@@ -126,6 +126,12 @@ LaunchpadRootCommandTest >> handle: arguments onExitDo: aBlock [
 			  raise: Exit
 			  withExceptionDo: aBlock
 		  ]
+]
+
+{ #category : #private }
+LaunchpadRootCommandTest >> performTest [
+
+	self shouldnt: [ super performTest ] raise: Exit
 ]
 
 { #category : #private }
@@ -522,6 +528,30 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplication [
 ]
 
 { #category : #'tests - handling start subcommand' }
+LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingTCPCommandServer [
+
+	| output |
+
+	output := self handle: { 
+			          'launchpad'.
+			          'start'.
+			          '--debug-mode'.
+			          '--enable-tcp-command-server=0'.
+			          LaunchpadGreeterApplication commandName.
+			          '--name=John' }.
+
+	self assert: output equals: 'Hi John!<n>' expandMacros.
+
+	logger recordings
+		with: #( '[INFO] Receiving commands over TCP/0' '[INFO] Obtaining configuration...'
+			   '[WARNING] "Title" parameter not provided. Using default.'
+			   '[INFO] Name: John' '[INFO] Title: ' '[INFO] Obtaining configuration... [DONE]'
+			   '[INFO] Exit application' )
+		do: [ :recording :expectedOutput | 
+		self assert: ( recording printString endsWith: expectedOutput ) ]
+]
+
+{ #category : #'tests - handling start subcommand' }
 LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationInDebugMode [
 
 	| output |
@@ -746,6 +776,32 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 	self
 		assert: output equals: self expectedStartHelpOutput;
 		assert: logger recordings isEmpty
+]
+
+{ #category : #'tests - handling start subcommand' }
+LaunchpadRootCommandTest >> testHandlingStopBrokenApplicationWhileRunning [
+
+	| semaphore |
+
+	semaphore := Semaphore new.
+
+	[ 
+	[ self handle: #( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
+		on: Error
+		do: [ :error | 
+			semaphore wait.
+			error return
+			]
+	] forkAt: Processor userInterruptPriority named: 'Launching broken application'.
+
+	LaunchpadApplication currentlyRunning stop.
+	semaphore signal.
+
+	self assert: logger recordings size equals: 2.
+	logger recordings
+		with: #( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]' )
+		do: [ :recording :expectedOutput | 
+		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
 
 { #category : #'tests - handling main command' }

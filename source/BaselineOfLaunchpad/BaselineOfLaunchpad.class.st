@@ -42,7 +42,13 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 
 	spec
 		baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON:master/repository' ];
-		project: 'NeoJSON-Core' copyFrom: 'NeoJSON' with: [ spec loads: 'core' ]
+		project: 'NeoJSON-Core' copyFrom: 'NeoJSON' with: [ spec loads: 'core' ].
+
+	spec
+		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v4' ];
+		project: 'Hyperspace-SUnit'
+		copyFrom: 'Hyperspace'
+		with: [ spec loads: 'Dependent-SUnit-Extensions' ]
 ]
 
 { #category : #baselines }
@@ -125,6 +131,6 @@ BaselineOfLaunchpad >> setUpTestPackages: spec [
 
 	spec
 		package: 'Launchpad-Commands-Tests'
-		with: [ spec requires: #( 'Examples' 'Launchpad-Commands' 'Buoy-SUnit' ) ];
+		with: [ spec requires: #( 'Examples' 'Launchpad-Commands' 'Buoy-SUnit' 'Hyperspace-SUnit' ) ];
 		group: 'Tests' with: 'Launchpad-Commands-Tests'
 ]
