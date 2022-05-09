@@ -19,15 +19,18 @@ StackTraceBinarySerializer class >> on: anOpenStreamAction [
 	^ self new initializeOn: anOpenStreamAction
 ]
 
-{ #category : #private }
+{ #category : #actions }
 StackTraceBinarySerializer class >> openDebuggerOn: anExecutionStack [
 
 	^ [ 
-	  Smalltalk tools debugger
-		  openOn: ( Processor activeProcess newDebugSessionNamed:
-				    ( 'Materialized stack: <1s>' expandMacrosWith: anExecutionStack receiver description )
-				    startedAt: anExecutionStack )
-		  withFullView: true
+	  | exception debugSession |
+	  exception := anExecutionStack receiver.
+	  debugSession := Processor activeProcess
+		                  newDebugSessionNamed:
+		                  ( 'Materialized stack: <1s>' expandMacrosWith: exception description )
+		                  startedAt: anExecutionStack.
+	  debugSession exception: exception.
+	  StDebugger openOn: debugSession withFullView: true
 	  ] forkNamed: 'Debugging materialized stack'
 ]
 

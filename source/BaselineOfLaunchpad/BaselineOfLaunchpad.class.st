@@ -18,7 +18,8 @@ BaselineOfLaunchpad >> baseline: spec [
 			group: 'CI' with: 'Tests';
 			group: 'default' with: 'Development' ].
 
-	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ]
+	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
+	spec for: #'pharo8.x' do: [ self setUpPharo8Packages: spec ].
 ]
 
 { #category : #accessing }
@@ -106,6 +107,15 @@ BaselineOfLaunchpad >> setUpPharo10Packages: spec [
 			spec requires:
 					#( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
 		group: 'Tools' with: 'Launchpad-Development-Tools'
+]
+
+{ #category : #baselines }
+BaselineOfLaunchpad >> setUpPharo8Packages: spec [
+
+	spec
+		package: 'Launchpad-Tracing-Pharo8'
+		with: [ spec requires: 'Launchpad-Tracing' ];
+		group: 'Deployment' with: 'Launchpad-Tracing-Pharo8'
 ]
 
 { #category : #initialization }
