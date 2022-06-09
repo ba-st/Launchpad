@@ -91,7 +91,7 @@ LaunchpadLogRecord >> initializeWithMessage: aString [
 { #category : #testing }
 LaunchpadLogRecord >> isInformational [
 
-	^ self logLevel = 'INFO'
+	^ #( 'INFO' 'TRACE' 'DEBUG' ) includes: self logLevel
 ]
 
 { #category : #accessing }
