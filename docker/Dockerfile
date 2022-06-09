@@ -11,7 +11,10 @@ RUN set -eu; \
   ln -s /opt/pharo/launchpad-list /usr/local/bin/launchpad-list; \
   ln -s /opt/pharo/launchpad-explain /usr/local/bin/launchpad-explain; \
   ln -s /opt/pharo/launchpad-start /usr/local/bin/launchpad-start; \
+  ln -s /opt/pharo/launchpad-healthcheck /usr/local/bin/launchpad-healthcheck; \
   chmod a+x /usr/local/bin/launchpad*; \
   true
 
 USER pharo
+
+HEALTHCHECK CMD [ "launchpad-healthcheck"]

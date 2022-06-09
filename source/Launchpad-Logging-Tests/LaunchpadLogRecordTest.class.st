@@ -41,6 +41,16 @@ LaunchpadLogRecordTest >> testEmitCombinedEvents [
 ]
 
 { #category : #tests }
+LaunchpadLogRecordTest >> testEmitDebug [
+
+	logger runDuring: [ LaunchpadLogRecord emitDebuggingInfo: 'Ouch!' ].
+
+	self
+		assert: logger recordings size equals: 1;
+		assert: ( logger recordings first printString endsWith: '[DEBUG] Ouch!' )
+]
+
+{ #category : #tests }
 LaunchpadLogRecordTest >> testEmitError [
 
 	logger runDuring: [ LaunchpadLogRecord emitError: 'Ouch!' ].
@@ -85,6 +95,16 @@ LaunchpadLogRecordTest >> testEmitInfoDuringWhenActionFails [
 		assert: logger recordings size equals: 2;
 		assert: ( logger recordings first printString endsWith: '[INFO] Starting...' );
 		assert: ( logger recordings last printString endsWith: '[ERROR] Starting... [FAILED]' )
+]
+
+{ #category : #tests }
+LaunchpadLogRecordTest >> testEmitTrace [
+
+	logger runDuring: [ LaunchpadLogRecord emitTraceInfo: 'Ouch!' ].
+
+	self
+		assert: logger recordings size equals: 1;
+		assert: ( logger recordings first printString endsWith: '[TRACE] Ouch!' )
 ]
 
 { #category : #tests }

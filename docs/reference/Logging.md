@@ -8,6 +8,8 @@ including a log level that can be `INFO`, `WARNING`, or `ERROR`.
 To emit your logs, you can reuse `LaunchpadLogRecord` by sending one of the
 `emit` messages:
 
+- `emitTraceInfo:` will produce informational signals with trace information.
+- `emitDebuggingInfo:` will produce informational signals with debugging information.
 - `emitInfo:` and `emitInfo:during:` will produce informational signals.
 - `emitWarning:` will produce warning signals.
 - `emitError:` will produce error signals.

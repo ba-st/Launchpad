@@ -9,6 +9,7 @@ adding some useful scripts for Launchpad-based applications:
 - `launchpad-list` starts the CLI with the `list` command
 - `launchpad-start` starts the CLI with the `start` command and setup
   a `SIGTERM` handler for gracefully stopping the application.
+- `launchpad-healthcheck` is run as the default docker `HEALTHCHECK`
 
 ## How to use as base docker image
 

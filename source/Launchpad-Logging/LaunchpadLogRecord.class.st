@@ -5,6 +5,14 @@ Class {
 }
 
 { #category : #actions }
+LaunchpadLogRecord class >> emitDebuggingInfo: aString [
+
+	^ ( self withMessage: aString )
+		  beForDebugging;
+		  emit
+]
+
+{ #category : #actions }
 LaunchpadLogRecord class >> emitError: aString [
 
 	^ ( self withMessage: aString )
@@ -29,6 +37,14 @@ LaunchpadLogRecord class >> emitInfo: aString during: aBlock [
 ]
 
 { #category : #actions }
+LaunchpadLogRecord class >> emitTraceInfo: aString [
+
+	^ ( self withMessage: aString )
+		  beForTracing;
+		  emit
+]
+
+{ #category : #actions }
 LaunchpadLogRecord class >> emitWarning: aString [
 
 	^ ( self withMessage: aString )
@@ -49,6 +65,18 @@ LaunchpadLogRecord >> beError [
 ]
 
 { #category : #private }
+LaunchpadLogRecord >> beForDebugging [
+
+	self properties at: #logLevel put: 'DEBUG'
+]
+
+{ #category : #private }
+LaunchpadLogRecord >> beForTracing [
+
+	self properties at: #logLevel put: 'TRACE'
+]
+
+{ #category : #private }
 LaunchpadLogRecord >> beWarning [
 
 	self properties at: #logLevel put: 'WARNING'
@@ -63,7 +91,7 @@ LaunchpadLogRecord >> initializeWithMessage: aString [
 { #category : #testing }
 LaunchpadLogRecord >> isInformational [
 
-	^ self logLevel = 'INFO'
+	^ #( 'INFO' 'TRACE' 'DEBUG' ) includes: self logLevel
 ]
 
 { #category : #accessing }
