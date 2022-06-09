@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ -z $LAUNCHPAD__COMMAND_SERVER_PORT ]]; then
+  LAUNCHPAD__COMMAND_SERVER_PORT=22222
+fi
+
+echo "HEALTHCHECK" | nc localhost $LAUNCHPAD__COMMAND_SERVER_PORT
