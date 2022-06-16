@@ -73,10 +73,7 @@ LaunchpadApplication class >> printCommandArgumentsOn: stream [
 LaunchpadApplication class >> printHelpOn: stream [
 
 	( LaunchpadHelpPrinter on: stream )
-		nameSectionContaining:
-			( '<1s> [<2s>] - <3s>' expandMacrosWith: self commandName
-				  with: self version
-				  with: self description );
+		nameSectionContaining: self summary;
 		synopsysSectionFor: self commandName with: [ self printCommandArgumentsOn: stream ];
 		parametersAndEnvironmentSectionDescribing: self configurationParameters
 ]
@@ -111,6 +108,12 @@ LaunchpadApplication class >> setAsCurrentlyRunning: application during: aBlock 
 	previousBinding := CurrentlyRunningApplicationBinding.
 	CurrentlyRunningApplicationBinding := Binding to: application.
 	aBlock ensure: [ CurrentlyRunningApplicationBinding := previousBinding ]
+]
+
+{ #category : #accessing }
+LaunchpadApplication class >> summary [
+
+	^ '<1s> [<2s>] - <3s>' expandMacrosWith: self commandName with: self version with: self description
 ]
 
 { #category : #accessing }
@@ -192,6 +195,7 @@ LaunchpadApplication >> startWithin: context [
 	mode
 		value: [ 
 			commandServer start.
+			LaunchpadLogRecord emitInfo: self class summary.
 			self
 				logConfigurationWithin: context;
 				basicStartWithin: context

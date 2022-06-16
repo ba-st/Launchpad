@@ -4,12 +4,16 @@ Launchpad logging builds on top of [Beacon](https://github.com/pharo-project/pha
 For a summary of Beacon take a look at [this blog post](http://www.humane-assessment.com/blog/beacon).
 
 Launchpad produces logging information by signaling `LaunchpadLogRecord` instances,
-including a log level that can be `INFO`, `WARNING`, or `ERROR`.
+including a log level that can be `TRACE`, `DEBUG`, `INFO`, `WARNING`, or `ERROR`.
 To emit your logs, you can reuse `LaunchpadLogRecord` by sending one of the
 `emit` messages:
 
 - `emitTraceInfo:` will produce informational signals with trace information.
+- `emitStructuredTraceInfo:with:` will produce informational signals with
+  trace information and additional structured data provided by the user.
 - `emitDebuggingInfo:` will produce informational signals with debugging information.
+- `emitStructuredDebuggingInfo:with:` will produce informational signals with
+  debugging information and additional structured data provided by the user.
 - `emitInfo:` and `emitInfo:during:` will produce informational signals.
 - `emitWarning:` will produce warning signals.
 - `emitError:` will produce error signals.
@@ -19,3 +23,6 @@ to process these events. One of the loggers writes informational log records to
 `stdout`. The other one handles warning and error records, writing them to `stderr`.
 Applications can freely configure their loggers if they want to report these events
 differently.
+
+If you want the logging in an structured format, use `--enable-structured-logging`
+option. When enabled the logs are emitted in JSON format.

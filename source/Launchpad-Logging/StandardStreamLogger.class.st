@@ -33,7 +33,7 @@ StandardStreamLogger >> initializeOn: standardStream [
 	stream forPlatformLineEnding
 ]
 
-{ #category : #registering }
+{ #category : #utilities }
 StandardStreamLogger >> nextPut: aSignal [
 
 	aSignal printOneLineOn: stream.

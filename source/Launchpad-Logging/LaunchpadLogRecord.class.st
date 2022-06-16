@@ -7,15 +7,13 @@ Class {
 { #category : #actions }
 LaunchpadLogRecord class >> emitDebuggingInfo: aString [
 
-	^ ( self withMessage: aString )
-		  beForDebugging;
-		  emit
+	^ self emitStructuredDebuggingInfo: aString with: [  ]
 ]
 
 { #category : #actions }
 LaunchpadLogRecord class >> emitError: aString [
 
-	^ ( self withMessage: aString )
+	^ ( self withMessage: aString andStructuredDataBy: [  ] )
 		  beError;
 		  emit
 ]
@@ -23,7 +21,7 @@ LaunchpadLogRecord class >> emitError: aString [
 { #category : #actions }
 LaunchpadLogRecord class >> emitInfo: aString [
 
-	^ ( self withMessage: aString ) emit
+	^ ( self withMessage: aString andStructuredDataBy: [  ] ) emit
 ]
 
 { #category : #actions }
@@ -37,25 +35,39 @@ LaunchpadLogRecord class >> emitInfo: aString during: aBlock [
 ]
 
 { #category : #actions }
-LaunchpadLogRecord class >> emitTraceInfo: aString [
+LaunchpadLogRecord class >> emitStructuredDebuggingInfo: aString with: aBlock [
 
-	^ ( self withMessage: aString )
+	^ ( self withMessage: aString andStructuredDataBy: aBlock )
+		  beForDebugging;
+		  emit
+]
+
+{ #category : #actions }
+LaunchpadLogRecord class >> emitStructuredTraceInfo: aString with: aBlock [
+
+	^ ( self withMessage: aString andStructuredDataBy: aBlock )
 		  beForTracing;
 		  emit
 ]
 
 { #category : #actions }
+LaunchpadLogRecord class >> emitTraceInfo: aString [
+
+	^ self emitStructuredTraceInfo: aString with: [  ]
+]
+
+{ #category : #actions }
 LaunchpadLogRecord class >> emitWarning: aString [
 
-	^ ( self withMessage: aString )
+	^ ( self withMessage: aString andStructuredDataBy: [  ] )
 		  beWarning;
 		  emit
 ]
 
 { #category : #'instance creation' }
-LaunchpadLogRecord class >> withMessage: aString [
+LaunchpadLogRecord class >> withMessage: aString andStructuredDataBy: aBlock [
 
-	^ self new initializeWithMessage: aString
+	^ self new initializeWithMessage: aString andStructuredDataBy: aBlock
 ]
 
 { #category : #private }
@@ -83,9 +95,14 @@ LaunchpadLogRecord >> beWarning [
 ]
 
 { #category : #initialization }
-LaunchpadLogRecord >> initializeWithMessage: aString [
+LaunchpadLogRecord >> initializeWithMessage: aString andStructuredDataBy: aBlock [
 
-	self properties at: #messageText put: aString
+	| data |
+
+	self properties at: #messageText put: aString.
+	data := OrderedDictionary new.
+	aBlock cull: data.
+	self properties at: #data put: data
 ]
 
 { #category : #testing }
@@ -109,7 +126,29 @@ LaunchpadLogRecord >> messageText [
 { #category : #printing }
 LaunchpadLogRecord >> printOneLineContentsOn: stream [
 
-	stream nextPutAll: self messageText
+	stream nextPutAll: self messageText.
+	( self properties at: #data ) ifNotEmpty: [ :data | 
+		stream
+			space;
+			nextPutAll: ( NeoJSONWriter toString: data )
+		]
+]
+
+{ #category : #printing }
+LaunchpadLogRecord >> printOneLineJsonOn: stream [
+
+	| json |
+
+	json := OrderedDictionary new.
+	json
+		at: #time put: self timestamp asString;
+		at: #level put: self logLevel;
+		at: #message put: self messageText;
+		at: #process put: self processId.
+
+	( self properties at: #data ) keysAndValuesDo: [ :key :value | json at: key put: value ].
+
+	stream nextPutAll: ( NeoJSONWriter toString: json )
 ]
 
 { #category : #printing }

@@ -75,7 +75,7 @@ LaunchpadRootCommandTest >> expectedListHelpOutput [
 { #category : #private }
 LaunchpadRootCommandTest >> expectedStartHelpOutput [
 
-	^ 'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-tcp-command-server=%<listeningPort>] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>'
+	^ 'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-tcp-command-server=%<listeningPort>] [--enable-structured-logging] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>'
 		  expandMacros			
 ]
 
@@ -441,13 +441,16 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplication [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'start' 'broken' )
+	output := self
+		          handle: #( 'launchpad' 'start' 'broken' )
 		          onExitDo: [ :exit | self deny: exit isSuccess ].
 
 	self assert: output isEmpty.
 
-	logger recordings with:
-		#( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]' )
+	logger recordings
+		with: #( '[INFO] broken [v0.0.1] - A broken application'
+			   		'[INFO] Obtaining configuration...'
+					'[INFO] Obtaining configuration... [DONE]' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -462,8 +465,10 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationInDebugMode [
 	self assert: output isEmpty.
 
 	logger recordings
-		with: #( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]'
-			   '[ERROR] Exit application' )
+		with: #( '[INFO] broken [v0.0.1] - A broken application'
+			   		'[INFO] Obtaining configuration...'
+					'[INFO] Obtaining configuration... [DONE]'
+			   		'[ERROR] Exit application' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -473,15 +478,18 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationRaisingUnexpectedE
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'start' 'broken' '--raise-error' )
+	output := self
+		          handle: #( 'launchpad' 'start' 'broken' '--raise-error' )
 		          onExitDo: [ :exit | self deny: exit isSuccess ].
 
 	self assert: output isEmpty.
 
-	self assert: logger recordings size equals: 3.
+	self assert: logger recordings size equals: 4.
 	logger recordings
-		with: #( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]'
-			   '[ERROR] Unexpected startup error: "Doh!"' )
+		with: #( '[INFO] broken [v0.0.1] - A broken application'
+			   		'[INFO] Obtaining configuration...'
+					'[INFO] Obtaining configuration... [DONE]'
+			   		'[ERROR] Unexpected startup error: "Doh!"' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -489,14 +497,17 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationRaisingUnexpectedE
 { #category : #'tests - handling start subcommand' }
 LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationRaisingUnexpectedErrorInDebugMode [
 
-	self should: [ self handle: #( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
+	self
+		should: [ self handle: #( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
 		raise: Error
 		withMessageText: 'Doh!'.
 
 
-	self assert: logger recordings size equals: 2.
-	logger recordings with:
-		#( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]' )
+	self assert: logger recordings size equals: 3.
+	logger recordings
+		with: #( '[INFO] broken [v0.0.1] - A broken application'
+			   		'[INFO] Obtaining configuration...'
+					'[INFO] Obtaining configuration... [DONE]' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -518,11 +529,39 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplication [
 
 	logger recordings
 		with:
-			#( '[INFO] Obtaining configuration...' 
+			#( '[INFO] greeter [v1.0.0] - A greetings application'
+				'[INFO] Obtaining configuration...' 
 				'[WARNING] "Title" parameter not provided. Using default.'
 			   '[INFO] Name: John' 
 				'[INFO] Title: ' 
 				'[INFO] Obtaining configuration... [DONE]' )
+		do: [ :recording :expectedOutput | 
+		self assert: ( recording printString endsWith: expectedOutput ) ]
+]
+
+{ #category : #'tests - handling start subcommand' }
+LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingStructuredLogging [
+
+	| output |
+
+	output := self handle: { 
+			          'launchpad'.
+			          'start'.
+			          '--debug-mode'.
+			          '--enable-structured-logging'.
+			          LaunchpadGreeterApplication commandName.
+			          '--name=John' }.
+
+	self assert: output equals: 'Hi John!<n>' expandMacros.
+
+	logger recordings
+		with: #(	'[INFO] greeter [v1.0.0] - A greetings application'
+					'[INFO] Obtaining configuration...'
+			   		'[WARNING] "Title" parameter not provided. Using default.'
+			   		'[INFO] Name: John'
+					'[INFO] Title: '
+					'[INFO] Obtaining configuration... [DONE]'
+			   		'[INFO] Exit application' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -543,10 +582,14 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingTCPComman
 	self assert: output equals: 'Hi John!<n>' expandMacros.
 
 	logger recordings
-		with: #( '[INFO] Receiving commands over TCP/0' '[INFO] Obtaining configuration...'
-			   '[WARNING] "Title" parameter not provided. Using default.'
-			   '[INFO] Name: John' '[INFO] Title: ' '[INFO] Obtaining configuration... [DONE]'
-			   '[INFO] Exit application' )
+		with: #( '[INFO] Receiving commands over TCP/0'
+					'[INFO] greeter [v1.0.0] - A greetings application'
+					'[INFO] Obtaining configuration...'
+			   		'[WARNING] "Title" parameter not provided. Using default.'
+			   		'[INFO] Name: John'
+					'[INFO] Title: '
+					'[INFO] Obtaining configuration... [DONE]'
+			   		'[INFO] Exit application' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -566,10 +609,13 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationInDebugMode [
 	self assert: output equals: 'Hi John!<n>' expandMacros.
 
 	logger recordings
-		with:
-			#( '[INFO] Obtaining configuration...' '[WARNING] "Title" parameter not provided. Using default.'
-			   '[INFO] Name: John' '[INFO] Title: ' '[INFO] Obtaining configuration... [DONE]'
-			   '[INFO] Exit application' )
+		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+			   		'[INFO] Obtaining configuration...'
+					'[WARNING] "Title" parameter not provided. Using default.'
+			   		'[INFO] Name: John'
+					'[INFO] Title: '
+					'[INFO] Obtaining configuration... [DONE]'
+			   		'[INFO] Exit application' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -599,9 +645,12 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationLoadingSettingsFi
 
 			self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
-			logger recordings with:
-				#( '[INFO] Obtaining configuration...' '[INFO] Name: Jones' '[INFO] Title: Mr.'
-				   '[INFO] Obtaining configuration... [DONE]' )
+			logger recordings
+				with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+					   		'[INFO] Obtaining configuration...'
+							'[INFO] Name: Jones'
+							'[INFO] Title: Mr.'
+					   		'[INFO] Obtaining configuration... [DONE]' )
 				do: [ :recording :expectedOutput | 
 				self assert: ( recording printString endsWith: expectedOutput ) ]
 			]
@@ -636,9 +685,12 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationLoadingSeveralSet
 
 				self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
-				logger recordings with:
-					#( '[INFO] Obtaining configuration...' '[INFO] Name: Jones' '[INFO] Title: Mr.'
-					   '[INFO] Obtaining configuration... [DONE]' )
+				logger recordings
+					with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+						   		'[INFO] Obtaining configuration...'
+								'[INFO] Name: Jones'
+								'[INFO] Title: Mr.'
+						   		'[INFO] Obtaining configuration... [DONE]' )
 					do: [ :recording :expectedOutput | 
 					self assert: ( recording printString endsWith: expectedOutput ) ]
 				]
@@ -661,10 +713,10 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationMissingMandatoryP
 	self assert: output isEmpty.
 
 	logger recordings
-		with:
-			#( '[INFO] Obtaining configuration...' 
-				'[ERROR] "Name" parameter not provided. You must provide one.'
-			   '[ERROR] Obtaining configuration... [FAILED]' )
+		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+			   		'[INFO] Obtaining configuration...'
+					'[ERROR] "Name" parameter not provided. You must provide one.'
+			   		'[ERROR] Obtaining configuration... [FAILED]' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -685,10 +737,12 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationMissingMandatoryP
 		withMessageText: '"Name" parameter not present.'.
 
 	logger recordings
-		with:
-			#( '[INFO] Obtaining configuration...' '[ERROR] "Name" parameter not provided. You must provide one.'
-			   '[ERROR] Exit application' '[INFO] Obtaining configuration... [DONE]'
-			   '[ERROR] "Name" parameter not provided. You must provide one.' )
+		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+			   		'[INFO] Obtaining configuration...'
+					'[ERROR] "Name" parameter not provided. You must provide one.'
+			   		'[ERROR] Exit application'
+					'[INFO] Obtaining configuration... [DONE]'
+			  		'[ERROR] "Name" parameter not provided. You must provide one.' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -703,17 +757,18 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationWithAllParameters
 				          'launchpad'.
 				          'start'.
 				          LaunchpadGreeterApplication commandName.
-				          '--title=Mr.' . '--name=Jones'  }
+				          '--title=Mr.'.
+				          '--name=Jones' }
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
 	logger recordings
-		with:
-			#( '[INFO] Obtaining configuration...' 
-			   '[INFO] Name: Jones' 
-				'[INFO] Title: Mr.' 
-				'[INFO] Obtaining configuration... [DONE]' )
+		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+			   		'[INFO] Obtaining configuration...'
+					'[INFO] Name: Jones'
+					'[INFO] Title: Mr.'
+			   		'[INFO] Obtaining configuration... [DONE]' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]
@@ -743,9 +798,12 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationWithMixedConfigur
 
 				self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
-				logger recordings with:
-					#( '[INFO] Obtaining configuration...' '[INFO] Name: Jones' '[INFO] Title: Mr.'
-					   '[INFO] Obtaining configuration... [DONE]' )
+				logger recordings
+					with: #( '[INFO] greeter [v1.0.0] - A greetings application'
+						   		'[INFO] Obtaining configuration...'
+								'[INFO] Name: Jones'
+								'[INFO] Title: Mr.'
+						   		'[INFO] Obtaining configuration... [DONE]' )
 					do: [ :recording :expectedOutput | 
 					self assert: ( recording printString endsWith: expectedOutput ) ]
 				]
@@ -797,9 +855,11 @@ LaunchpadRootCommandTest >> testHandlingStopBrokenApplicationWhileRunning [
 	LaunchpadApplication currentlyRunning stop.
 	semaphore signal.
 
-	self assert: logger recordings size equals: 2.
+	self assert: logger recordings size equals: 3.
 	logger recordings
-		with: #( '[INFO] Obtaining configuration...' '[INFO] Obtaining configuration... [DONE]' )
+		with: #( '[INFO] broken [v0.0.1] - A broken application'
+			   		'[INFO] Obtaining configuration...'
+					'[INFO] Obtaining configuration... [DONE]' )
 		do: [ :recording :expectedOutput | 
 		self assert: ( recording printString endsWith: expectedOutput ) ]
 ]

@@ -56,7 +56,7 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 
 	spec
-		package: 'Launchpad-Logging';
+		package: 'Launchpad-Logging' with: [ spec requires: 'NeoJSON-Core' ];
 		group: 'Deployment' with: 'Launchpad-Logging'.
 
 	spec

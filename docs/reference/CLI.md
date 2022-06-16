@@ -180,7 +180,10 @@ $ launchpad explain bad
 The `start` sub-command will start the selected application.
 
 ```bash
-launchpad start [--help|-h] [--debug-mode] [--settings-file=<filename>] <app> [<parameters>]
+launchpad start [--help|-h] [--debug-mode] [--settings-file=<filename>]
+                [--enable-tcp-command-server=<listeningPort>]
+                [--enable-structured-logging]
+                <app> [<parameters>]
 ```
 
 This sub-command requires a valid `<app>` handle to be provided, so it will know
@@ -269,3 +272,7 @@ $ launchpad start greeter
 
   For details over the available configuration formats take a look at the
   configuration providers reference.
+- `--enable-tcp-command-server=<listeningPort>` Enable a TCP command server. This
+  can be used to send commands controlling the application using a TCP port.
+- `--enable-structured-logging` Enable structured logging. When enabled the log
+  will be emitted in JSON format.
