@@ -28,5 +28,17 @@ COPY --from=loader /opt/pharo/Pharo*.sources ./
 # Your own directives
 
 CMD [ "launchpad-start", "app-name" , "--parameter=value" ]
+```
 
+## Environment variables
+
+- `LAUNCHPAD__COMMAND_SERVER_PORT` defines in which port is listening the TCP
+  command server. Defaults to 22222.
+
+## Structured logging
+
+To enable the structured logging support just change the `CMD` to
+
+```docker
+CMD [ "launchpad-start", "--enable-structured-logging", "app-name" ]
 ```
