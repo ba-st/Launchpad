@@ -98,6 +98,33 @@ LaunchpadLogRecordTest >> testEmitInfoDuringWhenActionFails [
 ]
 
 { #category : #tests }
+LaunchpadLogRecordTest >> testEmitStructuredDebuggingInfo [
+
+	logger runDuring: [ 
+		LaunchpadLogRecord
+			emitStructuredDebuggingInfo: 'Ouch!'
+			with: [ :data | data at: #errorCode put: 1234 ]
+		].
+
+	self
+		assert: logger recordings size equals: 1;
+		assert: ( logger recordings first printString endsWith: '[DEBUG] Ouch! {"errorCode":1234}' )
+]
+
+{ #category : #tests }
+LaunchpadLogRecordTest >> testEmitStructuredTraceInfo [
+
+	logger runDuring: [ 
+		LaunchpadLogRecord
+			emitStructuredTraceInfo: 'Ouch!'
+			with: [ :data | data at: #errorCode put: 1234 ] ].
+
+	self
+		assert: logger recordings size equals: 1;
+		assert: ( logger recordings first printString endsWith: '[TRACE] Ouch! {"errorCode":1234}' )
+]
+
+{ #category : #tests }
 LaunchpadLogRecordTest >> testEmitTrace [
 
 	logger runDuring: [ LaunchpadLogRecord emitTraceInfo: 'Ouch!' ].
@@ -116,4 +143,30 @@ LaunchpadLogRecordTest >> testEmitWarning [
 		assert: logger recordings size equals: 1;
 		assert:
 			( logger recordings first printString endsWith: '[WARNING] Missing value, using X as default' )
+]
+
+{ #category : #tests }
+LaunchpadLogRecordTest >> testPrintOneLineJsonOn [
+
+	"Tests structured JSON formatting for log records.
+	The expected output is something like:
+  	{'time':'2022-06-16T11:01:54.154679-03:00','level':'INFO','message':'Enabling free disk space monitoring','process':'Morphic UI Process','limit':'50MB','notify':true}	"
+
+	| record logLine |
+
+	record := LaunchpadLogRecord
+		          withMessage: 'Enabling free disk space monitoring'
+		          andStructuredDataBy: [ :data | 
+			          data
+				          at: #limit put: '50MB';
+				          at: #notify put: true
+			          ].
+
+	logLine := String streamContents: [ :s | record printOneLineJsonOn: s ].
+
+	self
+		assert: ( logLine beginsWith: '{"time":"' );
+		assert: ( logLine includesSubstring:
+					  '","level":"INFO","message":"Enabling free disk space monitoring","process":"' );
+		assert: ( logLine endsWith: '","limit":"50MB","notify":true}' )
 ]

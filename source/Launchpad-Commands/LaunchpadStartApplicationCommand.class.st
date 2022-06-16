@@ -26,6 +26,20 @@ Execute launchpad explain <app> to get a list of valid configuration parameters.
 ]
 
 { #category : #configuring }
+LaunchpadStartApplicationCommand >> enableStructuredLogging [
+
+	[ 
+	StandardStreamStructuredLogger onStandardOutput startFor:
+		( LaunchpadLogRecord where: [ :record | record isInformational ] )
+	] ensure: [ StandardStreamLogger onStandardOutput stop ].
+
+	[ 
+	StandardStreamStructuredLogger onStandardError startFor:
+		( LaunchpadLogRecord where: [ :record | record isInformational not ] )
+	] ensure: [ StandardStreamLogger onStandardError stop ]
+]
+
+{ #category : #configuring }
 LaunchpadStartApplicationCommand >> enableTCPCommandServerListeningOn: listeningPort [
 
 	LaunchpadLogRecord emitInfo: ( 'Receiving commands over TCP/<1p>' expandMacrosWith: listeningPort ).
@@ -57,7 +71,8 @@ LaunchpadStartApplicationCommand >> initialize [
 		           with: ( LaunchpadHelpOption for: self )
 		           with: ( LaunchpadDebugModeOption for: self )
 		           with: ( LaunchpadSettingsFileOption for: self )
-		           with: ( LaunchpadTCPCommandServerOption for: self ).
+		           with: ( LaunchpadTCPCommandServerOption for: self )
+		           with: ( LaunchpadStructuredLoggingOption for: self ).
 	baseConfigurationProvider := NullConfigurationProvider new.
 	applicationMode := ReleasedApplicationMode new.
 	commandServer := NullCommandServer new

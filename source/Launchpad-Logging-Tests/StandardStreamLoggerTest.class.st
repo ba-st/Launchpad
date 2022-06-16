@@ -12,7 +12,7 @@ StandardStreamLoggerTest >> testStandardError [
 
 	| record |
 
-	record := LaunchpadLogRecord withMessage: 'Test error'.
+	record := LaunchpadLogRecord withMessage: 'Test error' andStructuredDataBy: [  ].
 
 	StandardStreamLogger onStandardError nextPut: record
 ]
@@ -29,7 +29,7 @@ StandardStreamLoggerTest >> testStandardOutput [
 
 	| record |
 
-	record := LaunchpadLogRecord withMessage: 'Test'.
+	record := LaunchpadLogRecord withMessage: 'Test' andStructuredDataBy: [].
 
 	StandardStreamLogger onStandardOutput nextPut: record
 ]
