@@ -21,6 +21,8 @@ LaunchpadCommandLineHandler >> activate [
 
 	| context |
 
+	Processor activeProcess name: 'Launchpad CLI'.
+
 	StandardStreamLogger onStandardOutput startFor:
 		( LaunchpadLogRecord where: [ :record | record isInformational ] ).
 	StandardStreamLogger onStandardError startFor:
