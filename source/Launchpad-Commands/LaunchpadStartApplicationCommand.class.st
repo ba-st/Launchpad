@@ -42,7 +42,6 @@ LaunchpadStartApplicationCommand >> enableStructuredLogging [
 { #category : #configuring }
 LaunchpadStartApplicationCommand >> enableTCPCommandServerListeningOn: listeningPort [
 
-	LaunchpadLogRecord emitInfo: ( 'Receiving commands over TCP/<1p>' expandMacrosWith: listeningPort ).
 	commandServer := TCPCommandServer listeningOn: listeningPort.
 	commandServer registerCommandNamed: 'SHUTDOWN' executing: [ 
 		[ 
