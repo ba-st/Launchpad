@@ -58,6 +58,13 @@ docker build -t launchpad-examples:sut -f .docker/Dockerfile .
 
 print_info "Running basic test"
 executeWithArguments docker run launchpad-examples:sut
+assertOutputIncludesMessage '[INFO]' out
+assertOutputIncludesMessage "Hi Mr. DJ!" out
+print_success "OK"
+
+print_info "Running basic test with structured logging"
+executeWithArguments docker run -e LAUNCHPAD__LOG_FORMAT='json' launchpad-examples:sut
+assertOutputIncludesMessage '"level":"INFO"' out
 assertOutputIncludesMessage "Hi Mr. DJ!" out
 print_success "OK"
 

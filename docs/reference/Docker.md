@@ -34,11 +34,4 @@ CMD [ "launchpad-start", "app-name" , "--parameter=value" ]
 
 - `LAUNCHPAD__COMMAND_SERVER_PORT` defines in which port is listening the TCP
   command server. Defaults to 22222.
-
-## Structured logging
-
-To enable the structured logging support just change the `CMD` to
-
-```docker
-CMD [ "launchpad-start", "--enable-structured-logging", "app-name" ]
-```
+- `LAUNCHPAD__LOG_FORMAT` can be set to `json` to enable structured logging

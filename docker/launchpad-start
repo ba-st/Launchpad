@@ -19,6 +19,12 @@ termination_handler() {
 }
 
 trap 'termination_handler' SIGTERM
-launchpad start --enable-tcp-command-server=$LAUNCHPAD__COMMAND_SERVER_PORT "$@" &
+
+STRUCTURED_LOGGING=
+if [[ "$LAUNCHPAD__LOG_FORMAT" == "json" ]]; then
+    STRUCTURED_LOGGING=--enable-structured-logging
+fi
+
+launchpad start $STRUCTURED_LOGGING --enable-tcp-command-server=$LAUNCHPAD__COMMAND_SERVER_PORT "$@" &
 pid="$!"
 wait "$pid"
