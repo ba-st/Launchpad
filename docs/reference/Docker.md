@@ -1,7 +1,7 @@
 # Docker support
 
 Launchpad provides a Docker image that can be used as base for containerized
-applications. It's built on top of [pharo:v10.0.0](https://github.com/ba-st/docker-pharo-runtime),
+applications. It's built on top of [pharo:v10.0.1](https://github.com/ba-st/docker-pharo-runtime),
 adding some useful scripts for Launchpad-based applications:
 
 - `launchpad` starts the CLI
@@ -16,7 +16,7 @@ adding some useful scripts for Launchpad-based applications:
 In your Dockerfile put something like:
 
 ```docker
-FROM ghcr.io/ba-st/pharo-loader:v10.0.0 AS loader
+FROM ghcr.io/ba-st/pharo-loader:v10.0.1 AS loader
 # Load your own application
 RUN pharo metacello install github://owner/repo:branch BaselineOfProject
 
