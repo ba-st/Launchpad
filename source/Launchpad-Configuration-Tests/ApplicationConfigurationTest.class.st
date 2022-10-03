@@ -3,7 +3,7 @@ An ApplicationConfigurationTest is a test class for testing the behavior of Appl
 "
 Class {
 	#name : #ApplicationConfigurationTest,
-	#superclass : #TestCase,
+	#superclass : #LaunchpadTest,
 	#category : #'Launchpad-Configuration-Tests'
 }
 
@@ -239,14 +239,16 @@ ApplicationConfigurationTest >> testLoadingJsonSettings [
 { #category : #tests }
 ApplicationConfigurationTest >> testLogging [
 
-	| configuration parameters provider logger |
+	| configuration parameters provider |
 
-	parameters := Array with: ( MandatoryConfigurationParameter named: 'Port' describedBy: 'Port' )
+	parameters := Array
+		              with: ( MandatoryConfigurationParameter named: 'Port' describedBy: 'Port' )
 		              with:
 		              ( MandatoryConfigurationParameter named: 'Token' describedBy: 'Auth Token' )
 			              asSensitive
 		              with:
-		              ( OptionalConfigurationParameter named: 'Scheme'
+		              ( OptionalConfigurationParameter
+			                named: 'Scheme'
 			                describedBy: 'Scheme'
 			                defaultingTo: 'https' ).
 
@@ -254,30 +256,31 @@ ApplicationConfigurationTest >> testLogging [
 
 	configuration := ApplicationConfiguration forAll: parameters providedBy: provider.
 
-	logger := MemoryLogger new runDuring: [ 
-		          parameters do: [ :parameter | parameter logValueIn: configuration ] ].
-
 	self
-		assert: logger recordings size equals: 3;
-		assert: ( logger recordings first printString endsWith: '[INFO] Port: 8086' );
-		assert: ( logger recordings second printString endsWith: '[INFO] Token: **********' );
-		assert: ( logger recordings third printString endsWith: '[INFO] Scheme: https' )
+		runMemoryLoggerDuring: [ parameters do: [ :parameter | parameter logValueIn: configuration ] ]
+		assertingLogRecordsMatch:
+		#( '[INFO] Port: 8086'
+			'[INFO] Token: **********'
+			'[INFO] Scheme: https' )
 ]
 
 { #category : #tests }
 ApplicationConfigurationTest >> testLoggingWhenUsingConverters [
 
-	| configuration parameters provider logger |
+	| configuration parameters provider |
 
 	parameters := Array
 		              with:
-		              ( MandatoryConfigurationParameter named: 'Port'
+		              ( MandatoryConfigurationParameter
+			                named: 'Port'
 			                describedBy: 'Port'
 			                convertingWith: #asNumber )
-		              with: ( MandatoryConfigurationParameter named: 'Token'
+		              with: ( MandatoryConfigurationParameter
+				                named: 'Token'
 				                describedBy: 'Auth Token'
 				                convertingWith: #asByteArray ) asSensitive
-		              with: ( OptionalConfigurationParameter named: 'Target port'
+		              with: ( OptionalConfigurationParameter
+				                named: 'Target port'
 				                describedBy: 'Target port'
 				                defaultingTo: 9999
 				                convertingWith: #asNumber ).
@@ -286,14 +289,12 @@ ApplicationConfigurationTest >> testLoggingWhenUsingConverters [
 
 	configuration := ApplicationConfiguration forAll: parameters providedBy: provider.
 
-	logger := MemoryLogger new runDuring: [ 
-		          parameters do: [ :parameter | parameter logValueIn: configuration ] ].
-
 	self
-		assert: logger recordings size equals: 3;
-		assert: ( logger recordings first printString endsWith: '[INFO] Port: 8086' );
-		assert: ( logger recordings second printString endsWith: '[INFO] Token: **********' );
-		assert: ( logger recordings third printString endsWith: '[INFO] Target port: 9999' )
+		runMemoryLoggerDuring: [ parameters do: [ :parameter | parameter logValueIn: configuration ] ]
+		assertingLogRecordsMatch:
+		#( '[INFO] Port: 8086'
+			'[INFO] Token: **********'
+			'[INFO] Target port: 9999' )
 ]
 
 { #category : #tests }
@@ -491,17 +492,15 @@ ApplicationConfigurationTest >> testValueForParameterInSection [
 { #category : #tests }
 ApplicationConfigurationTest >> testWarningOnOptionalParametersWhenUsingTheDefault [
 
-	| configuration parameter logger |
+	| parameter |
 
-	parameter := OptionalConfigurationParameter named: 'Scheme'
+	parameter := OptionalConfigurationParameter
+		             named: 'Scheme'
 		             describedBy: 'Scheme'
 		             defaultingTo: 'https'.
 
-	logger := MemoryLogger new runDuring: [ 
-		          configuration := ApplicationConfiguration forAll: { parameter }
-			                           providedBy: NullConfigurationProvider new
-		          ].
-
-	self withTheOnlyOneIn: logger recordings do: [ :record | 
-		self assert: ( record printString endsWith: '"Scheme" parameter not provided. Using default.' ) ]
+	self
+		runMemoryLoggerDuring: [ 
+		ApplicationConfiguration forAll: { parameter } providedBy: NullConfigurationProvider new ]
+		assertingLogRecordsMatch: #( '"Scheme" parameter not provided. Using default.' )
 ]

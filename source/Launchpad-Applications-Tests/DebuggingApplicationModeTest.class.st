@@ -3,7 +3,7 @@ A DebuggingApplicationModeTest is a test class for testing the behavior of Debug
 "
 Class {
 	#name : #DebuggingApplicationModeTest,
-	#superclass : #TestCase,
+	#superclass : #LaunchpadTest,
 	#category : #'Launchpad-Applications-Tests'
 }
 
@@ -11,28 +11,16 @@ Class {
 DebuggingApplicationModeTest >> testExitFailure [
 
 	self
-		shouldnt: [ 
-			| logger |
-
-			logger := MemoryLogger new runDuring: [ DebuggingApplicationMode new exitFailure ].
-			self withTheOnlyOneIn: logger recordings
-				do: [ :recording | self assert: ( recording printString endsWith: '[ERROR] Exit application' ) ]
-			]
-		raise: Exit
+		runMemoryLoggerDuring: [ DebuggingApplicationMode new exitFailure ]
+		assertingLogRecordsMatch: #( '[ERROR] Exit application' )
 ]
 
 { #category : #tests }
 DebuggingApplicationModeTest >> testExitSuccess [
 
 	self
-		shouldnt: [ 
-			| logger |
-
-			logger := MemoryLogger new runDuring: [ DebuggingApplicationMode new exitSuccess ].
-			self withTheOnlyOneIn: logger recordings
-				do: [ :recording | self assert: ( recording printString endsWith: '[INFO] Exit application' ) ]
-			]
-		raise: Exit
+		runMemoryLoggerDuring: [ DebuggingApplicationMode new exitSuccess ]
+		assertingLogRecordsMatch: #( '[INFO] Exit application' )
 ]
 
 { #category : #test }
@@ -46,6 +34,7 @@ DebuggingApplicationModeTest >> testValueOnErrorDo [
 
 	DebuggingApplicationMode new value: [  ] onErrorDo: [ self fail ].
 
-	self should: [ DebuggingApplicationMode new value: [ 1 / 0 ] onErrorDo: [ self fail ] ]
+	self
+		should: [ DebuggingApplicationMode new value: [ 1 / 0 ] onErrorDo: [ self fail ] ]
 		raise: ZeroDivide
 ]

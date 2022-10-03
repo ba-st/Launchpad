@@ -3,10 +3,9 @@ A LaunchpadMainCommandTest is a test class for testing the behavior of Launchpad
 "
 Class {
 	#name : #LaunchpadRootCommandTest,
-	#superclass : #TestCase,
+	#superclass : #LaunchpadTest,
 	#instVars : [
-		'command',
-		'logger'
+		'command'
 	],
 	#category : #'Launchpad-Commands-Tests'
 }
@@ -107,7 +106,7 @@ LaunchpadRootCommandTest >> handle: arguments [
 
 		  self assertCommandCanHandleNextArgumentIn: context.
 
-		  logger runDuring: [ self use: 'v4.0.0' asVersionDuring: [ command evaluateWithin: context ] ]
+		  self runMemoryLoggerDuring: [ self use: 'v4.0.0' asVersionDuring: [ command evaluateWithin: context ] ]
 		  ]
 ]
 
@@ -122,16 +121,10 @@ LaunchpadRootCommandTest >> handle: arguments onExitDo: aBlock [
 		  self assertCommandCanHandleNextArgumentIn: context.
 
 		  self should: [ 
-			  logger runDuring: [ self use: 'v4.0.0' asVersionDuring: [ command evaluateWithin: context ] ] ]
+			  self runMemoryLoggerDuring: [ self use: 'v4.0.0' asVersionDuring: [ command evaluateWithin: context ] ] ]
 			  raise: Exit
 			  withExceptionDo: aBlock
 		  ]
-]
-
-{ #category : #private }
-LaunchpadRootCommandTest >> performTest [
-
-	self shouldnt: [ super performTest ] raise: Exit
 ]
 
 { #category : #private }
@@ -141,12 +134,11 @@ LaunchpadRootCommandTest >> set: environmentVariableName to: value during: aBloc
 	aBlock ensure: [ OSPlatform current environment removeKey: environmentVariableName ]
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 LaunchpadRootCommandTest >> setUp [
 
 	super setUp.
-	command := LaunchpadRootCommand new.
-	logger := MemoryLogger new
+	command := LaunchpadRootCommand new
 ]
 
 { #category : #tests }
@@ -190,7 +182,7 @@ LaunchpadRootCommandTest >> testHandlingExplainBrokenApplication [
 
 	self
 		assert: output equals: self expectedExplainBrokenHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -204,7 +196,7 @@ LaunchpadRootCommandTest >> testHandlingExplainGreeterApplication [
 
 	self
 		assert: output equals: self expectedExplainGreeterHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -217,7 +209,7 @@ LaunchpadRootCommandTest >> testHandlingExplainSubcommandHelp [
 
 	self
 		assert: output equals: self expectedExplainHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -230,7 +222,7 @@ LaunchpadRootCommandTest >> testHandlingExplainSubcommandShortHelp [
 
 	self
 		assert: output equals: self expectedExplainHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling main command' }
@@ -242,7 +234,7 @@ LaunchpadRootCommandTest >> testHandlingHelpOption [
 
 	self
 		assert: output equals: self expectedHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -255,8 +247,7 @@ LaunchpadRootCommandTest >> testHandlingInvalidExplainSubcommandApp [
 
 	self
 		assert: output isEmpty;
-		assert:
-			( logger recordings first printString endsWith: '[ERROR] explain unknown application: wrong' )
+		assertLogRecordsMatch: #( '[ERROR] explain unknown application: wrong' )
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -269,8 +260,7 @@ LaunchpadRootCommandTest >> testHandlingInvalidExplainSubcommandOption [
 
 	self
 		assert: output isEmpty;
-		assert:
-			( logger recordings first printString endsWith: '[ERROR] explain unknown option: --wrong' )
+		assertLogRecordsMatch: #( '[ERROR] explain unknown option: --wrong' )
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -283,8 +273,7 @@ LaunchpadRootCommandTest >> testHandlingInvalidListSubcommandOption [
 
 	self
 		assert: output isEmpty;
-		assert:
-			( logger recordings first printString endsWith: '[ERROR] list unknown option: --wrong' )
+		assertLogRecordsMatch: #( '[ERROR] list unknown option: --wrong' )
 ]
 
 { #category : #'tests - handling main command' }
@@ -296,9 +285,7 @@ LaunchpadRootCommandTest >> testHandlingInvalidOption [
 
 	self
 		assert: output isEmpty;
-		assert: logger recordings size equals: 1;
-		assert:
-			( logger recordings first printString endsWith: '[ERROR] launchpad unknown option: --wrong' )
+		assertLogRecordsMatch: #( '[ERROR] launchpad unknown option: --wrong' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -306,13 +293,13 @@ LaunchpadRootCommandTest >> testHandlingInvalidStartSubcommandApp [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'start' 'wrong' )
+	output := self
+		          handle: #( 'launchpad' 'start' 'wrong' )
 		          onExitDo: [ :exit | self deny: exit isSuccess ].
 
 	self
 		assert: output isEmpty;
-		assert:
-			( logger recordings first printString endsWith: '[ERROR] start unknown application: wrong' )
+		assertLogRecordsMatch: #( '[ERROR] start unknown application: wrong' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -320,12 +307,13 @@ LaunchpadRootCommandTest >> testHandlingInvalidStartSubcommandOption [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'start' '--wrong' )
+	output := self
+		          handle: #( 'launchpad' 'start' '--wrong' )
 		          onExitDo: [ :exit | self deny: exit isSuccess ].
 
 	self
 		assert: output isEmpty;
-		assert: ( logger recordings first printString endsWith: '[ERROR] start unknown option: --wrong' )
+		assertLogRecordsMatch: #( '[ERROR] start unknown option: --wrong' )
 ]
 
 { #category : #tests }
@@ -337,9 +325,7 @@ LaunchpadRootCommandTest >> testHandlingInvalidSubcommand [
 
 	self
 		assert: output isEmpty;
-		assert: logger recordings size equals: 1;
-		assert:
-			( logger recordings first printString endsWith: '[ERROR] launchpad unknown command: wrong' )
+		assertLogRecordsMatch: #( '[ERROR] launchpad unknown command: wrong' )
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -351,12 +337,12 @@ LaunchpadRootCommandTest >> testHandlingListSubcommand [
 
 	self
 		assert: output equals: ( String streamContents: [ :stream | 
-					  LaunchpadApplication availableApplications do: [ :application | 
-							  stream nextPutAll: application commandName ]
+					  LaunchpadApplication availableApplications
+						  do: [ :application | stream nextPutAll: application commandName ]
 						  separatedBy: [ stream space ].
 					  stream nextPutAll: '<n>' expandMacros
 					  ] );
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -364,12 +350,13 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandHelp [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'explain' '--help' )
+	output := self
+		          handle: #( 'launchpad' 'explain' '--help' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: self expectedExplainHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -377,12 +364,13 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandShortHelp [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'list' '-h' )
+	output := self
+		          handle: #( 'launchpad' 'list' '-h' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: self expectedListHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -390,12 +378,13 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandShortVerboseMode [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'list' '-v' )
+	output := self
+		          handle: #( 'launchpad' 'list' '-v' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: self expectedVerboseListOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -403,12 +392,13 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandVerboseMode [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'list' '--verbose' )
+	output := self
+		          handle: #( 'launchpad' 'list' '--verbose' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: self expectedVerboseListOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #tests }
@@ -420,8 +410,7 @@ LaunchpadRootCommandTest >> testHandlingMissingSubcommandAndOption [
 
 	self
 		assert: output isEmpty;
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[ERROR] Missing command or option.' )
+		assertLogRecordsMatch: #( '[ERROR] Missing command or option.' )
 ]
 
 { #category : #'tests - handling main command' }
@@ -433,7 +422,7 @@ LaunchpadRootCommandTest >> testHandlingShortHelpOption [
 
 	self
 		assert: output equals: self expectedHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -447,12 +436,10 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplication [
 
 	self assert: output isEmpty.
 
-	logger recordings
-		with: #( '[INFO] broken [v0.0.1] - A broken application'
-			   		'[INFO] Obtaining configuration...'
-					'[INFO] Obtaining configuration... [DONE]' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch:
+		#( '[INFO] broken [v0.0.1] - A broken application'
+			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration... [DONE]' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -464,13 +451,11 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationInDebugMode [
 
 	self assert: output isEmpty.
 
-	logger recordings
-		with: #( '[INFO] broken [v0.0.1] - A broken application'
-			   		'[INFO] Obtaining configuration...'
-					'[INFO] Obtaining configuration... [DONE]'
-			   		'[ERROR] Exit application' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch:
+		#( '[INFO] broken [v0.0.1] - A broken application'
+			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration... [DONE]'
+			'[ERROR] Exit application' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -484,14 +469,11 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationRaisingUnexpectedE
 
 	self assert: output isEmpty.
 
-	self assert: logger recordings size equals: 4.
-	logger recordings
-		with: #( '[INFO] broken [v0.0.1] - A broken application'
-			   		'[INFO] Obtaining configuration...'
-					'[INFO] Obtaining configuration... [DONE]'
-			   		'[ERROR] Unexpected startup error: "Doh!"' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch:
+		#( '[INFO] broken [v0.0.1] - A broken application'
+			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration... [DONE]'
+			'[ERROR] Unexpected startup error: "Doh!"' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -503,13 +485,10 @@ LaunchpadRootCommandTest >> testHandlingStartBrokenApplicationRaisingUnexpectedE
 		withMessageText: 'Doh!'.
 
 
-	self assert: logger recordings size equals: 3.
-	logger recordings
-		with: #( '[INFO] broken [v0.0.1] - A broken application'
-			   		'[INFO] Obtaining configuration...'
-					'[INFO] Obtaining configuration... [DONE]' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch:
+		#( '[INFO] broken [v0.0.1] - A broken application'
+			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration... [DONE]' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -527,16 +506,13 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplication [
 
 	self assert: output equals: 'Hi John!<n>' expandMacros.
 
-	logger recordings
-		with:
-			#( '[INFO] greeter [v1.0.0] - A greetings application'
-				'[INFO] Obtaining configuration...' 
-				'[WARNING] "Title" parameter not provided. Using default.'
-			   '[INFO] Name: John' 
-				'[INFO] Title: ' 
-				'[INFO] Obtaining configuration... [DONE]' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #(
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[WARNING] "Title" parameter not provided. Using default.'
+	   '[INFO] Name: John'
+		'[INFO] Title: '
+		'[INFO] Obtaining configuration... [DONE]' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -554,16 +530,14 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingStructure
 
 	self assert: output equals: 'Hi John!<n>' expandMacros.
 
-	logger recordings
-		with: #(	'[INFO] greeter [v1.0.0] - A greetings application'
-					'[INFO] Obtaining configuration...'
-			   		'[WARNING] "Title" parameter not provided. Using default.'
-			   		'[INFO] Name: John'
-					'[INFO] Title: '
-					'[INFO] Obtaining configuration... [DONE]'
-			   		'[INFO] Exit application' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #( 
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[WARNING] "Title" parameter not provided. Using default.'
+		'[INFO] Name: John'
+		'[INFO] Title: '
+		'[INFO] Obtaining configuration... [DONE]'
+		'[INFO] Exit application' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -581,17 +555,15 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingTCPComman
 
 	self assert: output equals: 'Hi John!<n>' expandMacros.
 
-	logger recordings
-		with: #( '[INFO] Receiving commands over TCP/0'
-					'[INFO] greeter [v1.0.0] - A greetings application'
-					'[INFO] Obtaining configuration...'
-			   		'[WARNING] "Title" parameter not provided. Using default.'
-			   		'[INFO] Name: John'
-					'[INFO] Title: '
-					'[INFO] Obtaining configuration... [DONE]'
-			   		'[INFO] Exit application' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #( 
+		'[INFO] Receiving commands over TCP/0'
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[WARNING] "Title" parameter not provided. Using default.'
+		'[INFO] Name: John'
+		'[INFO] Title: '
+		'[INFO] Obtaining configuration... [DONE]'
+		'[INFO] Exit application' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -608,16 +580,14 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationInDebugMode [
 
 	self assert: output equals: 'Hi John!<n>' expandMacros.
 
-	logger recordings
-		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-			   		'[INFO] Obtaining configuration...'
-					'[WARNING] "Title" parameter not provided. Using default.'
-			   		'[INFO] Name: John'
-					'[INFO] Title: '
-					'[INFO] Obtaining configuration... [DONE]'
-			   		'[INFO] Exit application' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #( 
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[WARNING] "Title" parameter not provided. Using default.'
+		'[INFO] Name: John'
+		'[INFO] Title: '
+		'[INFO] Obtaining configuration... [DONE]'
+		'[INFO] Exit application' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -626,6 +596,7 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationLoadingSettingsFi
 	| fileName |
 
 	fileName := '<1s>-settings.json' expandMacrosWith: testSelector asString.
+
 	self
 		createFileNamed: fileName
 		containing: ( NeoJSONWriter toStringPretty: ( Dictionary new
@@ -645,14 +616,11 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationLoadingSettingsFi
 
 			self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
-			logger recordings
-				with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-					   		'[INFO] Obtaining configuration...'
-							'[INFO] Name: Jones'
-							'[INFO] Title: Mr.'
-					   		'[INFO] Obtaining configuration... [DONE]' )
-				do: [ :recording :expectedOutput | 
-				self assert: ( recording printString endsWith: expectedOutput ) ]
+			self assertLogRecordsMatch: #( 
+				'[INFO] greeter [v1.0.0] - A greetings application'
+				'[INFO] Obtaining configuration...'
+				'[INFO] Name: Jones' '[INFO] Title: Mr.'
+				'[INFO] Obtaining configuration... [DONE]' )
 			]
 ]
 
@@ -662,6 +630,7 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationLoadingSeveralSet
 	| jsonFileName |
 
 	jsonFileName := '<1s>-settings.json' expandMacrosWith: testSelector asString.
+
 	self
 		createFileNamed: jsonFileName
 		containing: ( NeoJSONWriter toStringPretty: ( Dictionary new
@@ -684,15 +653,11 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationLoadingSeveralSet
 					          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 				self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
-
-				logger recordings
-					with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-						   		'[INFO] Obtaining configuration...'
-								'[INFO] Name: Jones'
-								'[INFO] Title: Mr.'
-						   		'[INFO] Obtaining configuration... [DONE]' )
-					do: [ :recording :expectedOutput | 
-					self assert: ( recording printString endsWith: expectedOutput ) ]
+				self assertLogRecordsMatch: #(
+					'[INFO] greeter [v1.0.0] - A greetings application'
+					'[INFO] Obtaining configuration...'
+					'[INFO] Name: Jones' '[INFO] Title: Mr.'
+					'[INFO] Obtaining configuration... [DONE]' )
 				]
 			]
 ]
@@ -712,13 +677,11 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationMissingMandatoryP
 
 	self assert: output isEmpty.
 
-	logger recordings
-		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-			   		'[INFO] Obtaining configuration...'
-					'[ERROR] "Name" parameter not provided. You must provide one.'
-			   		'[ERROR] Obtaining configuration... [FAILED]' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #(
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[ERROR] "Name" parameter not provided. You must provide one.'
+		'[ERROR] Obtaining configuration... [FAILED]' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -736,15 +699,13 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationMissingMandatoryP
 		raise: RequiredConfigurationNotFound
 		withMessageText: '"Name" parameter not present.'.
 
-	logger recordings
-		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-			   		'[INFO] Obtaining configuration...'
-					'[ERROR] "Name" parameter not provided. You must provide one.'
-			   		'[ERROR] Exit application'
-					'[INFO] Obtaining configuration... [DONE]'
-			  		'[ERROR] "Name" parameter not provided. You must provide one.' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #( 
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[ERROR] "Name" parameter not provided. You must provide one.'
+		'[ERROR] Exit application'
+		'[INFO] Obtaining configuration... [DONE]'
+		'[ERROR] "Name" parameter not provided. You must provide one.' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -763,14 +724,12 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationWithAllParameters
 
 	self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
-	logger recordings
-		with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-			   		'[INFO] Obtaining configuration...'
-					'[INFO] Name: Jones'
-					'[INFO] Title: Mr.'
-			   		'[INFO] Obtaining configuration... [DONE]' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch: #(
+		'[INFO] greeter [v1.0.0] - A greetings application'
+		'[INFO] Obtaining configuration...'
+		'[INFO] Name: Jones'
+		'[INFO] Title: Mr.'
+		'[INFO] Obtaining configuration... [DONE]' )
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -798,14 +757,12 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationWithMixedConfigur
 
 				self assert: output equals: 'Hi Mr. Jones!<n>' expandMacros.
 
-				logger recordings
-					with: #( '[INFO] greeter [v1.0.0] - A greetings application'
-						   		'[INFO] Obtaining configuration...'
-								'[INFO] Name: Jones'
-								'[INFO] Title: Mr.'
-						   		'[INFO] Obtaining configuration... [DONE]' )
-					do: [ :recording :expectedOutput | 
-					self assert: ( recording printString endsWith: expectedOutput ) ]
+				self assertLogRecordsMatch: #(
+					'[INFO] greeter [v1.0.0] - A greetings application'
+					'[INFO] Obtaining configuration...'
+					'[INFO] Name: Jones'
+					'[INFO] Title: Mr.'
+					'[INFO] Obtaining configuration... [DONE]' )
 				]
 			]
 ]
@@ -815,12 +772,13 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandHelp [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'start' '--help' )
+	output := self
+		          handle: #( 'launchpad' 'start' '--help' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: self expectedStartHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -828,12 +786,13 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 
 	| output |
 
-	output := self handle: #( 'launchpad' 'start' '-h' )
+	output := self
+		          handle: #( 'launchpad' 'start' '-h' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: self expectedStartHelpOutput;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -855,13 +814,10 @@ LaunchpadRootCommandTest >> testHandlingStopBrokenApplicationWhileRunning [
 	LaunchpadApplication currentlyRunning stop.
 	semaphore signal.
 
-	self assert: logger recordings size equals: 3.
-	logger recordings
-		with: #( '[INFO] broken [v0.0.1] - A broken application'
-			   		'[INFO] Obtaining configuration...'
-					'[INFO] Obtaining configuration... [DONE]' )
-		do: [ :recording :expectedOutput | 
-		self assert: ( recording printString endsWith: expectedOutput ) ]
+	self assertLogRecordsMatch:
+		#( '[INFO] broken [v0.0.1] - A broken application'
+			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration... [DONE]' )
 ]
 
 { #category : #'tests - handling main command' }
@@ -869,12 +825,13 @@ LaunchpadRootCommandTest >> testHandlingVersionOption [
 
 	| output |
 
-	output := self handle: #( 'launchpad' '--version' )
+	output := self
+		          handle: #( 'launchpad' '--version' )
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
 		assert: output equals: 'Launchpad v4.0.0<n>' expandMacros;
-		assert: logger recordings isEmpty
+		assertThereAreNoLogRecords
 ]
 
 { #category : #tests }

@@ -3,71 +3,54 @@ A LaunchpadLogRecordTest is a test class for testing the behavior of LaunchpadLo
 "
 Class {
 	#name : #LaunchpadLogRecordTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'logger'
-	],
+	#superclass : #LaunchpadTest,
 	#category : #'Launchpad-Logging-Tests'
 }
-
-{ #category : #running }
-LaunchpadLogRecordTest >> setUp [
-
-	super setUp.
-	logger := MemoryLogger new
-]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitCombinedEvents [
 
-	logger runDuring: [ 
-		self
-			should: [ 
-				LaunchpadLogRecord emitInfo: 'Starting app' during: [ 
-					LaunchpadLogRecord emitInfo: 'Setting up data'.
-					LaunchpadLogRecord emitWarning: 'Missing data, using default.'.
-					Error signal
-					]
-				]
-			raise: Error
-		].
-
 	self
-		assert: logger recordings size equals: 4;
-		assert: ( logger recordings first printString endsWith: '[INFO] Starting app...' );
-		assert: ( logger recordings second printString endsWith: '[INFO] Setting up data' );
-		assert: ( logger recordings third printString endsWith: '[WARNING] Missing data, using default.' );
-		assert: ( logger recordings last printString endsWith: '[ERROR] Starting app... [FAILED]' )
+		runMemoryLoggerDuring: [ 
+			self
+				should: [ 
+					LaunchpadLogRecord emitInfo: 'Starting app' during: [ 
+						LaunchpadLogRecord emitInfo: 'Setting up data'.
+						LaunchpadLogRecord emitWarning: 'Missing data, using default.'.
+						Error signal
+						]
+					]
+				raise: Error
+			]
+		assertingLogRecordsMatch:
+			#( '[INFO] Starting app...'
+				'[INFO] Setting up data'
+				'[WARNING] Missing data, using default.'
+			   '[ERROR] Starting app... [FAILED]' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitDebug [
 
-	logger runDuring: [ LaunchpadLogRecord emitDebuggingInfo: 'Ouch!' ].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[DEBUG] Ouch!' )
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitDebuggingInfo: 'Ouch!' ]
+		assertingLogRecordsMatch: #( '[DEBUG] Ouch!' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitError [
 
-	logger runDuring: [ LaunchpadLogRecord emitError: 'Ouch!' ].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[ERROR] Ouch!' )
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitError: 'Ouch!' ]
+		assertingLogRecordsMatch: #( '[ERROR] Ouch!' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitInfo [
 
-	logger runDuring: [ LaunchpadLogRecord emitInfo: 'Starting' ].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[INFO] Starting' )
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitInfo: 'Starting' ]
+		assertingLogRecordsMatch: #( '[INFO] Starting' )
 ]
 
 { #category : #tests }
@@ -76,73 +59,62 @@ LaunchpadLogRecordTest >> testEmitInfoDuring [
 	| wasEvaluated |
 
 	wasEvaluated := false.
-	logger runDuring: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ wasEvaluated := true ] ].
-
 	self
-		assert: wasEvaluated;
-		assert: logger recordings size equals: 2;
-		assert: ( logger recordings first printString endsWith: '[INFO] Starting...' );
-		assert: ( logger recordings last printString endsWith: '[INFO] Starting... [DONE]' )
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ wasEvaluated := true ] ]
+		assertingLogRecordsMatch: #( 
+			'[INFO] Starting...'
+			'[INFO] Starting... [DONE]' ).
+	self assert: wasEvaluated
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitInfoDuringWhenActionFails [
 
-	logger runDuring: [ 
-		self should: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ Error signal ] ] raise: Error ].
-
 	self
-		assert: logger recordings size equals: 2;
-		assert: ( logger recordings first printString endsWith: '[INFO] Starting...' );
-		assert: ( logger recordings last printString endsWith: '[ERROR] Starting... [FAILED]' )
+		runMemoryLoggerDuring: [ 
+		self should: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ Error signal ] ] raise: Error ]
+		assertingLogRecordsMatch: #( 
+			'[INFO] Starting...'
+			'[ERROR] Starting... [FAILED]' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitStructuredDebuggingInfo [
 
-	logger runDuring: [ 
-		LaunchpadLogRecord
-			emitStructuredDebuggingInfo: 'Ouch!'
-			with: [ :data | data at: #errorCode put: 1234 ]
-		].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[DEBUG] Ouch! {"errorCode":1234}' )
+		runMemoryLoggerDuring: [ 
+			LaunchpadLogRecord
+				emitStructuredDebuggingInfo: 'Ouch!'
+				with: [ :data | data at: #errorCode put: 1234 ]
+			]
+		assertingLogRecordsMatch: #( '[DEBUG] Ouch! {"errorCode":1234}' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitStructuredTraceInfo [
 
-	logger runDuring: [ 
-		LaunchpadLogRecord
-			emitStructuredTraceInfo: 'Ouch!'
-			with: [ :data | data at: #errorCode put: 1234 ] ].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[TRACE] Ouch! {"errorCode":1234}' )
+		runMemoryLoggerDuring: [ 
+			LaunchpadLogRecord
+				emitStructuredTraceInfo: 'Ouch!'
+				with: [ :data | data at: #errorCode put: 1234 ] ]
+		assertingLogRecordsMatch: #( '[TRACE] Ouch! {"errorCode":1234}' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitTrace [
 
-	logger runDuring: [ LaunchpadLogRecord emitTraceInfo: 'Ouch!' ].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert: ( logger recordings first printString endsWith: '[TRACE] Ouch!' )
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitTraceInfo: 'Ouch!' ]
+		assertingLogRecordsMatch: #( '[TRACE] Ouch!' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitWarning [
 
-	logger runDuring: [ LaunchpadLogRecord emitWarning: 'Missing value, using X as default' ].
-
 	self
-		assert: logger recordings size equals: 1;
-		assert:
-			( logger recordings first printString endsWith: '[WARNING] Missing value, using X as default' )
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitWarning: 'Missing value, using X as default' ]
+		assertingLogRecordsMatch: #( '[WARNING] Missing value, using X as default' )
 ]
 
 { #category : #tests }

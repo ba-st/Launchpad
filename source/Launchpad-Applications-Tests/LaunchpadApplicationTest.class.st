@@ -7,7 +7,7 @@ Class {
 	#category : #'Launchpad-Applications-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 LaunchpadApplicationTest >> testIsDebugModeEnabled [
 
 	| application |
@@ -19,7 +19,7 @@ LaunchpadApplicationTest >> testIsDebugModeEnabled [
 	self assert: application isDebugModeEnabled
 ]
 
-{ #category : #test }
+{ #category : #tests }
 LaunchpadApplicationTest >> testIsDebugModeNotEnabled [
 
 	| application |
