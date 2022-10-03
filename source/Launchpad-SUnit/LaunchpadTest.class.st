@@ -39,6 +39,14 @@ LaunchpadTest >> runMemoryLoggerDuring: aBlock [
 	memoryLogger runDuring: aBlock
 ]
 
+{ #category : #private }
+LaunchpadTest >> runMemoryLoggerDuring: aBlock assertingLogRecordsMatch: expectedLogEntries [
+
+	self
+		runMemoryLoggerDuring: aBlock;
+		assertLogRecordsMatch: expectedLogEntries
+]
+
 { #category : #running }
 LaunchpadTest >> setUp [
 

@@ -10,47 +10,47 @@ Class {
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitCombinedEvents [
 
-	self runMemoryLoggerDuring: [ 
-		self
-			should: [ 
-				LaunchpadLogRecord emitInfo: 'Starting app' during: [ 
-					LaunchpadLogRecord emitInfo: 'Setting up data'.
-					LaunchpadLogRecord emitWarning: 'Missing data, using default.'.
-					Error signal
+	self
+		runMemoryLoggerDuring: [ 
+			self
+				should: [ 
+					LaunchpadLogRecord emitInfo: 'Starting app' during: [ 
+						LaunchpadLogRecord emitInfo: 'Setting up data'.
+						LaunchpadLogRecord emitWarning: 'Missing data, using default.'.
+						Error signal
+						]
 					]
-				]
-			raise: Error
-		].
-
-	self assertLogRecordsMatch:
-		#( '[INFO] Starting app...'
-			'[INFO] Setting up data'
-			'[WARNING] Missing data, using default.'
-		   '[ERROR] Starting app... [FAILED]' )
+				raise: Error
+			]
+		assertingLogRecordsMatch:
+			#( '[INFO] Starting app...'
+				'[INFO] Setting up data'
+				'[WARNING] Missing data, using default.'
+			   '[ERROR] Starting app... [FAILED]' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitDebug [
 
-	self runMemoryLoggerDuring: [ LaunchpadLogRecord emitDebuggingInfo: 'Ouch!' ].
-
-	self assertLogRecordsMatch: #( '[DEBUG] Ouch!' )
+	self
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitDebuggingInfo: 'Ouch!' ]
+		assertingLogRecordsMatch: #( '[DEBUG] Ouch!' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitError [
 
-	self runMemoryLoggerDuring: [ LaunchpadLogRecord emitError: 'Ouch!' ].
-
-	self assertLogRecordsMatch: #( '[ERROR] Ouch!' )
+	self
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitError: 'Ouch!' ]
+		assertingLogRecordsMatch: #( '[ERROR] Ouch!' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitInfo [
 
-	self runMemoryLoggerDuring: [ LaunchpadLogRecord emitInfo: 'Starting' ].
-
-	self assertLogRecordsMatch: #( '[INFO] Starting' )
+	self
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitInfo: 'Starting' ]
+		assertingLogRecordsMatch: #( '[INFO] Starting' )
 ]
 
 { #category : #tests }
@@ -59,63 +59,62 @@ LaunchpadLogRecordTest >> testEmitInfoDuring [
 	| wasEvaluated |
 
 	wasEvaluated := false.
-	self runMemoryLoggerDuring: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ wasEvaluated := true ] ].
-
 	self
-		assert: wasEvaluated;
-		assertLogRecordsMatch: #(
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ wasEvaluated := true ] ]
+		assertingLogRecordsMatch: #( 
 			'[INFO] Starting...'
-			'[INFO] Starting... [DONE]' )
+			'[INFO] Starting... [DONE]' ).
+	self assert: wasEvaluated
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitInfoDuringWhenActionFails [
 
-	self runMemoryLoggerDuring: [ 
-		self should: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ Error signal ] ] raise: Error ].
-
-	self assertLogRecordsMatch: #(
-		'[INFO] Starting...'
-		'[ERROR] Starting... [FAILED]' )
+	self
+		runMemoryLoggerDuring: [ 
+		self should: [ LaunchpadLogRecord emitInfo: 'Starting' during: [ Error signal ] ] raise: Error ]
+		assertingLogRecordsMatch: #( 
+			'[INFO] Starting...'
+			'[ERROR] Starting... [FAILED]' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitStructuredDebuggingInfo [
 
-	self runMemoryLoggerDuring: [ 
-		LaunchpadLogRecord
-			emitStructuredDebuggingInfo: 'Ouch!'
-			with: [ :data | data at: #errorCode put: 1234 ]
-		].
-
-	self assertLogRecordsMatch: #( '[DEBUG] Ouch! {"errorCode":1234}' )
+	self
+		runMemoryLoggerDuring: [ 
+			LaunchpadLogRecord
+				emitStructuredDebuggingInfo: 'Ouch!'
+				with: [ :data | data at: #errorCode put: 1234 ]
+			]
+		assertingLogRecordsMatch: #( '[DEBUG] Ouch! {"errorCode":1234}' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitStructuredTraceInfo [
 
-	self runMemoryLoggerDuring: [ 
-		LaunchpadLogRecord
-			emitStructuredTraceInfo: 'Ouch!'
-			with: [ :data | data at: #errorCode put: 1234 ] ].
-
-	self assertLogRecordsMatch: #( '[TRACE] Ouch! {"errorCode":1234}' )
+	self
+		runMemoryLoggerDuring: [ 
+			LaunchpadLogRecord
+				emitStructuredTraceInfo: 'Ouch!'
+				with: [ :data | data at: #errorCode put: 1234 ] ]
+		assertingLogRecordsMatch: #( '[TRACE] Ouch! {"errorCode":1234}' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitTrace [
 
-	self runMemoryLoggerDuring: [ LaunchpadLogRecord emitTraceInfo: 'Ouch!' ].
-
-	self assertLogRecordsMatch: #( '[TRACE] Ouch!' )
+	self
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitTraceInfo: 'Ouch!' ]
+		assertingLogRecordsMatch: #( '[TRACE] Ouch!' )
 ]
 
 { #category : #tests }
 LaunchpadLogRecordTest >> testEmitWarning [
 
-	self runMemoryLoggerDuring: [ LaunchpadLogRecord emitWarning: 'Missing value, using X as default' ].
-
-	self assertLogRecordsMatch: #( '[WARNING] Missing value, using X as default' )
+	self
+		runMemoryLoggerDuring: [ LaunchpadLogRecord emitWarning: 'Missing value, using X as default' ]
+		assertingLogRecordsMatch: #( '[WARNING] Missing value, using X as default' )
 ]
 
 { #category : #tests }

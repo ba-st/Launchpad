@@ -10,15 +10,17 @@ Class {
 { #category : #tests }
 DebuggingApplicationModeTest >> testExitFailure [
 
-	self runMemoryLoggerDuring: [ DebuggingApplicationMode new exitFailure ].
-	self assertLogRecordsMatch: #( '[ERROR] Exit application' )
+	self
+		runMemoryLoggerDuring: [ DebuggingApplicationMode new exitFailure ]
+		assertingLogRecordsMatch: #( '[ERROR] Exit application' )
 ]
 
 { #category : #tests }
 DebuggingApplicationModeTest >> testExitSuccess [
 
-	self runMemoryLoggerDuring: [ DebuggingApplicationMode new exitSuccess ].
-	self assertLogRecordsMatch: #( '[INFO] Exit application' )
+	self
+		runMemoryLoggerDuring: [ DebuggingApplicationMode new exitSuccess ]
+		assertingLogRecordsMatch: #( '[INFO] Exit application' )
 ]
 
 { #category : #test }

@@ -256,9 +256,9 @@ ApplicationConfigurationTest >> testLogging [
 
 	configuration := ApplicationConfiguration forAll: parameters providedBy: provider.
 
-	self runMemoryLoggerDuring: [ parameters do: [ :parameter | parameter logValueIn: configuration ] ].
-
-	self assertLogRecordsMatch:
+	self
+		runMemoryLoggerDuring: [ parameters do: [ :parameter | parameter logValueIn: configuration ] ]
+		assertingLogRecordsMatch:
 		#( '[INFO] Port: 8086'
 			'[INFO] Token: **********'
 			'[INFO] Scheme: https' )
@@ -289,9 +289,9 @@ ApplicationConfigurationTest >> testLoggingWhenUsingConverters [
 
 	configuration := ApplicationConfiguration forAll: parameters providedBy: provider.
 
-	self runMemoryLoggerDuring: [ parameters do: [ :parameter | parameter logValueIn: configuration ] ].
-
-	self assertLogRecordsMatch:
+	self
+		runMemoryLoggerDuring: [ parameters do: [ :parameter | parameter logValueIn: configuration ] ]
+		assertingLogRecordsMatch:
 		#( '[INFO] Port: 8086'
 			'[INFO] Token: **********'
 			'[INFO] Target port: 9999' )
@@ -499,8 +499,8 @@ ApplicationConfigurationTest >> testWarningOnOptionalParametersWhenUsingTheDefau
 		             describedBy: 'Scheme'
 		             defaultingTo: 'https'.
 
-	self runMemoryLoggerDuring: [ 
-		ApplicationConfiguration forAll: { parameter } providedBy: NullConfigurationProvider new ].
-
-	self assertLogRecordsMatch: #( '"Scheme" parameter not provided. Using default.' )
+	self
+		runMemoryLoggerDuring: [ 
+		ApplicationConfiguration forAll: { parameter } providedBy: NullConfigurationProvider new ]
+		assertingLogRecordsMatch: #( '"Scheme" parameter not provided. Using default.' )
 ]
