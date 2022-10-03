@@ -8,5 +8,6 @@ loading targets:
 - `Tests` will load the test cases
 - `CI` is the group loaded in the continuous integration setup, in this
   particular case it is the same as `Tests`
+- `Dependent-SUnit-Extensions` will load extensions to SUnit
 - `Development` will load all the needed packages to develop and contribute to
   the project
