@@ -22,7 +22,7 @@ LaunchpadTest >> assertLogRecordsMatch: expectedLogEntries [
 ]
 
 { #category : #private }
-LaunchpadTest >> assertThereIsNoLogRecords [
+LaunchpadTest >> assertThereAreNoLogRecords [
 
 	self assertLogRecordsMatch: #(  )
 ]

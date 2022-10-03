@@ -182,7 +182,7 @@ LaunchpadRootCommandTest >> testHandlingExplainBrokenApplication [
 
 	self
 		assert: output equals: self expectedExplainBrokenHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -196,7 +196,7 @@ LaunchpadRootCommandTest >> testHandlingExplainGreeterApplication [
 
 	self
 		assert: output equals: self expectedExplainGreeterHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -209,7 +209,7 @@ LaunchpadRootCommandTest >> testHandlingExplainSubcommandHelp [
 
 	self
 		assert: output equals: self expectedExplainHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -222,7 +222,7 @@ LaunchpadRootCommandTest >> testHandlingExplainSubcommandShortHelp [
 
 	self
 		assert: output equals: self expectedExplainHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling main command' }
@@ -234,7 +234,7 @@ LaunchpadRootCommandTest >> testHandlingHelpOption [
 
 	self
 		assert: output equals: self expectedHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling explain subcommand' }
@@ -342,7 +342,7 @@ LaunchpadRootCommandTest >> testHandlingListSubcommand [
 						  separatedBy: [ stream space ].
 					  stream nextPutAll: '<n>' expandMacros
 					  ] );
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -356,7 +356,7 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandHelp [
 
 	self
 		assert: output equals: self expectedExplainHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -370,7 +370,7 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandShortHelp [
 
 	self
 		assert: output equals: self expectedListHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -384,7 +384,7 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandShortVerboseMode [
 
 	self
 		assert: output equals: self expectedVerboseListOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling list subcommand' }
@@ -398,7 +398,7 @@ LaunchpadRootCommandTest >> testHandlingListSubcommandVerboseMode [
 
 	self
 		assert: output equals: self expectedVerboseListOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #tests }
@@ -422,7 +422,7 @@ LaunchpadRootCommandTest >> testHandlingShortHelpOption [
 
 	self
 		assert: output equals: self expectedHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -778,7 +778,7 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandHelp [
 
 	self
 		assert: output equals: self expectedStartHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -792,7 +792,7 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 
 	self
 		assert: output equals: self expectedStartHelpOutput;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #'tests - handling start subcommand' }
@@ -831,7 +831,7 @@ LaunchpadRootCommandTest >> testHandlingVersionOption [
 
 	self
 		assert: output equals: 'Launchpad v4.0.0<n>' expandMacros;
-		assertThereIsNoLogRecords
+		assertThereAreNoLogRecords
 ]
 
 { #category : #tests }
