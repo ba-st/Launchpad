@@ -33,3 +33,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           name: Unit-Tests-${{matrix.smalltalk}}
+          token: ${{ secrets.CODECOV_TOKEN }}
