@@ -3,7 +3,7 @@ A LaunchpadCommandLineHandlerTest is a test class for testing the behavior of La
 "
 Class {
 	#name : #LaunchpadCommandLineHandlerTest,
-	#superclass : #TestCase,
+	#superclass : #LaunchpadTest,
 	#category : #'Launchpad-Commands-Tests'
 }
 
@@ -30,11 +30,15 @@ LaunchpadCommandLineHandlerTest >> testHandlingHelpOption [
 LaunchpadCommandLineHandlerTest >> testStartingApplication [
 
 	| commandLine |
-	commandLine := CommandLineArguments withArguments:
-		               #( 'launchpad' 'start' 'greeter' '--name=John' ).
+
+	commandLine := CommandLineArguments withArguments: #( 'launchpad' 'start' 'greeter' '--name=John' ).
 
 	self
 		should: [ LaunchpadCommandLineHandler activateWith: commandLine ]
 		raise: Exit
-		withExceptionDo: [ :exit | self assert: exit isSuccess ]
+		withExceptionDo: [ :exit | self assert: exit isSuccess ].
+
+	self
+		should: [ self start: LaunchpadGreeterApplication withAll: #(  ) ]
+		raise: RequiredConfigurationNotFound
 ]

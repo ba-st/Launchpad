@@ -94,6 +94,7 @@ BaselineOfLaunchpad >> setUpPackages: spec [
 	self
 		setUpDeploymentPackages: spec;
 		setUpExamplePackages: spec;
+		setUpSUnitPackages: spec;
 		setUpTestPackages: spec.
 		
 	spec group: 'Tools' with: 'Buoy-Tools'
@@ -118,21 +119,32 @@ BaselineOfLaunchpad >> setUpPharo8Packages: spec [
 		group: 'Deployment' with: 'Launchpad-Tracing-Pharo8'
 ]
 
+{ #category : #baselines }
+BaselineOfLaunchpad >> setUpSUnitPackages: spec [
+
+	spec
+		package: 'Launchpad-SUnit' with: [ 
+			spec requires:
+					#( 'Buoy-SUnit' 'Launchpad-Logging' 'Launchpad-Applications' 'Launchpad-Commands' ) ];
+		group: 'Dependent-SUnit-Extensions' with: 'Launchpad-SUnit'
+]
+
 { #category : #initialization }
 BaselineOfLaunchpad >> setUpTestPackages: spec [
 
 	spec
-		package: 'Launchpad-Logging-Tests' with: [ spec requires: 'Launchpad-Logging' ];
+		package: 'Launchpad-Logging-Tests'
+		with: [ spec requires: #( 'Launchpad-Logging' 'Launchpad-SUnit' ) ];				
 		group: 'Tests' with: 'Launchpad-Logging-Tests'.
 
 	spec
 		package: 'Launchpad-Configuration-Tests'
-		with: [ spec requires: #( 'Launchpad-Configuration' 'Buoy-SUnit' ) ];
+		with: [ spec requires: #( 'Launchpad-Configuration' 'Launchpad-SUnit' ) ];
 		group: 'Tests' with: 'Launchpad-Configuration-Tests'.
 
 	spec
 		package: 'Launchpad-Applications-Tests'
-		with: [ spec requires: #( 'Launchpad-Applications' 'Buoy-SUnit' ) ];
+		with: [ spec requires: #( 'Launchpad-Applications' 'Launchpad-SUnit' ) ];
 		group: 'Tests' with: 'Launchpad-Applications-Tests'.
 
 	spec
@@ -141,6 +153,6 @@ BaselineOfLaunchpad >> setUpTestPackages: spec [
 
 	spec
 		package: 'Launchpad-Commands-Tests'
-		with: [ spec requires: #( 'Examples' 'Launchpad-Commands' 'Buoy-SUnit' 'Hyperspace-SUnit' ) ];
+		with: [ spec requires: #( 'Examples' 'Launchpad-Commands' 'Launchpad-SUnit' 'Hyperspace-SUnit' ) ];
 		group: 'Tests' with: 'Launchpad-Commands-Tests'
 ]

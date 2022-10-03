@@ -7,7 +7,7 @@ Class {
 	#category : #'Launchpad-Applications-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 ReleasedApplicationModeTest >> testExitFailure [
 
 	self should: [ ReleasedApplicationMode new exitFailure ]
@@ -15,7 +15,7 @@ ReleasedApplicationModeTest >> testExitFailure [
 		withExceptionDo: [ :exit | self deny: exit isSuccess ]
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ReleasedApplicationModeTest >> testExitSuccess [
 
 	self should: [ ReleasedApplicationMode new exitSuccess ]
@@ -23,13 +23,13 @@ ReleasedApplicationModeTest >> testExitSuccess [
 		withExceptionDo: [ :exit | self assert: exit isSuccess ]
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ReleasedApplicationModeTest >> testIsDebugMode [
 
 	self deny: ReleasedApplicationMode new isDebugMode
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ReleasedApplicationModeTest >> testValueOnErrorDo [
 
 	| errorWasHandled |

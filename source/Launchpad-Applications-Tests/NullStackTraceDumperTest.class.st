@@ -3,23 +3,21 @@ A NullStackTraceDumperTest is a test class for testing the behavior of NullStack
 "
 Class {
 	#name : #NullStackTraceDumperTest,
-	#superclass : #TestCase,
+	#superclass : #LaunchpadTest,
 	#category : #'Launchpad-Applications-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 NullStackTraceDumperTest >> testDumpStackTraceFor [
 
-	| logger |
+	self runMemoryLoggerDuring: [ 
+		[ 1 / 0 ]
+			on: ZeroDivide
+			do: [ :error | 
+				NullStackTraceDumper new dumpStackTraceFor: error.
+				error return
+				]
+		].
 
-	logger := MemoryLogger new runDuring: [ 
-		          [ 1 / 0 ] on: ZeroDivide
-			          do: [ :error | 
-				          NullStackTraceDumper new dumpStackTraceFor: error.
-				          error return
-				          ]
-		          ].
-
-	self withTheOnlyOneIn: logger recordings do: [ :recording | 
-		self assert: ( recording printString endsWith: '[WARNING] Ignoring stack trace dumping' ) ]
+	self assertLogRecordsMatch: #( '[WARNING] Ignoring stack trace dumping' )
 ]
