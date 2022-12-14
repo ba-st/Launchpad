@@ -23,7 +23,7 @@ Once you grasped the basics, lookup for details in the reference docs:
 or expand your understanding over specific topics:
 
 - [What happens when debugging mode is enabled?](explanation/Debugging-mode.md)
-- [How is obtained the value of a configuration parameter?](explanation/Configuration-resolution.md)
+- [How is the value of a configuration parameter obtained?](explanation/Configuration-resolution.md)
 - [What happens when an application is started?](explanation/Application-start-up.md)
 
 ---
