@@ -8,10 +8,10 @@ Class {
 }
 
 { #category : #private }
-MandatoryConfigurationParameterTest >> set: environmentVariableName to: value during: aBlock [
+MandatoryConfigurationParameterTest >> commandLineProviderSetting: aParameter to: aString [
 
-	OSPlatform current environment at: environmentVariableName put: value.
-	aBlock ensure: [ OSPlatform current environment removeKey: environmentVariableName ]
+	^ ConfigurationFromCommandLineProvider over: ( CommandLineArguments withArguments:
+			    ( Array with: ( '--<1s>=<2s>' expandMacrosWith: aParameter name with: aString ) ) )
 ]
 
 { #category : #tests }
@@ -67,45 +67,50 @@ MandatoryConfigurationParameterTest >> testAccessingInSection [
 { #category : #tests }
 MandatoryConfigurationParameterTest >> testBooleanTransformation [
 
-	| parameter provider |
+	| parameter |
 
 	parameter := MandatoryConfigurationParameter
-		             named: 'Be public'
+		             named: 'public'
 		             describedBy: 'Whether it will be visible'
 		             convertingWith: #asBoolean.
 
-	provider := ConfigurationFromEnvironmentProvider new.
+	self assert: ( self valueWhenSetting: parameter to: 'true' ).
+	self assert: ( self valueWhenSetting: parameter to: 'trUE' ).
+	self deny: ( self valueWhenSetting: parameter to: 'false' ).
+	self deny: ( self valueWhenSetting: parameter to: 'fAlse' ).
 
-	self assert: ( self valueOfSetting: parameter whenSetTo: 'true' using: provider ).
-	self deny: ( self valueOfSetting: parameter whenSetTo: 'false' using: provider ).
-	self deny: ( self valueOfSetting: parameter whenSetTo: 'True' using: provider ).
-	self deny: ( self valueOfSetting: parameter whenSetTo: 'TRUE' using: provider ).
-	self deny: ( self valueOfSetting: parameter whenSetTo: '' using: provider )
+	self
+		should: [ self valueWhenSetting: parameter to: '' ]
+		raise: Error
+		withMessageText: ' can''t be interpreted as a boolean'.
+
+	self
+		should: [ self valueWhenSetting: parameter to: 'unclear' ]
+		raise: Error
+		withMessageText: 'unclear can''t be interpreted as a boolean'
 ]
 
 { #category : #tests }
 MandatoryConfigurationParameterTest >> testNumberTransformation [
 
-	| parameter provider |
+	| parameter |
 
 	parameter := MandatoryConfigurationParameter
-		             named: 'Port'
+		             named: 'port'
 		             describedBy: 'The number of the port to listen'
 		             convertingWith: #asNumber.
 
-	provider := ConfigurationFromEnvironmentProvider new.
-
-	self assert: ( self valueOfSetting: parameter whenSetTo: '1' using: provider ) equals: 1.
-	self assert: ( self valueOfSetting: parameter whenSetTo: '01' using: provider ) equals: 1.
-	self assert: ( self valueOfSetting: parameter whenSetTo: '11' using: provider ) equals: 11.
+	self assert: ( self valueWhenSetting: parameter to: '1' ) equals: 1.
+	self assert: ( self valueWhenSetting: parameter to: '01' ) equals: 1.
+	self assert: ( self valueWhenSetting: parameter to: '11' ) equals: 11.
 
 	self
-		should: [ self valueOfSetting: parameter whenSetTo: 'a story about an API' using: provider ]
+		should: [ self valueWhenSetting: parameter to: 'a story about an API' ]
 		raise: Error
 		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'.
 
 	self
-		should: [ self valueOfSetting: parameter whenSetTo: '' using: provider ]
+		should: [ self valueWhenSetting: parameter to: '' ]
 		raise: Error
 		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'
 ]
@@ -132,34 +137,25 @@ MandatoryConfigurationParameterTest >> testPrintString [
 { #category : #tests }
 MandatoryConfigurationParameterTest >> testUrlTransformation [
 
-	| parameter provider |
+	| parameter |
 
 	parameter := MandatoryConfigurationParameter
-		             named: 'Url'
+		             named: 'url'
 		             describedBy: 'The base URL'
 		             convertingWith: #asUrl.
 
-	provider := ConfigurationFromEnvironmentProvider new.
-
 	self
-		assert: ( self valueOfSetting: parameter whenSetTo: 'http://www.the-server.com' using: provider )
+		assert: ( self valueWhenSetting: parameter to: 'http://www.the-server.com' )
 		equals: ( ZnUrl fromString: 'http://www.the-server.com' ).
-	self
-		assert: ( self valueOfSetting: parameter whenSetTo: '' using: provider )
-		equals: ( ZnUrl fromString: '/' )
+	self assert: ( self valueWhenSetting: parameter to: '' ) equals: ( ZnUrl fromString: '/' )
 ]
 
 { #category : #private }
-MandatoryConfigurationParameterTest >> valueOfSetting: aParameter whenSetTo: aString using: aProvider [
+MandatoryConfigurationParameterTest >> valueWhenSetting: aParameter to: aString [
 
-	| valueBinding |
+	| provider |
 
-	valueBinding := Binding undefinedExplainedBy: 'Not yed defined'.
-	self
-		set: aParameter environmentVariableName
-		to: aString
-		during: [ 
-		valueBinding := Binding to: ( aParameter resolveValueUsing: aProvider ifUnable: [ self fail ] ) ].
-	
-	^ valueBinding content
+	provider := self commandLineProviderSetting: aParameter to: aString.
+
+	^ aParameter resolveValueUsing: provider ifUnable: [ self fail ]
 ]
