@@ -11,7 +11,8 @@ Class {
 OptionalConfigurationParameterTest >> commandLineProviderSetting: aParameter to: aString [
 
 	^ ConfigurationFromCommandLineProvider over: ( CommandLineArguments withArguments:
-			    ( Array with: ( '--<1s>=<2s>' expandMacrosWith: aParameter name with: aString ) ) )
+			    ( Array with:
+				      ( '--<1s>=<2s>' expandMacrosWith: aParameter commandLineArgumentName with: aString ) ) )
 ]
 
 { #category : #tests }
