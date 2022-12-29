@@ -26,7 +26,11 @@ Every parameter must have a name and a summary.
 
 A parameter's value primordial type is a `String`. Optionally, a parameter can
 use a converter to parse the value and transform it
-into a proper object. For common transformations, you can indicate a message implemented in String, such as `#asNumber`, `#asBoolean` (included in Launchpad), `#asUrl` (included in Zinc). 
+into a proper object.
+For common transformations, you can indicate a message implemented in String,
+such as #asNumber or asUppercase.
+Launchpad adds the #asBoolean message,
+which accepts all case types of true and false.
 
 Configuration parameters can also be nested in sections to group the related ones.
 
