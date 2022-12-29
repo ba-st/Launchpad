@@ -7,6 +7,14 @@ Class {
 	#category : #'Launchpad-Configuration-Tests'
 }
 
+{ #category : #private }
+OptionalConfigurationParameterTest >> commandLineProviderSetting: aParameter to: aString [
+
+	^ ConfigurationFromCommandLineProvider over: ( CommandLineArguments withArguments:
+			    ( Array with:
+				      ( '--<1s>=<2s>' expandMacrosWith: aParameter commandLineArgumentName with: aString ) ) )
+]
+
 { #category : #tests }
 OptionalConfigurationParameterTest >> testAccessing [
 
@@ -61,6 +69,59 @@ OptionalConfigurationParameterTest >> testAccessingInSection [
 ]
 
 { #category : #tests }
+OptionalConfigurationParameterTest >> testBooleanTransformation [
+
+	| parameter |
+
+	parameter := OptionalConfigurationParameter
+		             named: 'beta'
+		             describedBy: 'Determines if experimental stuff is ready'
+		             defaultingTo: true
+		             convertingWith: #asBoolean.
+
+	self assert: ( self valueWhenSetting: parameter to: 'true' ).
+	self assert: ( self valueWhenSetting: parameter to: 'trUE' ).
+	self deny: ( self valueWhenSetting: parameter to: 'false' ).
+	self deny: ( self valueWhenSetting: parameter to: 'fAlse' ).
+
+	self
+		should: [ self valueWhenSetting: parameter to: '' ]
+		raise: Error
+		withMessageText: ' can''t be interpreted as a boolean'.
+
+	self
+		should: [ self valueWhenSetting: parameter to: 'unclear' ]
+		raise: Error
+		withMessageText: 'unclear can''t be interpreted as a boolean'
+]
+
+{ #category : #tests }
+OptionalConfigurationParameterTest >> testNumberTransformation [
+
+	| parameter |
+
+	parameter := OptionalConfigurationParameter
+		             named: 'port'
+		             describedBy: 'The service''s listening port'
+		             defaultingTo: 8080
+		             convertingWith: #asNumber.
+
+	self assert: ( self valueWhenSetting: parameter to: '1' ) equals: 1.
+	self assert: ( self valueWhenSetting: parameter to: '01' ) equals: 1.
+	self assert: ( self valueWhenSetting: parameter to: '11' ) equals: 11.
+
+	self
+		should: [ self valueWhenSetting: parameter to: 'a story about an API' ]
+		raise: Error
+		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'.
+
+	self
+		should: [ self valueWhenSetting: parameter to: '' ]
+		raise: Error
+		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'
+]
+
+{ #category : #tests }
 OptionalConfigurationParameterTest >> testPrintString [
 
 	| parameter |
@@ -79,4 +140,31 @@ OptionalConfigurationParameterTest >> testPrintString [
 
 	self assert: parameter printString equals: '--communications.http.port
 	[Optional] The service''s listening port. Defaults to 8080.'
+]
+
+{ #category : #tests }
+OptionalConfigurationParameterTest >> testUrlTransformation [
+
+	| parameter |
+
+	parameter := OptionalConfigurationParameter
+		             named: 'location'
+		             describedBy: 'Web site for the company'
+		             defaultingTo: 'www.wecare.org'
+		             convertingWith: #asUrl.
+
+	self
+		assert: ( self valueWhenSetting: parameter to: 'http://www.the-server.com' )
+		equals: ( ZnUrl fromString: 'http://www.the-server.com' ).
+	self assert: ( self valueWhenSetting: parameter to: '' ) equals: ( ZnUrl fromString: '/' )
+]
+
+{ #category : #private }
+OptionalConfigurationParameterTest >> valueWhenSetting: aParameter to: aString [
+
+	| provider |
+
+	provider := self commandLineProviderSetting: aParameter to: aString.
+
+	^ aParameter resolveValueUsing: provider ifUnable: [ self fail ]
 ]
