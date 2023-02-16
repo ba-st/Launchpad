@@ -175,7 +175,7 @@ LaunchpadApplication >> isDebugModeEnabled [
 { #category : #'private - activation/deactivation' }
 LaunchpadApplication >> logConfigurationWithin: context [
 
-	LaunchpadLogRecord emitInfo: 'Obtaining configuration' during: [ 
+	LogRecord emitInfo: 'Obtaining configuration' during: [ 
 		[ 
 		self class configurationParameters do: [ :parameter | parameter logValueIn: self configuration ] ] 
 			on: RequiredConfigurationNotFound
@@ -195,13 +195,13 @@ LaunchpadApplication >> startWithin: context [
 	mode
 		value: [ 
 			commandServer start.
-			LaunchpadLogRecord emitInfo: self class summary.
+			LogRecord emitInfo: self class summary.
 			self
 				logConfigurationWithin: context;
 				basicStartWithin: context
 			]
 		onErrorDo: [ :error | 
-			LaunchpadLogRecord emitError:
+			LogRecord emitError:
 				( 'Unexpected startup error: "<1s>"' expandMacrosWith: error messageText ).
 			self stackTraceDumper dumpStackTraceFor: error.
 			self exitFailure
@@ -212,7 +212,7 @@ LaunchpadApplication >> startWithin: context [
 LaunchpadApplication >> stop [
 
 	mode value: [ self basicStop ] onErrorDo: [ :error | 
-		LaunchpadLogRecord emitError:
+		LogRecord emitError:
 			( 'Unexpected shutdown error: "<1s>"' expandMacrosWith: error messageText ).
 		self stackTraceDumper dumpStackTraceFor: error.
 		self exitFailure

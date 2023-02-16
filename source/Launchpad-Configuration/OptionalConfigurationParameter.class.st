@@ -67,7 +67,7 @@ OptionalConfigurationParameter >> initializeNamed: aName describedBy: aDescripti
 	default := aDefaultValue.
 	converter := aConverterAction.
 	emitWarningAction := [ 
-	                 LaunchpadLogRecord emitWarning:
+	                 LogRecord emitWarning:
 		                 ( '"<1s>" parameter not provided. Using default.' expandMacrosWith: self name )
 	                 ]
 ]

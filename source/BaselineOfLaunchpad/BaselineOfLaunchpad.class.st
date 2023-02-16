@@ -5,10 +5,17 @@ Class {
 }
 
 { #category : #baselines }
+BaselineOfLaunchpad >> addLaunchpadLogRecordAsGlobal [
+
+	Smalltalk at: #LaunchpadLogRecord put: LogRecord
+]
+
+{ #category : #baselines }
 BaselineOfLaunchpad >> baseline: spec [
 
 	<baseline>
 	spec for: #pharo do: [ 
+		spec postLoadDoIt: #addLaunchpadLogRecordAsGlobal.
 		self
 			setUpDependencies: spec;
 			setUpPackages: spec.
@@ -28,7 +35,7 @@ BaselineOfLaunchpad >> projectClass [
 	^ MetacelloCypressBaselineProject
 ]
 
-{ #category : #initialization }
+{ #category : #baselines }
 BaselineOfLaunchpad >> setUpDependencies: spec [
 
 	spec
@@ -38,12 +45,13 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 		project: 'Buoy-Tools' copyFrom: 'Buoy' with: [ spec loads: 'Tools' ].
 
 	spec
-		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.1.1' ];
-		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
+		baseline: 'Bell' with: [ spec repository: 'github://ba-st/Bell:v1' ];
+		project: 'Bell-Deployment' copyFrom: 'Bell' with: [ spec loads: 'Deployment' ];
+		project: 'Bell-SUnit' copyFrom: 'Bell' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
 
 	spec
-		baseline: 'NeoJSON' with: [ spec repository: 'github://svenvc/NeoJSON:master/repository' ];
-		project: 'NeoJSON-Core' copyFrom: 'NeoJSON' with: [ spec loads: 'core' ].
+		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.1.1' ];
+		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
 	spec
 		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v4' ];
@@ -56,18 +64,12 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 
 	spec
-		package: 'Launchpad-Logging' with: [ spec requires: 'NeoJSON-Core' ];
-		group: 'Deployment' with: 'Launchpad-Logging'.
-
-	spec
 		package: 'Launchpad-Configuration'
-		with: [ 
-			spec requires: #( 'Launchpad-Logging' 'NeoJSON-Core' 'INIParser-Deployment'
-				   'Buoy-Deployment' ) ];
+		with: [ spec requires: #( 'Bell-Deployment' 'INIParser-Deployment' 'Buoy-Deployment' ) ];
 		group: 'Deployment' with: 'Launchpad-Configuration'.
 
 	spec
-		package: 'Launchpad-Applications' with: [ spec requires: 'Launchpad-Logging' ];
+		package: 'Launchpad-Applications' with: [ spec requires: 'Bell-Deployment' ];
 		group: 'Deployment' with: 'Launchpad-Applications'.
 
 	spec
@@ -125,17 +127,12 @@ BaselineOfLaunchpad >> setUpSUnitPackages: spec [
 	spec
 		package: 'Launchpad-SUnit' with: [ 
 			spec requires:
-					#( 'Buoy-SUnit' 'Launchpad-Logging' 'Launchpad-Applications' 'Launchpad-Commands' ) ];
+					#( 'Buoy-SUnit' 'Bell-SUnit' 'Launchpad-Applications' 'Launchpad-Commands' ) ];
 		group: 'Dependent-SUnit-Extensions' with: 'Launchpad-SUnit'
 ]
 
-{ #category : #initialization }
+{ #category : #baselines }
 BaselineOfLaunchpad >> setUpTestPackages: spec [
-
-	spec
-		package: 'Launchpad-Logging-Tests'
-		with: [ spec requires: #( 'Launchpad-Logging' 'Launchpad-SUnit' ) ];				
-		group: 'Tests' with: 'Launchpad-Logging-Tests'.
 
 	spec
 		package: 'Launchpad-Configuration-Tests'

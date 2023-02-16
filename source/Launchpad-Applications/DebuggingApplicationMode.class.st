@@ -7,13 +7,13 @@ Class {
 { #category : #utilities }
 DebuggingApplicationMode >> exitFailure [
 
-	LaunchpadLogRecord emitError: 'Exit application'
+	LogRecord emitError: 'Exit application'
 ]
 
 { #category : #utilities }
 DebuggingApplicationMode >> exitSuccess [
 
-	LaunchpadLogRecord emitInfo: 'Exit application'
+	LogRecord emitInfo: 'Exit application'
 ]
 
 { #category : #testing }

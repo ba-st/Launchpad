@@ -139,7 +139,7 @@ ApplicationConfiguration >> initializeForAll: aParameterCollection providedBy: a
 { #category : #private }
 ApplicationConfiguration >> missingConfigurationFor: parameter [
 
-	LaunchpadLogRecord emitError:
+	LogRecord emitError:
 		( '"<1s>" parameter not provided. You must provide one.' expandMacrosWith: parameter name ).
 	RequiredConfigurationNotFound signal:
 		( '"<1s>" parameter not present.' expandMacrosWith: parameter name )

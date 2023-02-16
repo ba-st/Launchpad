@@ -30,12 +30,12 @@ LaunchpadStartApplicationCommand >> enableStructuredLogging [
 
 	[ 
 	StandardStreamStructuredLogger onStandardOutput startFor:
-		( LaunchpadLogRecord where: [ :record | record isInformational ] )
+		( LogRecord where: [ :record | record isInformational ] )
 	] ensure: [ StandardStreamLogger onStandardOutput stop ].
 
 	[ 
 	StandardStreamStructuredLogger onStandardError startFor:
-		( LaunchpadLogRecord where: [ :record | record isInformational not ] )
+		( LogRecord where: [ :record | record isInformational not ] )
 	] ensure: [ StandardStreamLogger onStandardError stop ]
 ]
 

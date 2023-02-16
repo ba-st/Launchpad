@@ -24,9 +24,9 @@ LaunchpadCommandLineHandler >> activate [
 	Processor activeProcess name: 'Launchpad CLI'.
 
 	StandardStreamLogger onStandardOutput startFor:
-		( LaunchpadLogRecord where: [ :record | record isInformational ] ).
+		( LogRecord where: [ :record | record isInformational ] ).
 	StandardStreamLogger onStandardError startFor:
-		( LaunchpadLogRecord where: [ :record | record isInformational not ] ).
+		( LogRecord where: [ :record | record isInformational not ] ).
 
 	context := LaunchpadCommandLineProcessingContext handling: commandLine writingTo: self stdout.
 	context usePlatformLineEnding.
