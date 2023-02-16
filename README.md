@@ -27,7 +27,6 @@ Launchpad provides abstractions to architect your application:
 
 - Configuration parameters (mandatory, optional, and sensitive)
 - Command-line arguments, environment variables, or settings file configuration providers.
-- Logging infrastructure (based on `Beacon`)
 - Inline help
 - Textual and binary stack trace generation
 
