@@ -60,7 +60,7 @@ TCPCommandServer >> serverLoop [
 { #category : #controlling }
 TCPCommandServer >> start [
 
-	LaunchpadLogRecord emitInfo:
+	LogRecord emitInfo:
 		( 'Receiving commands over TCP/<1p>' expandMacrosWith: self listeningPort ).
 
 	connectionSocket

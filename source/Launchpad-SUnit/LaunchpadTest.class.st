@@ -2,8 +2,8 @@ Class {
 	#name : #LaunchpadTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'memoryLogger',
-		'runningApplication'
+		'runningApplication',
+		'loggingAsserter'
 	],
 	#category : #'Launchpad-SUnit'
 }
@@ -17,8 +17,7 @@ LaunchpadTest class >> isAbstract [
 { #category : #private }
 LaunchpadTest >> assertLogRecordsMatch: expectedLogEntries [
 
-	memoryLogger recordings with: expectedLogEntries do: [ :record :expectedLogEntry | 
-		self assert: ( record printString includesSubstring: expectedLogEntry ) ]
+	loggingAsserter assertLogRecordsMatch: expectedLogEntries 
 ]
 
 { #category : #private }
@@ -36,7 +35,7 @@ LaunchpadTest >> runCase [
 { #category : #private }
 LaunchpadTest >> runMemoryLoggerDuring: aBlock [
 
-	memoryLogger runDuring: aBlock
+	loggingAsserter runMemoryLoggerDuring: aBlock
 ]
 
 { #category : #private }
@@ -51,7 +50,7 @@ LaunchpadTest >> runMemoryLoggerDuring: aBlock assertingLogRecordsMatch: expecte
 LaunchpadTest >> setUp [
 
 	super setUp.
-	memoryLogger := MemoryLogger new
+	loggingAsserter := LoggingAsserter on: self
 ]
 
 { #category : #private }
@@ -75,20 +74,10 @@ LaunchpadTest >> start: aLaunchpadApplication withAll: arguments [
 		]
 ]
 
-{ #category : #private }
-LaunchpadTest >> stopLoggers [
-
-	StandardStreamLogger onStandardOutput stop.
-	StandardStreamLogger onStandardError stop.
-	StandardErrorStructuredLogger onStandardOutput stop.
-	StandardErrorStructuredLogger onStandardError stop
-]
-
 { #category : #running }
 LaunchpadTest >> tearDown [
 
-	memoryLogger reset.
-	self stopLoggers.
+	loggingAsserter stopLoggers.
 	runningApplication ifNotNil: #stop.
 	super tearDown
 ]

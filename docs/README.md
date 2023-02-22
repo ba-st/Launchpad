@@ -5,7 +5,7 @@ applications available within the image, including:
 
 - Configuration parameters (mandatory, optional, and sensitive)
 - Command-line arguments, environment variables, or settings file configuration providers.
-- Logging infrastructure (based on `Beacon`)
+- Logging (based on `Bell`)
 - Inline help
 - Textual and binary stack trace generation
 

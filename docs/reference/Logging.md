@@ -1,22 +1,6 @@
-# Logging infrastructure
+# Logging
 
-Launchpad logging builds on top of [Beacon](https://github.com/pharo-project/pharo-beacon).
-For a summary of Beacon take a look at [this blog post](http://www.humane-assessment.com/blog/beacon).
-
-Launchpad produces logging information by signaling `LaunchpadLogRecord` instances,
-including a log level that can be `TRACE`, `DEBUG`, `INFO`, `WARNING`, or `ERROR`.
-To emit your logs, you can reuse `LaunchpadLogRecord` by sending one of the
-`emit` messages:
-
-- `emitTraceInfo:` will produce informational signals with trace information.
-- `emitStructuredTraceInfo:with:` will produce informational signals with
-  trace information and additional structured data provided by the user.
-- `emitDebuggingInfo:` will produce informational signals with debugging information.
-- `emitStructuredDebuggingInfo:with:` will produce informational signals with
-  debugging information and additional structured data provided by the user.
-- `emitInfo:` and `emitInfo:during:` will produce informational signals.
-- `emitWarning:` will produce warning signals.
-- `emitError:` will produce error signals.
+Launchapad log events using [Bell](https://github.com/ba-st/Bell).
 
 By default, during the application startup process, Launchpad enables two loggers
 to process these events. One of the loggers writes informational log records to

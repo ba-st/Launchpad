@@ -109,7 +109,7 @@ ConfigurationParameter >> environmentVariableName [
 { #category : #logging }
 ConfigurationParameter >> logValueIn: configuration [
 
-	LaunchpadLogRecord emitInfo:
+	LogRecord emitInfo:
 		( '<1s>: <2s>' expandMacrosWith: self name with: ( self valueToLogFrom: configuration ) asString )
 ]
 
