@@ -1,6 +1,6 @@
 # Logging
 
-Launchapad log events using [Bell](https://github.com/ba-st/Bell).
+Launchpad log events using [Bell](https://github.com/ba-st/Bell).
 
 By default, during the application startup process, Launchpad enables two loggers
 to process these events. One of the loggers writes informational log records to
