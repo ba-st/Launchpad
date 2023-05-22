@@ -17,7 +17,7 @@ StackTraceTextDumper class >> on: anOpenStreamAction [
 StackTraceTextDumper >> dumpStackTraceFor: anError [
 
 	self writeStreamDo: [ :stream | 
-		( thisContext contextStack detect: [ :context | context receiver = anError ] ) errorReportOn:
+		( thisContext contextStack detect: [ :context | context receiver == anError ] ) errorReportOn:
 			stream ]
 ]
 
