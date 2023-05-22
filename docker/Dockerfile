@@ -1,4 +1,4 @@
-FROM ghcr.io/ba-st/pharo:v10.0.1
+FROM ghcr.io/ba-st/pharo:v11.0.0
 
 COPY --chown=pharo:users ./launchpad* ./
 USER root
