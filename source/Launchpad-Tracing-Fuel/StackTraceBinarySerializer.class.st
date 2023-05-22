@@ -28,21 +28,14 @@ StackTraceBinarySerializer >> binaryWriteStreamDo: dumpAction [
 { #category : #'error handling' }
 StackTraceBinarySerializer >> dumpStackTraceFor: anError [
 
-	| stackFrameToDump |
+	| stackToDump |
 
-	stackFrameToDump := thisContext.
-	[ stackFrameToDump receiver == anError ] whileFalse: [
-		stackFrameToDump := stackFrameToDump sender.
-		stackFrameToDump ifNil: [
-			Error signal: ( 'Cannot find stack frame for <1p>' expandMacrosWith: anError ) ]
-		].
-
-	stackFrameToDump := stackFrameToDump copyStack.
+	stackToDump := thisContext contextStack detect: [ :context | context receiver == anError ].
 
 	self binaryWriteStreamDo: [ :stream |
 		self serializer
 			streamFactory: [ stream ];
-			object: stackFrameToDump;
+			object: stackToDump;
 			serialize
 		]
 ]
