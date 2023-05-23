@@ -19,6 +19,21 @@ StackTraceBinarySerializer class >> on: anOpenStreamAction [
 	^ self new initializeOn: anOpenStreamAction
 ]
 
+{ #category : #actions }
+StackTraceBinarySerializer class >> openDebuggerOn: anExecutionStack [
+
+	^ [ 
+	  | exception debugSession |
+	  exception := anExecutionStack receiver.
+	  debugSession := Processor activeProcess
+		                  newDebugSessionNamed:
+		                  ( 'Materialized stack: <1s>' expandMacrosWith: exception description )
+		                  startedAt: anExecutionStack.
+	  debugSession exception: exception.
+	  StDebugger openOn: debugSession withFullView: true
+	  ] forkNamed: 'Debugging materialized stack'
+]
+
 { #category : #private }
 StackTraceBinarySerializer >> binaryWriteStreamDo: dumpAction [
 
