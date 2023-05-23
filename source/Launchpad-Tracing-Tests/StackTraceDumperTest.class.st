@@ -13,6 +13,8 @@ StackTraceDumperTest class >> isAbstract [
 { #category : #tests }
 StackTraceDumperTest >> generateErrorDumpingStackTraceWith: dumper [
 
-	[ 1 / 0 ] on: Error
+	<ignoreForCoverage>
+	[ AssertionFailed signal ]
+		on: AssertionFailed
 		do: [ :error | dumper dumpStackTraceFor: error ]
 ]

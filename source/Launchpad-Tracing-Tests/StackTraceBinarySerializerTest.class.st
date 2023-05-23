@@ -24,7 +24,7 @@ StackTraceBinarySerializerTest >> testDumpStack [
 
 	| dumper output |
 
-	output := ByteArray streamContents: [ :stream | 
+	output := ByteArray streamContents: [ :stream |
 		          dumper := StackTraceBinarySerializer on: [ :dumpAction | dumpAction value: stream ].
 		          self generateErrorDumpingStackTraceWith: dumper
 		          ].

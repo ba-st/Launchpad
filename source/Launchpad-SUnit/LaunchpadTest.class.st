@@ -79,5 +79,6 @@ LaunchpadTest >> tearDown [
 
 	loggingAsserter stopLoggers.
 	runningApplication ifNotNil: #stop.
+	LaunchpadApplication resetCurrentlyRunning.
 	super tearDown
 ]

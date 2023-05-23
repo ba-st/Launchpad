@@ -30,12 +30,12 @@ StackTraceBinarySerializer >> dumpStackTraceFor: anError [
 
 	| stackToDump |
 
-	stackToDump := thisContext contextStack detect: [ :context | context receiver == anError ].
+	stackToDump := thisContext findContextSuchThat: [ :context | context receiver == anError ].
 
 	self binaryWriteStreamDo: [ :stream |
 		self serializer
 			streamFactory: [ stream ];
-			object: stackToDump;
+			object: stackToDump copyStack;
 			serialize
 		]
 ]

@@ -4,7 +4,7 @@ Class {
 	#category : #BaselineOfLaunchpad
 }
 
-{ #category : #baselines }
+{ #category : #'post-load actions' }
 BaselineOfLaunchpad >> addLaunchpadLogRecordAsGlobal [
 
 	Smalltalk at: #LaunchpadLogRecord put: LogRecord
@@ -23,13 +23,25 @@ BaselineOfLaunchpad >> baseline: spec [
 		spec
 			group: 'Development' with: #( 'Tests' 'Tools' );
 			group: 'CI' with: 'Tests';
-			group: 'default' with: 'Development'
-		].
+			group: 'default' with: 'Development' ].
 
 	spec for: #'pharo8.x' do: [ self setUpPharo8Packages: spec ].
 	spec for: #'pharo9.x' do: [ self setUpPharo9Packages: spec ].
 	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
-	spec for: #'pharo11.x' do: [ self setUpPharo11Packages: spec ]
+	spec for: #'pharo11.x' do: [
+		self setUpPharo11Packages: spec.
+		spec preLoadDoIt: #closeWelcomeWindow ]
+]
+
+{ #category : #'post-load actions' }
+BaselineOfLaunchpad >> closeWelcomeWindow [
+	"Workaround for https://github.com/pharo-project/pharo/issues/13788"
+
+	Smalltalk globals
+		at: #StWelcomeBrowser
+		ifPresent: [ :class |
+		class allInstancesDo: [ :browser | browser owner close ] ].
+	Smalltalk garbageCollect
 ]
 
 { #category : #accessing }
