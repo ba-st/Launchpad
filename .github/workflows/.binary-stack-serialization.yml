@@ -16,7 +16,7 @@ jobs:
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
       - name: Load Image and Run Tests
-        # We can't run this tests with the coverage enabled because it will modify the stack it's
+        # We can't run these tests with the coverage enabled because it will modify the stack it's
         # trying to serialize making the tests fail in some situations
         run: smalltalkci -s ${{ matrix.smalltalk }} .smalltalkci/.binary-stack-serialization.ston
         env:
