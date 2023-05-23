@@ -9,16 +9,12 @@ SmalltalkCISpec {
   ],
   #testing : {
     #exclude : {
-      #packages : [ 'Launchpad-Tracing*']
-    },
-    #coverage : {
       #packages : [ 
         'Launchpad-Applications*',
         'Launchpad-Commands*',
         'Launchpad-Configuration*',
         'Launchpad-Examples*',
-        'Launchpad-SUnit*' ],
-      #format: #lcov
+        'Launchpad-SUnit*' ]
     }
   }
 }

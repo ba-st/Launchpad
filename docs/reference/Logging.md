@@ -8,5 +8,5 @@ to process these events. One of the loggers writes informational log records to
 Applications can freely configure their loggers if they want to report these events
 differently.
 
-If you want the logging in an structured format, use `--enable-structured-logging`
+If you want the logging in a structured format, use `--enable-structured-logging`
 option. When enabled the logs are emitted in JSON format.

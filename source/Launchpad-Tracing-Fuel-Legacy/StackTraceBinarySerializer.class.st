@@ -4,10 +4,10 @@ Class {
 	#instVars : [
 		'openStreamAction'
 	],
-	#category : #'Launchpad-Tracing'
+	#category : #'Launchpad-Tracing-Fuel-Legacy'
 }
 
-{ #category : #coverage }
+{ #category : #accessing }
 StackTraceBinarySerializer class >> classNamesNotUnderTest [
 
 	^ #( StackTraceBinarySerializer )

@@ -4,7 +4,7 @@ Class {
 	#category : #BaselineOfLaunchpad
 }
 
-{ #category : #baselines }
+{ #category : #'post-load actions' }
 BaselineOfLaunchpad >> addLaunchpadLogRecordAsGlobal [
 
 	Smalltalk at: #LaunchpadLogRecord put: LogRecord
@@ -14,7 +14,7 @@ BaselineOfLaunchpad >> addLaunchpadLogRecordAsGlobal [
 BaselineOfLaunchpad >> baseline: spec [
 
 	<baseline>
-	spec for: #pharo do: [ 
+	spec for: #pharo do: [
 		spec postLoadDoIt: #addLaunchpadLogRecordAsGlobal.
 		self
 			setUpDependencies: spec;
@@ -25,8 +25,23 @@ BaselineOfLaunchpad >> baseline: spec [
 			group: 'CI' with: 'Tests';
 			group: 'default' with: 'Development' ].
 
-	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
 	spec for: #'pharo8.x' do: [ self setUpPharo8Packages: spec ].
+	spec for: #'pharo9.x' do: [ self setUpPharo9Packages: spec ].
+	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
+	spec for: #'pharo11.x' do: [
+		self setUpPharo11Packages: spec.
+		spec preLoadDoIt: #closeWelcomeWindow ]
+]
+
+{ #category : #'post-load actions' }
+BaselineOfLaunchpad >> closeWelcomeWindow [
+	"Workaround for https://github.com/pharo-project/pharo/issues/13788"
+
+	Smalltalk globals
+		at: #StWelcomeBrowser
+		ifPresent: [ :class |
+		class allInstancesDo: [ :browser | browser owner close ] ].
+	Smalltalk garbageCollect
 ]
 
 { #category : #accessing }
@@ -106,19 +121,45 @@ BaselineOfLaunchpad >> setUpPackages: spec [
 BaselineOfLaunchpad >> setUpPharo10Packages: spec [
 
 	spec
-		package: 'Launchpad-Development-Tools' with: [ 
-			spec requires:
-					#( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
+		package: 'Launchpad-Tracing-Fuel-Legacy' with: [ spec requires: 'Launchpad-Tracing' ];
+		group: 'Deployment' with: 'Launchpad-Tracing-Fuel-Legacy';
+		group: 'Tests' with: 'Launchpad-Tracing-Fuel-Legacy'.
+
+	spec
+		package: 'Launchpad-Development-Tools'
+		with: [ spec requires: #( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
 		group: 'Tools' with: 'Launchpad-Development-Tools'
+]
+
+{ #category : #baselines }
+BaselineOfLaunchpad >> setUpPharo11Packages: spec [
+
+	spec
+		package: 'Launchpad-Tracing-Fuel' with: [ spec requires: 'Launchpad-Tracing' ];
+		group: 'Deployment' with: 'Launchpad-Tracing-Fuel';
+		group: 'Tests' with: 'Launchpad-Tracing-Fuel'
 ]
 
 { #category : #baselines }
 BaselineOfLaunchpad >> setUpPharo8Packages: spec [
 
 	spec
-		package: 'Launchpad-Tracing-Pharo8'
-		with: [ spec requires: 'Launchpad-Tracing' ];
+		package: 'Launchpad-Tracing-Fuel-Legacy' with: [ spec requires: 'Launchpad-Tracing' ];
+		group: 'Deployment' with: 'Launchpad-Tracing-Fuel-Legacy';
+		group: 'Tests' with: 'Launchpad-Tracing-Fuel-Legacy'.
+
+	spec
+		package: 'Launchpad-Tracing-Pharo8' with: [ spec requires: 'Launchpad-Tracing-Fuel-Legacy' ];
 		group: 'Deployment' with: 'Launchpad-Tracing-Pharo8'
+]
+
+{ #category : #baselines }
+BaselineOfLaunchpad >> setUpPharo9Packages: spec [
+
+	spec
+		package: 'Launchpad-Tracing-Fuel-Legacy' with: [ spec requires: 'Launchpad-Tracing' ];
+		group: 'Deployment' with: 'Launchpad-Tracing-Fuel-Legacy';
+		group: 'Tests' with: 'Launchpad-Tracing-Fuel-Legacy'
 ]
 
 { #category : #baselines }

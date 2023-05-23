@@ -51,10 +51,13 @@ function assertOutputIncludesMessage() {
 set -e
 
 print_info "Building base image"
-docker build -t launchpad:sut docker
+docker buildx build --tag launchpad:sut docker
 
 print_info "Building examples image"
-docker build -t launchpad-examples:sut -f .docker/Dockerfile .
+docker buildx build \
+  --tag launchpad-examples:sut \
+  --file .docker/Dockerfile \
+  .
 
 print_info "Running basic test"
 executeWithArguments docker run launchpad-examples:sut

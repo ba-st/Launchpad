@@ -1,23 +1,24 @@
-name: Baseline Groups
+name: Binary Stack Serialization Tests
 
 on: [push,pull_request,workflow_dispatch]
 
 jobs:
-   group-loading:
+   unit-tests:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         smalltalk: [ Pharo64-11, Pharo64-10, Pharo64-9.0, Pharo64-8.0 ]
-        load-spec: [ deployment, examples, tools, sunit, development]
-    name: ${{ matrix.smalltalk }} + ${{ matrix.load-spec }}
+    name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v3
       - uses: hpi-swa/setup-smalltalkCI@v1
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
-      - name: Load group in image
-        run: smalltalkci -s ${{ matrix.smalltalk }} .smalltalkci/.loading.${{ matrix.load-spec }}.ston
+      - name: Load Image and Run Tests
+        # We can't run these tests with the coverage enabled because it will modify the stack it's
+        # trying to serialize making the tests fail in some situations
+        run: smalltalkci -s ${{ matrix.smalltalk }} .smalltalkci/.binary-stack-serialization.ston
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 15
