@@ -1,0 +1,30 @@
+RwSimpleProjectLoadComponentV2 {
+	#name : 'Tests',
+	#condition : 'tests',
+	#projectNames : [ ],
+	#componentNames : [
+		'Deployment'
+	],
+	#packageNames : [
+		'Launchpad-Applications-Tests',
+		'Launchpad-Commands-Tests',
+		'Launchpad-Configuration-Tests',
+		'Launchpad-Examples',
+		'Launchpad-SUnit',
+		'Launchpad-Tracing-Tests'
+	],
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'allusers' : {
+				#packageNameToPlatformPropertiesMap : {
+    				'Launchpad-Applications-Tests' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Commands-Tests' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Configuration-Tests' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Examples' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-SUnit' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Tracing-Tests' : { 'symbolDictName' : 'Launchpad' }
+				}
+			}
+	 	}
+	}
+}

@@ -1,0 +1,29 @@
+RwSimpleProjectLoadComponentV2 {
+	#name : 'Deployment',
+	#projectNames : [ 
+		'Bell',
+		'Buoy',
+		'INI-Parser'
+	],
+	#componentNames : [ ],
+	#packageNames : [
+		'Launchpad-Applications',
+		'Launchpad-Commands',
+		'Launchpad-Configuration',
+		'Launchpad-GS64-Extensions',
+		'Launchpad-Tracing'
+	],
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'allusers' : {
+				#packageNameToPlatformPropertiesMap : {
+    				'Launchpad-Applications' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Commands' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Configuration' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-GS64-Extensions' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Tracing' : { 'symbolDictName' : 'Launchpad' }
+				}
+			}
+	 	}
+	}
+}

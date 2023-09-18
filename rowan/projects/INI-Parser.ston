@@ -1,0 +1,10 @@
+RwLoadSpecificationV2 {
+  #specName: 'INI-Parser',
+  #projectName : 'INI-Parser',
+  #gitUrl : 'https://github.com/ba-st-dependencies/INI-Parser.git',
+  #revision : 'release-candidate',
+  #projectSpecFile : 'rowan/project.ston',
+  #componentNames : [
+    'Deployment'
+  ]
+}
