@@ -34,7 +34,7 @@ ConfigurationFromEnvironmentProvider >> reloadConfiguration [
 { #category : #resolving }
 ConfigurationFromEnvironmentProvider >> valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock [
 
-	^ OSPlatform current
+	^ LanguagePlatform current os
 		  environmentAt: aConfigurationParameter environmentVariableName
 		  ifPresent: aPresentBlock
 		  ifAbsent: [ 

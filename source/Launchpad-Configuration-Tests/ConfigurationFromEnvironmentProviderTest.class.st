@@ -10,8 +10,8 @@ Class {
 { #category : #private }
 ConfigurationFromEnvironmentProviderTest >> set: environmentVariableName to: value during: aBlock [
 
-	OSPlatform current environment at: environmentVariableName put: value.
-	aBlock ensure: [ OSPlatform current environment removeKey: environmentVariableName ]
+	LanguagePlatform current os environment at: environmentVariableName put: value.
+	aBlock ensure: [ LanguagePlatform current os environment removeKey: environmentVariableName ]
 ]
 
 { #category : #tests }
