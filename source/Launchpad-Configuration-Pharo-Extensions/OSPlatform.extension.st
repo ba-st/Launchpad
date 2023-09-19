@@ -1,6 +1,6 @@
 Extension { #name : #OSPlatform }
 
-{ #category : #'*Launchpad-Configuration' }
+{ #category : #'*Launchpad-Configuration-Pharo-Extensions' }
 OSPlatform >> environmentAt: aVariableName ifPresent: aBlock ifAbsent: anAbsentBlock [
 
 	^ self environment

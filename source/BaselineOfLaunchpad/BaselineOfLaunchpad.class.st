@@ -79,10 +79,15 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 
 	spec
+		package: 'Launchpad-Configuration-Pharo-Extensions';
+		group: 'Deployment'
+		with: 'Launchpad-Configuration-Pharo-Extensions'.
+
+	spec
 		package: 'Launchpad-Configuration' with: [
 			spec requires:
 					#( 'Bell-Deployment' 'INIParser-Deployment'
-					   'Buoy-Deployment' ) ];
+					   'Buoy-Deployment' 'Launchpad-Configuration-Pharo-Extensions' ) ];
 		group: 'Deployment' with: 'Launchpad-Configuration'.
 
 	spec
@@ -109,7 +114,7 @@ BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 	spec
 		package: 'Launchpad-Tracing'
 		with: [ spec requires: 'Launchpad-Tracing-Pharo' ];
-		group: 'Deployment' with: 'Launchpad-Tracing'.
+		group: 'Deployment' with: 'Launchpad-Tracing'
 ]
 
 { #category : #baselines }
