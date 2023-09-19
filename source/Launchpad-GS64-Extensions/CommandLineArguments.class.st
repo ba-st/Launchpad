@@ -1,10 +1,5 @@
 "
 The CommandLineArguments represents the arguments passed to the image.
-In the following case,
-
-	$PHARO_VM myImage.image --foo bar
-	
-`CommandLineArguments default` contains {'--foo'. 'bar'}.
 "
 Class {
 	#name : #CommandLineArguments,
@@ -12,118 +7,80 @@ Class {
 	#instVars : [
 		'arguments'
 	],
-	#classInstVars : [
-		'singleton'
-	],
 	#category : #'Launchpad-GS64-Extensions'
 }
 
 { #category : #'instance creation' }
-CommandLineArguments class >> default [
-	^singleton ifNil: [ singleton := self new ]
+CommandLineArguments class >> new [
+
+	^ self withArguments: System commandLineArguments
 ]
 
 { #category : #'instance creation' }
 CommandLineArguments class >> withArguments: aCollection [
-	^ self basicNew
-		initializeWithArguments: aCollection;
-		yourself
-]
 
-{ #category : #accessing }
-CommandLineArguments >> allFilesWithExtension: anExtension [
-	^ self arguments select: [ :arg|
-		arg endsWith: anExtension ]
+	^ super new
+		  initializeWithArguments: aCollection;
+		  yourself
 ]
 
 { #category : #accessing }
 CommandLineArguments >> argumentAt: index [
+
 	^ arguments at: index
 ]
 
 { #category : #accessing }
 CommandLineArguments >> arguments [
+
 	^ arguments
-]
-
-{ #category : #testing }
-CommandLineArguments >> commandLineArguments [
-	"self commandLineArguments"
-
-	| documentPath args |
-
-	args := OrderedCollection withAll: Smalltalk arguments.
-	documentPath := Smalltalk vm documentPath.
-	documentPath isEmptyOrNil
-		ifFalse: [ args addFirst: documentPath ].
- 	^ args
 ]
 
 { #category : #copying }
 CommandLineArguments >> copySubcommand [
-	"return a new copy of this CommandLine without the first arguments"
-	^ self class withArguments: arguments allButFirst
-]
 
-{ #category : #copying }
-CommandLineArguments >> copyWithoutPassword [
-	^ self class withArguments: (arguments reject: [ :each | each beginsWith: '--deploymentPassword' ])
+	^ self class withArguments: arguments allButFirst
 ]
 
 { #category : #testing }
 CommandLineArguments >> hasArguments [
-	^ arguments size > 0
-]
 
-{ #category : #testing }
-CommandLineArguments >> hasFileWithExtension: aFileExtension [
-	"return true if the first argument has the given file extension"
-	^ self arguments anySatisfy: [ :arg|
-		arg endsWith: aFileExtension]
+	^ arguments notEmpty
 ]
 
 { #category : #testing }
 CommandLineArguments >> hasOption: aString [
+
 	| option |
-	option := (aString size = 1
-					ifTrue: [ '-']
-					ifFalse: [ '--']), aString.
+	option := ((self isShort: aString)
+		           ifTrue: [ '-' ]
+		           ifFalse: [ '--' ]) , aString.
 	(self arguments includes: option) ifTrue: [ ^ true ].
-	option := option,'='.
-	^ self arguments anySatisfy: [ :arg| arg beginsWith: option ]
+	option := option , '='.
+	^ self arguments anySatisfy: [ :arg | arg beginsWith: option ]
 ]
 
 { #category : #testing }
 CommandLineArguments >> includesSubCommand: aName [
-	self withFirstArgument: [ :arg|
-		arg = aName ifTrue: [ ^ true ]].
+
+	self withFirstArgument: [ :arg | arg = aName ifTrue: [ ^ true ] ].
 	^ false
 ]
 
 { #category : #initialization }
-CommandLineArguments >> initialize [
-
-	| documentPath  |
-
-	arguments := OrderedCollection withAll: Smalltalk arguments.
-	documentPath := Smalltalk vm documentPath.
-	documentPath isEmptyOrNil
-		ifFalse: [ arguments addFirst: documentPath ]
-]
-
-{ #category : #initialization }
 CommandLineArguments >> initializeWithArguments: aCollection [
-	super initialize.
+
 	arguments := aCollection
 ]
 
-{ #category : #testing }
-CommandLineArguments >> longOptionAt: aString [
-	^ self longOptionAt: aString ifAbsent: [
-		Error signal: 'Could not find long-form option: ', aString  ]
+{ #category : #private }
+CommandLineArguments >> isShort: aString [
+	"One letter strings are considered short options/arguments"
+
+	^ aString size = 1
 ]
 
-{ #category : #testing }
+{ #category : #private }
 CommandLineArguments >> longOptionAt: aString ifAbsent: absentBlock [
 	| optionStart |
 	optionStart := '--' , aString , '='.
@@ -135,15 +92,18 @@ CommandLineArguments >> longOptionAt: aString ifAbsent: absentBlock [
 
 { #category : #accessing }
 CommandLineArguments >> optionAt: aString [
-	^ self optionAt: aString ifAbsent: [
-		Error signal: 'Could not find option ', aString ]
+
+	^ self
+		  optionAt: aString
+		  ifAbsent: [ Error signal: 'Could not find option ' , aString ]
 ]
 
 { #category : #accessing }
 CommandLineArguments >> optionAt: aString ifAbsent: absentBlock [
-	^ (aString size = 1)
-		ifTrue: [ self shortOptionAt: aString ifAbsent: absentBlock ]
-		ifFalse: [ self longOptionAt: aString ifAbsent: absentBlock ]
+
+	^ (self isShort: aString)
+		  ifTrue: [ self shortOptionAt: aString ifAbsent: absentBlock ]
+		  ifFalse: [ self longOptionAt: aString ifAbsent: absentBlock ]
 ]
 
 { #category : #accessing }
@@ -156,18 +116,13 @@ CommandLineArguments >> optionAt: aString ifPresent: presentBlock [
 
 { #category : #accessing }
 CommandLineArguments >> optionAt: aString ifPresent: presentBlock ifAbsent: absentBlock [
+
 	| option |
 	option := self optionAt: aString ifAbsent: [ ^ absentBlock value ].
 	^ presentBlock value: option
 ]
 
-{ #category : #testing }
-CommandLineArguments >> shortOptionAt: aString [
-	^ self shortOptionAt: aString ifAbsent: [
-		Error signal: 'Could not find short-form option: ', aString  ]
-]
-
-{ #category : #testing }
+{ #category : #private }
 CommandLineArguments >> shortOptionAt: aString ifAbsent: absentBlock [
 	| index |
 	index := (arguments indexOf: '-', aString) + 1.
@@ -176,8 +131,9 @@ CommandLineArguments >> shortOptionAt: aString ifAbsent: absentBlock [
 		ifTrue: absentBlock
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 CommandLineArguments >> withFirstArgument: aBlock [
+
 	self arguments ifEmpty: [ ^ self ].
 	^ aBlock value: self arguments first
 ]

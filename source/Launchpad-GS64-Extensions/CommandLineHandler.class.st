@@ -31,9 +31,7 @@ Class {
 { #category : #'instance creation' }
 CommandLineHandler class >> activateWith: aCommandLine [
 
-	^ self new
-		commandLine: (self prepareSubcommand: aCommandLine);
-		activate
+	^ (self commandLine: (self prepareSubcommand: aCommandLine)) activate
 ]
 
 { #category : #accessing }
@@ -51,23 +49,16 @@ CommandLineHandler class >> commandLine: aCommandLine [
 
 { #category : #accessing }
 CommandLineHandler class >> commandName [
-	" Overwrite this method to provide a short name for this command handler.
-	You may pass the commandName as first argument to the image to select this handler"
-	^ self name
+
+	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
-CommandLineHandler class >> description [
-	"This method should return a short one-line description of the command"
-	^ nil
-]
-
-{ #category : #accessing }
+{ #category : #testing }
 CommandLineHandler class >> isAbstract [
 	^ self = CommandLineHandler
 ]
 
-{ #category : #'handler selection' }
+{ #category : #testing }
 CommandLineHandler class >> isResponsibleFor: aCommandLineArguments [
 	^ aCommandLineArguments includesSubCommand: self commandName
 ]
@@ -84,62 +75,21 @@ CommandLineHandler class >> prepareSubcommand: commandLineArguments [
 	^ commandLineArguments
 ]
 
-{ #category : #'handler selection' }
+{ #category : #accessing }
 CommandLineHandler class >> priority [
 	^ 0
 ]
 
-{ #category : #testing }
-CommandLineHandler class >> requireDeploymentPassword [
-	"Here so that we can distinguish user application services command line handlers from usual pharo command line handlers.
-	The objective is to be able to filter command line accessible by the user.
-	Command line handlers that are not application services can be protected by a password in deployment."
-
-	^ true
-]
-
-{ #category : #'handler selection' }
+{ #category : #private }
 CommandLineHandler class >> selectHandlersFor: aCommandLine [
 
 	^ self allHandlers select: [ :handlerClass|
 		handlerClass isResponsibleFor: aCommandLine ]
 ]
 
-{ #category : #utilities }
-CommandLineHandler >> << aString [
-	^ self stdout
-		nextPutAll: aString;
-		yourself
-]
-
 { #category : #activation }
 CommandLineHandler >> activate [
 	 self subclassResponsibility
-]
-
-{ #category : #activation }
-CommandLineHandler >> activateHelp [
-	"Default help implementation, running #help if the only argument is --help "
-	((self hasOption: 'help') and: [ self arguments size = 1 ])
-		ifTrue: [
-			self help.
-			^ true ].
-	^ false
-]
-
-{ #category : #activation }
-CommandLineHandler >> activateHelpWithoutArguments [
-	"Default help implementation, running #help if the there is no argument or a single one which is --help "
-	((self hasOption: 'help') or: [ self arguments isEmpty ])
-		ifTrue: [
-			self help.
-			^ true ].
-	^ false
-]
-
-{ #category : #accessing }
-CommandLineHandler >> allHandlers [
-	^ CommandLineHandler allHandlers
 ]
 
 { #category : #'accessing - arguments' }
@@ -167,30 +117,6 @@ CommandLineHandler >> commandName [
 	^ self class commandName
 ]
 
-{ #category : #accessing }
-CommandLineHandler >> description [
-	^ self class description
-]
-
-{ #category : #utilities }
-CommandLineHandler >> exitFailure [
-	 ^ self exitFailure: 'Command line handler failed'
-]
-
-{ #category : #utilities }
-CommandLineHandler >> exitFailure: aMessage [
-	self hasSessionChanged
-		ifTrue: [ ^ self ].
-	Exit signalFailure: aMessage
-]
-
-{ #category : #utilities }
-CommandLineHandler >> exitSuccess [
-	self hasSessionChanged
-		ifTrue: [ ^ self ].
-	Exit signalSuccess
-]
-
 { #category : #testing }
 CommandLineHandler >> hasArguments [
 	^ self commandLine hasArguments
@@ -201,40 +127,14 @@ CommandLineHandler >> hasOption: aString [
 	^ self commandLine hasOption: aString
 ]
 
-{ #category : #testing }
-CommandLineHandler >> hasSessionChanged [
-	"check whether the session has changed since the commandline handler as been created"
-
-	^ session ~~ Smalltalk session
-]
-
-{ #category : #actions }
-CommandLineHandler >> help [
-	"This is a crude default help implementation."
-	self printHelp.
-	Smalltalk isInteractive
-		ifFalse: [ self exitSuccess ]
-]
-
 { #category : #initialization }
 CommandLineHandler >> initialize [
+
 	super initialize.
-	session := Smalltalk session.
 	self
+		initializeSession;
 		initializeStdout;
 		initializeStderr
-]
-
-{ #category : #initialization }
-CommandLineHandler >> initializeStderr [
-	"install the line end conversion and initialize the converter"
-	stderr := VTermOutputDriver stderr
-]
-
-{ #category : #initialization }
-CommandLineHandler >> initializeStdout [
-	"install the line end conversion and initialize the converter"
-	stdout := VTermOutputDriver stdout
 ]
 
 { #category : #accessing }
@@ -263,17 +163,6 @@ CommandLineHandler >> optionAt: aString ifPresent: absentBlock [
 CommandLineHandler >> optionAt: aString ifPresent: presentBlock ifAbsent: absentBlock [
 	^ self commandLine
 		optionAt: aString ifPresent: presentBlock ifAbsent: absentBlock
-]
-
-{ #category : #printing }
-CommandLineHandler >> printHelp [
-	self stderr
-		nextPutAll: self class comment; lf
-]
-
-{ #category : #utilities }
-CommandLineHandler >> quit [
-	self exitSuccess
 ]
 
 { #category : #accessing }
