@@ -17,13 +17,6 @@ LaunchpadRootCommand class >> commandName [
 	^ 'launchpad'
 ]
 
-{ #category : #initialization }
-LaunchpadRootCommand class >> initialize [
-
-	<ignoreForCoverage>
-	self version: ( VersionFromRepositoryResolver new valueFor: #BaselineOfLaunchpad )
-]
-
 { #category : #accessing }
 LaunchpadRootCommand class >> summary [
 
