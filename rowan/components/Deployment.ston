@@ -11,7 +11,8 @@ RwSimpleProjectLoadComponentV2 {
 		'Launchpad-Commands',
 		'Launchpad-Configuration',
 		'Launchpad-GS64-Extensions',
-		'Launchpad-Tracing'
+		'Launchpad-Tracing',
+		'Launchpad-Tracing-GS64'
 	],
 	#conditionalPackageMapSpecs : {
 		'gemstone' : {
@@ -21,7 +22,8 @@ RwSimpleProjectLoadComponentV2 {
     				'Launchpad-Commands' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Configuration' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-GS64-Extensions' : { 'symbolDictName' : 'Launchpad' },
-    				'Launchpad-Tracing' : { 'symbolDictName' : 'Launchpad' }
+    				'Launchpad-Tracing' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Tracing-GS64' : { 'symbolDictName' : 'Launchpad' }
 				}
 			}
 	 	}
