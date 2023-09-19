@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'openStreamAction'
 	],
-	#category : #'Launchpad-Tracing'
+	#category : #'Launchpad-Tracing-Pharo'
 }
 
 { #category : #'instance creation' }

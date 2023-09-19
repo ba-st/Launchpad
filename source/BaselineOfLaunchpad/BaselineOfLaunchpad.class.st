@@ -102,9 +102,14 @@ BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 		group: 'Deployment' with: 'Launchpad-Commands-Pharo'.
 
 	spec
-		package: 'Launchpad-Tracing'
+		package: 'Launchpad-Tracing-Pharo'
 		with: [ spec requires: 'Launchpad-Applications' ];
-		group: 'Deployment' with: 'Launchpad-Tracing'
+		group: 'Deployment' with: 'Launchpad-Tracing-Pharo'.
+
+	spec
+		package: 'Launchpad-Tracing'
+		with: [ spec requires: 'Launchpad-Tracing-Pharo' ];
+		group: 'Deployment' with: 'Launchpad-Tracing'.
 ]
 
 { #category : #baselines }
