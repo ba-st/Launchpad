@@ -137,6 +137,24 @@ CommandLineHandler >> initialize [
 		initializeStderr
 ]
 
+{ #category : #initialization }
+CommandLineHandler >> initializeSession [
+
+	session := GsCurrentSession currentSession
+]
+
+{ #category : #initialization }
+CommandLineHandler >> initializeStderr [
+
+	stderr := Stdio stderr
+]
+
+{ #category : #initialization }
+CommandLineHandler >> initializeStdout [
+
+	stdout := Stdio stdout
+]
+
 { #category : #accessing }
 CommandLineHandler >> name [
 	^ self printString

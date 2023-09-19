@@ -68,18 +68,6 @@ CommandLineHandler >> initializeSession [
 ]
 
 { #category : #'*Launchpad-GS64-Compatibility' }
-CommandLineHandler >> initializeStderr [
-	"install the line end conversion and initialize the converter"
-	stderr := VTermOutputDriver stderr
-]
-
-{ #category : #'*Launchpad-GS64-Compatibility' }
-CommandLineHandler >> initializeStdout [
-	"install the line end conversion and initialize the converter"
-	stdout := VTermOutputDriver stdout
-]
-
-{ #category : #'*Launchpad-GS64-Compatibility' }
 CommandLineHandler >> printHelp [
 	self stderr
 		nextPutAll: self class comment; lf
