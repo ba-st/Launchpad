@@ -54,22 +54,22 @@ BaselineOfLaunchpad >> projectClass [
 BaselineOfLaunchpad >> setUpDependencies: spec [
 
 	spec
-		baseline: 'Buoy' with: [ spec repository: 'github://ba-st/Buoy:v6' ];
+		baseline: 'Buoy' with: [ spec repository: 'github://ba-st/Buoy:v7' ];
 		project: 'Buoy-Deployment' copyFrom: 'Buoy' with: [ spec loads: 'Deployment' ];
 		project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ];
 		project: 'Buoy-Tools' copyFrom: 'Buoy' with: [ spec loads: 'Tools' ].
 
 	spec
-		baseline: 'Bell' with: [ spec repository: 'github://ba-st/Bell:v1' ];
+		baseline: 'Bell' with: [ spec repository: 'github://ba-st/Bell:v2' ];
 		project: 'Bell-Deployment' copyFrom: 'Bell' with: [ spec loads: 'Deployment' ];
 		project: 'Bell-SUnit' copyFrom: 'Bell' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
 
 	spec
-		baseline: 'INIParser' with: [ spec repository: 'github://ctSkennerton/INI-Parser:v1.1.1' ];
+		baseline: 'INIParser' with: [ spec repository: 'github://ba-st-dependencies/INI-Parser:v2' ];
 		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
 	spec
-		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v4' ];
+		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v5' ];
 		project: 'Hyperspace-SUnit'
 		copyFrom: 'Hyperspace'
 		with: [ spec loads: 'Dependent-SUnit-Extensions' ]
