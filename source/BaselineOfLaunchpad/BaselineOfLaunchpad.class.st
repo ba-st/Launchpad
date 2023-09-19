@@ -209,6 +209,11 @@ BaselineOfLaunchpad >> setUpTestPackages: spec [
 		group: 'Tests' with: 'Launchpad-Tracing-Tests'.
 
 	spec
+		package: 'Launchpad-Tracing-Pharo-Tests'
+		with: [ spec requires: 'Launchpad-Tracing' ];
+		group: 'Tests' with: 'Launchpad-Tracing-Pharo-Tests'.
+
+	spec
 		package: 'Launchpad-Commands-Tests' with: [
 			spec requires:
 					#( 'Examples' 'Launchpad-Commands' 'Launchpad-SUnit'
