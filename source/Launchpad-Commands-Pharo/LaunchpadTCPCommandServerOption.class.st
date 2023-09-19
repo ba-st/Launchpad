@@ -4,13 +4,19 @@ Class {
 	#instVars : [
 		'command'
 	],
-	#category : #'Launchpad-Commands'
+	#category : #'Launchpad-Commands-Pharo'
 }
 
 { #category : #'instance creation' }
 LaunchpadTCPCommandServerOption class >> for: aCommand [
 
 	^ self new initializeFor: aCommand
+]
+
+{ #category : #testing }
+LaunchpadTCPCommandServerOption class >> isExtendedStartingOption [
+
+	^ true
 ]
 
 { #category : #testing }

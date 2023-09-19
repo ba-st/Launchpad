@@ -4,11 +4,26 @@ Class {
 	#category : #'Launchpad-Commands'
 }
 
+{ #category : #querying }
+LaunchpadOption class >> additionalStartingOptionsFor: startApplicationCommand [
+
+	^ self allLeafSubclasses
+		  select: [ :optionClass | optionClass isExtendedStartingOption ]
+		  thenCollect: [ :optionClass |
+		  optionClass for: startApplicationCommand ]
+]
+
 { #category : #testing }
 LaunchpadOption class >> isAbstract [
 
 	<ignoreForCoverage>
 	^ self = LaunchpadOption
+]
+
+{ #category : #testing }
+LaunchpadOption class >> isExtendedStartingOption [
+
+	^ false
 ]
 
 { #category : #testing }

@@ -79,21 +79,31 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 BaselineOfLaunchpad >> setUpDeploymentPackages: spec [
 
 	spec
-		package: 'Launchpad-Configuration'
-		with: [ spec requires: #( 'Bell-Deployment' 'INIParser-Deployment' 'Buoy-Deployment' ) ];
+		package: 'Launchpad-Configuration' with: [
+			spec requires:
+					#( 'Bell-Deployment' 'INIParser-Deployment'
+					   'Buoy-Deployment' ) ];
 		group: 'Deployment' with: 'Launchpad-Configuration'.
 
 	spec
-		package: 'Launchpad-Applications' with: [ spec requires: 'Bell-Deployment' ];
+		package: 'Launchpad-Applications'
+		with: [ spec requires: 'Bell-Deployment' ];
 		group: 'Deployment' with: 'Launchpad-Applications'.
 
 	spec
-		package: 'Launchpad-Commands'
-		with: [ spec requires: #( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
+		package: 'Launchpad-Commands' with: [
+			spec requires:
+					#( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
 		group: 'Deployment' with: 'Launchpad-Commands'.
 
 	spec
-		package: 'Launchpad-Tracing' with: [ spec requires: 'Launchpad-Applications' ];
+		package: 'Launchpad-Commands-Pharo'
+		with: [ spec requires: 'Launchpad-Commands' ];
+		group: 'Deployment' with: 'Launchpad-Commands-Pharo'.
+
+	spec
+		package: 'Launchpad-Tracing'
+		with: [ spec requires: 'Launchpad-Applications' ];
 		group: 'Deployment' with: 'Launchpad-Tracing'
 ]
 
@@ -177,20 +187,33 @@ BaselineOfLaunchpad >> setUpTestPackages: spec [
 
 	spec
 		package: 'Launchpad-Configuration-Tests'
-		with: [ spec requires: #( 'Launchpad-Configuration' 'Launchpad-SUnit' ) ];
+		with: [
+			spec requires: #( 'Launchpad-Configuration'
+				   'Launchpad-SUnit' ) ];
 		group: 'Tests' with: 'Launchpad-Configuration-Tests'.
 
 	spec
 		package: 'Launchpad-Applications-Tests'
-		with: [ spec requires: #( 'Launchpad-Applications' 'Launchpad-SUnit' ) ];
+		with: [
+			spec requires: #( 'Launchpad-Applications' 'Launchpad-SUnit' ) ];
 		group: 'Tests' with: 'Launchpad-Applications-Tests'.
 
 	spec
-		package: 'Launchpad-Tracing-Tests' with: [ spec requires: 'Launchpad-Tracing' ];
+		package: 'Launchpad-Tracing-Tests'
+		with: [ spec requires: 'Launchpad-Tracing' ];
 		group: 'Tests' with: 'Launchpad-Tracing-Tests'.
 
 	spec
-		package: 'Launchpad-Commands-Tests'
-		with: [ spec requires: #( 'Examples' 'Launchpad-Commands' 'Launchpad-SUnit' 'Hyperspace-SUnit' ) ];
-		group: 'Tests' with: 'Launchpad-Commands-Tests'
+		package: 'Launchpad-Commands-Tests' with: [
+			spec requires:
+					#( 'Examples' 'Launchpad-Commands' 'Launchpad-SUnit'
+					   'Hyperspace-SUnit' ) ];
+		group: 'Tests' with: 'Launchpad-Commands-Tests'.
+
+	spec
+		package: 'Launchpad-Commands-Pharo-Tests' with: [
+			spec requires:
+					#( 'Examples' 'Launchpad-Commands-Pharo'
+					   'Launchpad-SUnit' 'Hyperspace-SUnit' ) ];
+		group: 'Tests' with: 'Launchpad-Commands-Pharo-Tests'
 ]
