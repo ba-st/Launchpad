@@ -10,6 +10,7 @@ RwSimpleProjectLoadComponentV2 {
 		'Launchpad-Applications',
 		'Launchpad-Commands',
 		'Launchpad-Configuration',
+		'Launchpad-Configuration-GS64-Extensions',
 		'Launchpad-GS64-Extensions',
 		'Launchpad-Tracing',
 		'Launchpad-Tracing-GS64'
@@ -21,6 +22,7 @@ RwSimpleProjectLoadComponentV2 {
     				'Launchpad-Applications' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Commands' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Configuration' : { 'symbolDictName' : 'Launchpad' },
+    				'Launchpad-Configuration-GS64-Extensions' : { 'symbolDictName' : 'Globals' },
     				'Launchpad-GS64-Extensions' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Tracing' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Tracing-GS64' : { 'symbolDictName' : 'Launchpad' }
