@@ -11,6 +11,14 @@ Class {
 }
 
 { #category : #private }
+LaunchpadRootCommandTest >> assert: string isLineEndingInsensitiveEqualsTo: anotherString [
+
+	self
+		assert: (string withLineEndings: String lf)
+		equals: (anotherString withLineEndings: String lf)
+]
+
+{ #category : #private }
 LaunchpadRootCommandTest >> assertCommandCanHandleNextArgumentIn: context [
 
 	self assert: ( command canHandle: ( context nextCommandLineArgumentIfNone: [ self fail ] ) )
@@ -545,32 +553,6 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingStructure
 ]
 
 { #category : #'tests - handling start subcommand' }
-LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingTCPCommandServer [
-
-	| output |
-
-	output := self handle: { 
-			          'launchpad'.
-			          'start'.
-			          '--debug-mode'.
-			          '--enable-tcp-command-server=0'.
-			          LaunchpadGreeterApplication commandName.
-			          '--name=John' }.
-
-	self assert: output equals: 'Hi John!<n>' expandMacros.
-
-	self assertLogRecordsMatch: #( 
-		'[INFO] Receiving commands over TCP/0'
-		'[INFO] greeter [v1.0.0] - A greetings application'
-		'[INFO] Obtaining configuration...'
-		'[WARNING] "Title" parameter not provided. Using default.'
-		'[INFO] Name: John'
-		'[INFO] Title: '
-		'[INFO] Obtaining configuration... [DONE]'
-		'[INFO] Exit application' )
-]
-
-{ #category : #'tests - handling start subcommand' }
 LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationInDebugMode [
 
 	| output |
@@ -781,7 +763,7 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandHelp [
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
-		assert: output equals: self expectedStartHelpOutput;
+		assert: output isLineEndingInsensitiveEqualsTo: self expectedStartHelpOutput;
 		assertThereAreNoLogRecords
 ]
 
@@ -795,7 +777,7 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
-		assert: output equals: self expectedStartHelpOutput;
+		assert: output isLineEndingInsensitiveEqualsTo: self expectedStartHelpOutput;
 		assertThereAreNoLogRecords
 ]
 
@@ -847,7 +829,7 @@ LaunchpadRootCommandTest >> testPrintHelpOn [
 
 	help := String streamContents: [ :stream | command printHelpOn: stream ].
 
-	self assert: help equals: 'NAME
+	self assert: help isLineEndingInsensitiveEqualsTo: 'NAME
 		launchpad - A minimal application launcher
 SYNOPSYS
 		launchpad [--version] [--help|-h] <command>

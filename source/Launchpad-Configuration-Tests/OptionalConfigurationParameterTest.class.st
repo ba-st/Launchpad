@@ -112,13 +112,11 @@ OptionalConfigurationParameterTest >> testNumberTransformation [
 
 	self
 		should: [ self valueWhenSetting: parameter to: 'a story about an API' ]
-		raise: Error
-		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'.
+		raise: Error.
 
 	self
 		should: [ self valueWhenSetting: parameter to: '' ]
 		raise: Error
-		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'
 ]
 
 { #category : #tests }

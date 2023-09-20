@@ -59,5 +59,5 @@ ConfigurationFromJsonSettingsFileProvider >> valueFor: aConfigurationParameter i
 				  valueFor: aConfigurationParameter
 				  ifFound: aPresentBlock
 				  ifNone: aFailBlock ]
-		  ifNotNil: aPresentBlock
+		  ifNotNil: [ :value | aPresentBlock cull: value ]
 ]
