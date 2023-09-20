@@ -803,24 +803,26 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 LaunchpadRootCommandTest >> testHandlingStopBrokenApplicationWhileRunning [
 
 	| semaphore |
-
 	semaphore := Semaphore new.
 
-	[ 
-	[ self handle: #( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
-		on: Error
-		do: [ :error | 
-			semaphore wait.
-			error return
-			]
-	] forkAt: Processor userInterruptPriority named: 'Launching broken application'.
+	LanguagePlatform current
+		fork: [
+			[
+			self handle:
+				#( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
+				on: Error
+				do: [ :error |
+					semaphore wait.
+					error return ] ]
+		named: 'Launching broken application'
+		at: Processor userInterruptPriority.
 
 	LaunchpadApplication currentlyRunning stop.
 	semaphore signal.
 
 	self assertLogRecordsMatch:
 		#( '[INFO] broken [v0.0.1] - A broken application'
-			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration...'
 		   '[INFO] Obtaining configuration... [DONE]' )
 ]
 
