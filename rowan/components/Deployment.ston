@@ -3,7 +3,8 @@ RwSimpleProjectLoadComponentV2 {
 	#projectNames : [ 
 		'Bell',
 		'Buoy',
-		'INI-Parser'
+		'INI-Parser',
+		'SortFunctions'
 	],
 	#componentNames : [ ],
 	#packageNames : [
