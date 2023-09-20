@@ -15,6 +15,16 @@ MandatoryConfigurationParameterTest >> commandLineProviderSetting: aParameter to
 				      ( '--<1s>=<2s>' expandMacrosWith: aParameter commandLineArgumentName with: aString ) ) )
 ]
 
+{ #category : #private }
+MandatoryConfigurationParameterTest >> numberConversionAction [
+
+	^ [ :value |
+	  AssertionChecker
+		  enforce: [ value isAllDigits ]
+		  because: 'Expected a number'.
+	  value asNumber ]
+]
+
 { #category : #tests }
 MandatoryConfigurationParameterTest >> testAccessing [
 
@@ -99,7 +109,7 @@ MandatoryConfigurationParameterTest >> testNumberTransformation [
 	parameter := MandatoryConfigurationParameter
 		             named: 'port'
 		             describedBy: 'The number of the port to listen'
-		             convertingWith: #asNumber.
+		             convertingWith: self numberConversionAction.
 
 	self assert: ( self valueWhenSetting: parameter to: '1' ) equals: 1.
 	self assert: ( self valueWhenSetting: parameter to: '01' ) equals: 1.
@@ -107,11 +117,13 @@ MandatoryConfigurationParameterTest >> testNumberTransformation [
 
 	self
 		should: [ self valueWhenSetting: parameter to: 'a story about an API' ]
-		raise: Error.
+		raise: Error
+		withMessageText: 'Expected a number'.
 
 	self
 		should: [ self valueWhenSetting: parameter to: '' ]
 		raise: Error
+		withMessageText: 'Expected a number'
 ]
 
 { #category : #tests }
