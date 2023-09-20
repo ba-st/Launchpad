@@ -21,6 +21,13 @@ ConfigurationFromJsonSettingsFileProvider class >> loading: aJsonFileReference c
 	^ self new initializeLoading: aJsonFileReference chainedWith: aConfigurationProvider
 ]
 
+{ #category : #private }
+ConfigurationFromJsonSettingsFileProvider >> asJsonPath: aConfigurationParameter [
+
+	^ (aConfigurationParameter sectionsAsAttributeNames copyWith:
+		   aConfigurationParameter attributeName) collect: #asSymbol
+]
+
 { #category : #initialization }
 ConfigurationFromJsonSettingsFileProvider >> initializeLoading: aFileReference chainedWith: aConfigurationProvider [
 
@@ -46,9 +53,11 @@ ConfigurationFromJsonSettingsFileProvider >> reloadConfiguration [
 { #category : #resolving }
 ConfigurationFromJsonSettingsFileProvider >> valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock [
 
-	^ ( json atPath:
-		    ( aConfigurationParameter sectionsAsAttributeNames copyWith:
-			      aConfigurationParameter attributeName ) ) ifNil: [ 
-		  nextProvider valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock ]
+	^ (json atPath: (self asJsonPath: aConfigurationParameter))
+		  ifNil: [
+			  nextProvider
+				  valueFor: aConfigurationParameter
+				  ifFound: aPresentBlock
+				  ifNone: aFailBlock ]
 		  ifNotNil: aPresentBlock
 ]
