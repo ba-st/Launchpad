@@ -45,6 +45,13 @@ LaunchpadRootCommandTest >> createFileNamed: fileName containing: fileContents d
 ]
 
 { #category : #private }
+LaunchpadRootCommandTest >> existsExtendedStartingOptions [
+
+	^ LaunchpadOption allLeafSubclasses anySatisfy: [ :optionClass |
+		  optionClass isExtendedStartingOption ]
+]
+
+{ #category : #private }
 LaunchpadRootCommandTest >> expectedExplainBrokenHelpOutput [
 
 	^ 'NAME<n>		broken [v0.0.1] - A broken application<n>SYNOPSYS<n>		broken [--raise-error]<n>COMMANDS<n>		--raise-error<n>			Raises an unexpected error. Useful to test stack trace generation.<n>'
@@ -82,16 +89,12 @@ LaunchpadRootCommandTest >> expectedListHelpOutput [
 { #category : #private }
 LaunchpadRootCommandTest >> expectedStartHelpOutput [
 
-	| basicHelp |
-	basicHelp := 'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-structured-logging] [--enable-tcp-command-server=%<listeningPort>] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>'.
-
-	^ ((LaunchpadOption allLeafSubclasses anySatisfy: [ :optionClass |
-		    optionClass isExtendedStartingOption ])
+	^ (self existsExtendedStartingOptions
 		   ifTrue: [
-			   basicHelp
-			   ,
-			   '		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>' ]
-		   ifFalse: [ basicHelp ]) expandMacros
+			   'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-structured-logging] [--enable-tcp-command-server=%<listeningPort>] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>' ]
+		   ifFalse: [
+			   'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-structured-logging] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>' ])
+		  expandMacros
 ]
 
 { #category : #private }
