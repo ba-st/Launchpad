@@ -25,5 +25,5 @@ ReleasedApplicationMode >> isDebugMode [
 { #category : #utilities }
 ReleasedApplicationMode >> value: aBlock onErrorDo: errorHandler [
 
-	^ aBlock on: Error do: errorHandler
+	^ aBlock on: Error except: Exit do: errorHandler
 ]
