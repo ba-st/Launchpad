@@ -82,12 +82,13 @@ CommandLineArguments >> isShort: aString [
 
 { #category : #private }
 CommandLineArguments >> longOptionAt: aString ifAbsent: absentBlock [
+
 	| optionStart |
 	optionStart := '--' , aString , '='.
 	^ self arguments
-		detect: [ :arg | arg beginsWith: optionStart ]
-		ifFound: [ :option | (option splitOn: '=') second ]
-		ifNone: absentBlock
+		  detect: [ :arg | arg beginsWith: optionStart ]
+		  ifFound: [ :option | ('=' split: option) second ]
+		  ifNone: absentBlock
 ]
 
 { #category : #accessing }
