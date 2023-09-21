@@ -1,6 +1,5 @@
 RwSimpleProjectLoadComponentV2 {
 	#name : 'Deployment',
-	#postloadDoitName : 'scripts/recordLaunchpadVersion',
 	#projectNames : [ 
 		'Bell',
 		'Buoy',
