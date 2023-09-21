@@ -5,16 +5,16 @@ Class {
 }
 
 { #category : #accessing }
-VersionFromRepositoryResolver >> valueFor: aPackageName [
+VersionFromRepositoryResolver >> valueFor: projectName [
 
-	| version |
-
+	| packageName version |
+	packageName := ('BaselineOf<1s>' expandMacrosWith: projectName) asSymbol.
 	version := ''.
 	self class environment at: #IceRepository ifPresent: [ :icebergRepository | 
 		version := icebergRepository registry detect: [ :repository | 
-			           repository includesPackageNamed: aPackageName ]
+			           repository includesPackageNamed: packageName ]
 			           ifFound: [ :repository | self versionFromGitRepository: repository ]
-			           ifNone: [ self versionFromMonticelloRepository: aPackageName ]
+			           ifNone: [ self versionFromMonticelloRepository: packageName ]
 		].
 	^ version
 ]

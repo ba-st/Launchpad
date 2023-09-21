@@ -15,6 +15,16 @@ OptionalConfigurationParameterTest >> commandLineProviderSetting: aParameter to:
 				      ( '--<1s>=<2s>' expandMacrosWith: aParameter commandLineArgumentName with: aString ) ) )
 ]
 
+{ #category : #private }
+OptionalConfigurationParameterTest >> numberConversionAction [
+
+	^ [ :value |
+	  AssertionChecker
+		  enforce: [ value isAllDigits ]
+		  because: 'Expected a number'.
+	  value asNumber ]
+]
+
 { #category : #tests }
 OptionalConfigurationParameterTest >> testAccessing [
 
@@ -104,7 +114,7 @@ OptionalConfigurationParameterTest >> testNumberTransformation [
 		             named: 'port'
 		             describedBy: 'The service''s listening port'
 		             defaultingTo: 8080
-		             convertingWith: #asNumber.
+		             convertingWith: self numberConversionAction.
 
 	self assert: ( self valueWhenSetting: parameter to: '1' ) equals: 1.
 	self assert: ( self valueWhenSetting: parameter to: '01' ) equals: 1.
@@ -113,12 +123,12 @@ OptionalConfigurationParameterTest >> testNumberTransformation [
 	self
 		should: [ self valueWhenSetting: parameter to: 'a story about an API' ]
 		raise: Error
-		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'.
+		withMessageText: 'Expected a number'.
 
 	self
 		should: [ self valueWhenSetting: parameter to: '' ]
 		raise: Error
-		withMessageText: 'Reading a number failed: a digit between 0 and 9 expected'
+		withMessageText: 'Expected a number'
 ]
 
 { #category : #tests }

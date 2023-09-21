@@ -1,0 +1,11 @@
+RwLoadSpecificationV2 {
+  #specName: 'Bell',
+  #projectName : 'Bell',
+  #gitUrl : 'https://github.com/ba-st/Bell.git',
+  #revision : 'v2',
+  #projectSpecFile : 'rowan/project.ston',
+  #componentNames : [
+    'Deployment',
+    'Dependent-SUnit-Extensions'
+  ]
+}

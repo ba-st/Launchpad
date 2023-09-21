@@ -7,7 +7,7 @@ Class {
 		'connectionSocket',
 		'serverProcess'
 	],
-	#category : #'Launchpad-Commands'
+	#category : #'Launchpad-Commands-Pharo'
 }
 
 { #category : #'instance creation' }

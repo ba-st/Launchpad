@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'openStreamAction'
 	],
-	#category : #'Launchpad-Tracing'
+	#category : #'Launchpad-Tracing-GS64'
 }
 
 { #category : #'instance creation' }
@@ -17,8 +17,7 @@ StackTraceTextDumper class >> on: anOpenStreamAction [
 StackTraceTextDumper >> dumpStackTraceFor: anError [
 
 	self writeStreamDo: [ :stream | 
-		( thisContext contextStack detect: [ :context | context receiver == anError ] ) errorReportOn:
-			stream ]
+		stream nextPutAll: (GsProcess stackReportToLevel: 300) ]
 ]
 
 { #category : #initialization }

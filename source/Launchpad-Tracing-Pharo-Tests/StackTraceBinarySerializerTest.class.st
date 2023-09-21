@@ -4,7 +4,7 @@ A StackTraceBinarySerializerTest is a test class for testing the behavior of Sta
 Class {
 	#name : #StackTraceBinarySerializerTest,
 	#superclass : #StackTraceDumperTest,
-	#category : #'Launchpad-Tracing-Tests'
+	#category : #'Launchpad-Tracing-Pharo-Tests'
 }
 
 { #category : #coverage }

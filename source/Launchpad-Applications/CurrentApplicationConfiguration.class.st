@@ -5,7 +5,13 @@ Class {
 }
 
 { #category : #accessing }
+CurrentApplicationConfiguration class >> default [
+
+	^ LaunchpadApplication currentlyRunning configuration
+]
+
+{ #category : #accessing }
 CurrentApplicationConfiguration >> default [
 
-	^LaunchpadApplication currentlyRunning configuration
+	^ self class default
 ]

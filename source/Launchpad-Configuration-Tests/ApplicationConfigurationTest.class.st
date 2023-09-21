@@ -8,6 +8,14 @@ Class {
 }
 
 { #category : #private }
+ApplicationConfigurationTest >> assert: string isLineEndingInsensitiveEqualsTo: anotherString [
+
+	self
+		assert: (string withLineEndings: String lf)
+		equals: (anotherString withLineEndings: String lf)
+]
+
+{ #category : #private }
 ApplicationConfigurationTest >> commandLineProviderOver: arguments [
 
 	^ ConfigurationFromCommandLineProvider over: ( CommandLineArguments withArguments: arguments )
@@ -101,7 +109,7 @@ ApplicationConfigurationTest >> testAsEnvironment [
 
 	configuration := self newApplicationConfiguration.
 	env := String streamContents: [ :stream | configuration asEnvironmentOn: stream ].
-	self assert: env equals: '# Port
+	self assert: env isLineEndingInsensitiveEqualsTo: '# Port
 COMMUNICATIONS__HTTP__PORT=8086
 # Scheme. Defaults to https
 COMMUNICATIONS__HTTP__SCHEME=https
@@ -119,7 +127,7 @@ ApplicationConfigurationTest >> testAsIniFile [
 
 	configuration := self newApplicationConfiguration.
 	ini := String streamContents: [ :stream | configuration asIniFileOn: stream ].
-	self assert: ini equals: '; Public URL
+	self assert: ini isLineEndingInsensitiveEqualsTo: '; Public URL
 publicURL = https://api.example.com/
 
 [Communications.HTTP]

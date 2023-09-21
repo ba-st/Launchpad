@@ -60,6 +60,12 @@ LaunchpadApplication class >> initialize [
 	self resetCurrentlyRunning
 ]
 
+{ #category : #testing }
+LaunchpadApplication class >> isAbstract [
+
+	^ self = LaunchpadApplication
+]
+
 { #category : #printing }
 LaunchpadApplication class >> printCommandArgumentsOn: stream [
 

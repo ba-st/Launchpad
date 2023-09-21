@@ -39,19 +39,6 @@ LaunchpadStartApplicationCommand >> enableStructuredLogging [
 	] ensure: [ StandardStreamLogger onStandardError stop ]
 ]
 
-{ #category : #configuring }
-LaunchpadStartApplicationCommand >> enableTCPCommandServerListeningOn: listeningPort [
-
-	commandServer := TCPCommandServer listeningOn: listeningPort.
-	commandServer registerCommandNamed: 'SHUTDOWN' executing: [ 
-		[ 
-		LaunchpadApplication currentlyRunning
-			stop;
-			exitSuccess
-		] forkAt: Processor timingPriority named: 'Launchpad shutdown process'
-		]
-]
-
 { #category : #evaluating }
 LaunchpadStartApplicationCommand >> evaluateWithin: context [
 
@@ -66,12 +53,12 @@ LaunchpadStartApplicationCommand >> evaluateWithin: context [
 LaunchpadStartApplicationCommand >> initialize [
 
 	super initialize.
-	options := Array
-		           with: ( LaunchpadHelpOption for: self )
-		           with: ( LaunchpadDebugModeOption for: self )
-		           with: ( LaunchpadSettingsFileOption for: self )
-		           with: ( LaunchpadTCPCommandServerOption for: self )
-		           with: ( LaunchpadStructuredLoggingOption for: self ).
+	options := OrderedCollection
+		           with: (LaunchpadHelpOption for: self)
+		           with: (LaunchpadDebugModeOption for: self)
+		           with: (LaunchpadSettingsFileOption for: self)
+		           with: (LaunchpadStructuredLoggingOption for: self).
+	options addAll: (LaunchpadOption additionalStartingOptionsFor: self).
 	baseConfigurationProvider := NullConfigurationProvider new.
 	applicationMode := ReleasedApplicationMode new.
 	commandServer := NullCommandServer new

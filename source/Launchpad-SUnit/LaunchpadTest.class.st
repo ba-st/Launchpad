@@ -78,7 +78,7 @@ LaunchpadTest >> start: aLaunchpadApplication withAll: arguments [
 LaunchpadTest >> tearDown [
 
 	loggingAsserter stopLoggers.
-	runningApplication ifNotNil: #stop.
+	runningApplication ifNotNil: [:application | application stop].
 	LaunchpadApplication resetCurrentlyRunning.
 	super tearDown
 ]

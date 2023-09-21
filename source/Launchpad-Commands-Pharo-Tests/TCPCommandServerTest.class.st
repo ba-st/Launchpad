@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'server'
 	],
-	#category : #'Launchpad-Commands-Tests'
+	#category : #'Launchpad-Commands-Pharo-Tests'
 }
 
 { #category : #running }

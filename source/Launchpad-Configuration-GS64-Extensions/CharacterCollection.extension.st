@@ -1,7 +1,7 @@
-Extension { #name : #String }
+Extension { #name : #CharacterCollection }
 
-{ #category : #'*Launchpad-Configuration' }
-String >> asBoolean [
+{ #category : #'*Launchpad-Configuration-GS64-Extensions' }
+CharacterCollection >> asBoolean [
 
 	self asLowercase = 'true' ifTrue: [ ^ true ].
 	self asLowercase = 'false' ifTrue: [ ^ false ].

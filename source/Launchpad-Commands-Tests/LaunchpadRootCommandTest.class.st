@@ -11,6 +11,14 @@ Class {
 }
 
 { #category : #private }
+LaunchpadRootCommandTest >> assert: string isLineEndingInsensitiveEqualsTo: anotherString [
+
+	self
+		assert: (string withLineEndings: String lf)
+		equals: (anotherString withLineEndings: String lf)
+]
+
+{ #category : #private }
 LaunchpadRootCommandTest >> assertCommandCanHandleNextArgumentIn: context [
 
 	self assert: ( command canHandle: ( context nextCommandLineArgumentIfNone: [ self fail ] ) )
@@ -34,6 +42,13 @@ LaunchpadRootCommandTest >> createFileNamed: fileName containing: fileContents d
 	fileReference writeStreamDo: [ :stream | stream nextPutAll: fileContents ].
 	aBlock value
 	] ensure: [ fileReference ensureDelete ]
+]
+
+{ #category : #private }
+LaunchpadRootCommandTest >> existsExtendedStartingOptions [
+
+	^ LaunchpadOption allLeafSubclasses anySatisfy: [ :optionClass |
+		  optionClass isExtendedStartingOption ]
 ]
 
 { #category : #private }
@@ -74,8 +89,12 @@ LaunchpadRootCommandTest >> expectedListHelpOutput [
 { #category : #private }
 LaunchpadRootCommandTest >> expectedStartHelpOutput [
 
-	^ 'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-tcp-command-server=%<listeningPort>] [--enable-structured-logging] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>'
-		  expandMacros			
+	^ (self existsExtendedStartingOptions
+		   ifTrue: [
+			   'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-structured-logging] [--enable-tcp-command-server=%<listeningPort>] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>		--enable-tcp-command-server=%<listeningPort><n>			Enable a TCP command server. This can be used to send commands controlling the application using a TCP port.<n>' ]
+		   ifFalse: [
+			   'NAME<n>		launchpad-start - Start the selected application<n>SYNOPSYS<n>		launchpad start [--help|-h] [--debug-mode] [--settings-file=%<filename>] [--enable-structured-logging] %<app> [%<parameters>]<n>DESCRIPTION<n>		Start the application selected via %<app>.<n><n><t><t>Application configuration is made by the command-line via %<parameters>, using environment variables or settings files.<n><n><t><t>Execute launchpad explain %<app> to get a list of valid configuration parameters.<n>OPTIONS<n>		-h, --help<n>			Print this help message and exit.<n>		--debug-mode<n>			Enable the debugging mode. The image will not quit on unexpected errors. This configuration can be used in the application to improve the debugging experience.<n>		--settings-file=%<filename><n>			Provide application configuration via a settings file. This option can occur several times to configure more than one settings file. Supported file settings formats are INI and JSON.<n>		--enable-structured-logging<n>			Enable structured logging. When enabled the log will be emitted in JSON format.<n>' ])
+		  expandMacros
 ]
 
 { #category : #private }
@@ -130,8 +149,12 @@ LaunchpadRootCommandTest >> handle: arguments onExitDo: aBlock [
 { #category : #private }
 LaunchpadRootCommandTest >> set: environmentVariableName to: value during: aBlock [
 
-	OSPlatform current environment at: environmentVariableName put: value.
-	aBlock ensure: [ OSPlatform current environment removeKey: environmentVariableName ]
+	LanguagePlatform current os
+		environmentAt: environmentVariableName
+		put: value.
+	aBlock ensure: [
+		LanguagePlatform current os removeEnvironmentKey:
+			environmentVariableName ]
 ]
 
 { #category : #running }
@@ -541,32 +564,6 @@ LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingStructure
 ]
 
 { #category : #'tests - handling start subcommand' }
-LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationEnablingTCPCommandServer [
-
-	| output |
-
-	output := self handle: { 
-			          'launchpad'.
-			          'start'.
-			          '--debug-mode'.
-			          '--enable-tcp-command-server=0'.
-			          LaunchpadGreeterApplication commandName.
-			          '--name=John' }.
-
-	self assert: output equals: 'Hi John!<n>' expandMacros.
-
-	self assertLogRecordsMatch: #( 
-		'[INFO] Receiving commands over TCP/0'
-		'[INFO] greeter [v1.0.0] - A greetings application'
-		'[INFO] Obtaining configuration...'
-		'[WARNING] "Title" parameter not provided. Using default.'
-		'[INFO] Name: John'
-		'[INFO] Title: '
-		'[INFO] Obtaining configuration... [DONE]'
-		'[INFO] Exit application' )
-]
-
-{ #category : #'tests - handling start subcommand' }
 LaunchpadRootCommandTest >> testHandlingStartGreeterApplicationInDebugMode [
 
 	| output |
@@ -777,7 +774,7 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandHelp [
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
-		assert: output equals: self expectedStartHelpOutput;
+		assert: output isLineEndingInsensitiveEqualsTo: self expectedStartHelpOutput;
 		assertThereAreNoLogRecords
 ]
 
@@ -791,7 +788,7 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 		          onExitDo: [ :exit | self assert: exit isSuccess ].
 
 	self
-		assert: output equals: self expectedStartHelpOutput;
+		assert: output isLineEndingInsensitiveEqualsTo: self expectedStartHelpOutput;
 		assertThereAreNoLogRecords
 ]
 
@@ -799,24 +796,26 @@ LaunchpadRootCommandTest >> testHandlingStartSubcommandShortHelp [
 LaunchpadRootCommandTest >> testHandlingStopBrokenApplicationWhileRunning [
 
 	| semaphore |
-
 	semaphore := Semaphore new.
 
-	[ 
-	[ self handle: #( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
-		on: Error
-		do: [ :error | 
-			semaphore wait.
-			error return
-			]
-	] forkAt: Processor userInterruptPriority named: 'Launching broken application'.
+	LanguagePlatform current
+		fork: [
+			[
+			self handle:
+				#( 'launchpad' 'start' '--debug-mode' 'broken' '--raise-error' ) ]
+				on: Error
+				do: [ :error |
+					semaphore wait.
+					error return ] ]
+		named: 'Launching broken application'
+		at: Processor userInterruptPriority.
 
 	LaunchpadApplication currentlyRunning stop.
 	semaphore signal.
 
 	self assertLogRecordsMatch:
 		#( '[INFO] broken [v0.0.1] - A broken application'
-			'[INFO] Obtaining configuration...'
+		   '[INFO] Obtaining configuration...'
 		   '[INFO] Obtaining configuration... [DONE]' )
 ]
 
@@ -841,7 +840,7 @@ LaunchpadRootCommandTest >> testPrintHelpOn [
 
 	help := String streamContents: [ :stream | command printHelpOn: stream ].
 
-	self assert: help equals: 'NAME
+	self assert: help isLineEndingInsensitiveEqualsTo: 'NAME
 		launchpad - A minimal application launcher
 SYNOPSYS
 		launchpad [--version] [--help|-h] <command>

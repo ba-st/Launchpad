@@ -1,0 +1,9 @@
+RwLoadSpecificationV2 {
+  #specName: 'Launchpad-Deployment',
+  #projectName : 'Launchpad',
+  #diskUrl : 'Launchpad',
+  #projectSpecFile : 'rowan/project.ston',
+  #componentNames : [
+    'Deployment'
+  ]
+}
