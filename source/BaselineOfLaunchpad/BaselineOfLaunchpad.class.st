@@ -228,7 +228,6 @@ BaselineOfLaunchpad >> setUpTestPackages: spec [
 	spec
 		package: 'Launchpad-Commands-Pharo-Tests' with: [
 			spec requires:
-					#( 'Examples' 'Launchpad-Commands-Pharo'
-					   'Launchpad-SUnit' 'Hyperspace-SUnit' ) ];
+					#( 'Launchpad-Commands-Tests' 'Launchpad-Commands-Pharo' ) ];
 		group: 'Tests' with: 'Launchpad-Commands-Pharo-Tests'
 ]
