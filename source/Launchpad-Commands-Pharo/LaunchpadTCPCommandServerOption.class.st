@@ -13,13 +13,6 @@ LaunchpadTCPCommandServerOption class >> for: aCommand [
 	^ self new initializeFor: aCommand
 ]
 
-{ #category : #'class initialization' }
-LaunchpadTCPCommandServerOption class >> initialize [
-
-	<ignoreForCoverage>
-	LaunchpadRootCommand version: ( VersionFromRepositoryResolver new valueFor: #BaselineOfLaunchpad )
-]
-
 { #category : #testing }
 LaunchpadTCPCommandServerOption class >> isExtendedStartingOption [
 
