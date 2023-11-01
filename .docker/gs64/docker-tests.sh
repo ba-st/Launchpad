@@ -100,42 +100,42 @@ run_launchpad_gem launchpad --version
 assertOutputIncludesMessage "Launchpad" out
 print_success "OK"
 
-print_info "Running launchpad-list test"
-run_launchpad_gem launchpad-list
+print_info "Running launchpad list test"
+run_launchpad_gem launchpad list
 assertOutputIncludesMessage "broken greeter" out
 print_success "OK"
 
-print_info "Running launchpad-list --verbose test"
-run_launchpad_gem launchpad-list --verbose
+print_info "Running launchpad list --verbose test"
+run_launchpad_gem launchpad list --verbose
 assertOutputIncludesMessage "broken v0.0.1" out
 assertOutputIncludesMessage "greeter v1.0.0" out
 print_success "OK"
 
-print_info "Running launchpad-explain test"
-run_launchpad_gem launchpad-explain broken
+print_info "Running launchpad explain test"
+run_launchpad_gem launchpad explain broken
 assertOutputIncludesMessage "broken \[v0.0.1\] - A broken application" out
-run_launchpad_gem launchpad-explain greeter
+run_launchpad_gem launchpad explain greeter
 assertOutputIncludesMessage "greeter \[v1.0.0\] - A greetings application" out
-run_launchpad_gem launchpad-explain
+run_launchpad_gem launchpad explain
 assertOutputIncludesMessage "\[ERROR\] Missing application name or option." err
 print_success "OK"
 
-print_info "Running launchpad-start greeter test"
-run_launchpad_gem launchpad-start greeter --name=Juan
+print_info "Running launchpad start greeter test"
+run_launchpad_gem launchpad start greeter --name=Juan
 assertOutputIncludesMessage "Hi Juan!" out
 print_success " Just name, OK"
-run_launchpad_gem launchpad-start greeter --name=Julia --title=Miss
+run_launchpad_gem launchpad start greeter --name=Julia --title=Miss
 assertOutputIncludesMessage "Hi Miss Julia!" out
 print_success " Name and title, OK"
-run_launchpad_gem launchpad-start greeter --title=Miss
+run_launchpad_gem launchpad start greeter --title=Miss
 assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
 print_success " Missing name, OK"
-run_launchpad_gem launchpad-start greeter
+run_launchpad_gem launchpad start greeter
 assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
 print_success "OK"
 
-print_info "Running launchpad-start broken test"
-run_launchpad_gem launchpad-start broken --raise-error
+print_info "Running launchpad start broken test"
+run_launchpad_gem launchpad start broken --raise-error
 assertOutputIncludesMessage "\[INFO\] Obtaining configuration... \[DONE\]" out
 assertOutputIncludesMessage "\[ERROR\] Unexpected startup error: \"Doh!\"" err
 print_success "OK"
