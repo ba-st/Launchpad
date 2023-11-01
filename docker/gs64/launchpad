@@ -1,21 +1,6 @@
 #!/usr/bin/env bash
 
-# Configure NETLDI service database
 echo "${NETLDI_SERVICE_NAME} ${NETLDI_PORT}/tcp # GemStone - Netldi" >> /etc/services
-
-# Prepare Launchpad topaz input script
-readonly SYSTEM_USER_PASSWORD="${GS64_SYSTEM_USER_PASSWORD:-swordfish}"
-readonly STONE_NAME="${GS64_STONE_SERVICE_NAME:-gs64stone}"
-
-echo <<EOF >> .topazini
-set gemstone !@${GS64_STONE_HOSTNAME}!${STONE_NAME} user SystemUser pass ${SYSTEM_USER_PASSWORD}
-iferror exit 1
-login
-doit
-    CommandLineHandler activateWith: CommandLineArguments new
-%
-exit 0
-EOF
 
 # Ensure write permissions
 NEED_WRITE_PERMISSION=(
@@ -30,37 +15,5 @@ for path in "${NEED_WRITE_PERMISSION[@]}"; do
   fi
 done
 
-pid=0
-
-termination_handler() {
-  exit_status=0
-  if [ $pid -ne 0 ]; then
-    echo 'SIGTERM received, shutting down the gem'
-    kill "$pid"
-    stopnetldi
-    wait "$pid"
-    exit_status=$?
-  fi
-  exit "$exit_status"    
-}
-
-trap 'termination_handler' SIGTERM
-
-# start GemStone services
-# shellcheck disable=SC2086
-gosu "${GS_USER}" startnetldi \
-  -g \
-  -a "${GS_USER}" \
-  -n \
-  -P "${NETLDI_PORT}" \
-  -l "${GEMSTONE_LOG_DIR}/${NETLDI_SERVICE_NAME}.log" \
-  -D "${GEMSTONE_LOG_DIR}" \
-  ${NETLDI_ARGS:-} \
-  "${NETLDI_SERVICE_NAME}"
-
-# list GemStone services
-gslist -cvl
-
-gosu "${GS_USER}" topaz -l -- launchpad "$@"
-pid="$!"
-wait "$pid"
+# Run as GS_USER
+exec gosu "${GS_USER}" "${GEMSTONE_GLOBAL_DIR}/launchpad-gem" "$@"
