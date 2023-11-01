@@ -78,11 +78,13 @@ docker buildx build --tag launchpad-gs64:sut docker/gs64
 
 print_info "Running basic test"
 executeWithArguments docker run \
-   -e TZ="America/Argentina/Buenos_Aires" \
-   -e GS64_STONE_HOSTNAME="gs64-stone" \
-   --network=launchpad-net \
-   --cap-add=SYS_RESOURCE \
-   launchpad-examples-gs64:sut
+  -e TZ="America/Argentina/Buenos_Aires" \
+  -e GS64_STONE_HOSTNAME="gs64-stone" \
+  --cap-add=SYS_RESOURCE \
+  --network=launchpad-net \
+  --volume=$PWD/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
+  --volume=$PWD/.docker/gs64/gemstone.key:/opt/gemstone/product/sys/gemstone.key:ro \
+  launchpad-examples-gs64:sut
 assertOutputIncludesMessage '[INFO]' out
 assertOutputIncludesMessage "Hi Mr. DJ!" out
 print_success "OK"
