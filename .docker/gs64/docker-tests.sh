@@ -51,7 +51,7 @@ function assertOutputIncludesMessage() {
 set -e
 
 print_info "Creating network"
-docker network rm --force launchpad-net
+docker network rm launchpad-net
 docker network create --attachable launchpad-net
 
 print_info "Starting stone"
@@ -77,28 +77,26 @@ docker buildx build --tag launchpad-gs64:sut docker/gs64
    --file .docker/gs64/Dockerfile \
    .
 
-print_info "Running basic test"
-executeWithArguments docker run \
+function run_launchpad_gem(){
+  executeWithArguments docker run \
   -e TZ="America/Argentina/Buenos_Aires" \
   -e GS64_STONE_HOSTNAME="gs64-stone" \
   --cap-add=SYS_RESOURCE \
   --network=launchpad-net \
   --volume="$PWD"/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
-  launchpad-examples-gs64:sut
+  launchpad-examples-gs64:sut "$@"
+}
+
+print_info "Running basic test"
+run_launchpad_gem
 assertOutputIncludesMessage '[INFO]' out
 assertOutputIncludesMessage "Hi Mr. DJ!" out
 print_success "OK"
 
-# print_info "Running basic test with structured logging"
-# executeWithArguments docker run -e LAUNCHPAD__LOG_FORMAT='json' launchpad-examples:sut
-# assertOutputIncludesMessage '"level":"INFO"' out
-# assertOutputIncludesMessage "Hi Mr. DJ!" out
-# print_success "OK"
-
-# print_info "Running --version test"
-# executeWithArguments docker run launchpad-examples:sut launchpad --version
-# assertOutputIncludesMessage "Launchpad" out
-# print_success "OK"
+print_info "Running --version test"
+run_launchpad_gem launchpad --version
+assertOutputIncludesMessage "Launchpad" out
+print_success "OK"
 
 # print_info "Running launchpad-list test"
 # executeWithArguments docker run launchpad-examples:sut launchpad-list
@@ -151,4 +149,4 @@ print_success "OK"
 
 print_info "Stopping stone"
 docker stop gs64-stone
-docker network rm --force launchpad-net
+docker network rm launchpad-net
