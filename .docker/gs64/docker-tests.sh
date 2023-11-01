@@ -59,9 +59,9 @@ docker run --rm --detach --name gs64-stone \
   -e TZ="America/Argentina/Buenos_Aires" \
   --cap-add=SYS_RESOURCE \
   --network=launchpad-net \
-  --volume=$PWD:/opt/gemstone/projects/Launchpad:ro \
-  --volume=$PWD/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
-  --volume=$PWD/.docker/gs64/gemstone.key:/opt/gemstone/product/sys/gemstone.key:ro \
+  --volume="$PWD":/opt/gemstone/projects/Launchpad:ro \
+  --volume="$PWD"/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
+  --volume="$PWD"/.docker/gs64/gemstone.key:/opt/gemstone/product/sys/gemstone.key:ro \
   ghcr.io/ba-st/gs64-rowan:v3.7.0
 
 sleep 1
@@ -83,7 +83,7 @@ executeWithArguments docker run \
   -e GS64_STONE_HOSTNAME="gs64-stone" \
   --cap-add=SYS_RESOURCE \
   --network=launchpad-net \
-  --volume=$PWD/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
+  --volume="$PWD"/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
   launchpad-examples-gs64:sut
 assertOutputIncludesMessage '[INFO]' out
 assertOutputIncludesMessage "Hi Mr. DJ!" out

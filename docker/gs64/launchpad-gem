@@ -35,11 +35,11 @@ startnetldi \
   -l "${GEMSTONE_LOG_DIR}/${NETLDI_SERVICE_NAME}.log" \
   -D "${GEMSTONE_LOG_DIR}" \
   ${NETLDI_ARGS:-} \
-  "${NETLDI_SERVICE_NAME}"
+  "${NETLDI_SERVICE_NAME}" >> "${GEMSTONE_LOG_DIR}/startnetldi.log"
 
 # list GemStone services
-gslist -cvl
+gslist -cvl >> "${GEMSTONE_LOG_DIR}/startnetldi.log"
 
-topaz -l -I "${LAUNCHPAD_TOPAZ_SCRIPT}" -S "${GEMSTONE_GLOBAL_DIR}/command-line-handler.tpz" -- launchpad "$@" &
+topaz -l -q -I "${LAUNCHPAD_TOPAZ_SCRIPT}" -S "${GEMSTONE_GLOBAL_DIR}/command-line-handler.tpz" -- launchpad "$@" &
 pid="$!"
 wait "$pid"
