@@ -56,7 +56,7 @@ docker buildx build --tag launchpad:sut docker/pharo
 print_info "Building examples image"
 docker buildx build \
   --tag launchpad-examples:sut \
-  --file .docker/Dockerfile \
+  --file .docker/pharo/Dockerfile \
   .
 
 print_info "Running basic test"

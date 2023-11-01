@@ -10,4 +10,4 @@ jobs:
         with:
           fetch-depth: 2
       - name: Run tests using Docker
-        run: ./.docker/docker-tests.sh
+        run: ./.docker/pharo/docker-tests.sh

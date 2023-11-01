@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+readonly SYSTEM_USER_PASSWORD="${GS64_SYSTEM_USER_PASSWORD:-swordfish}"
+readonly STONE_NAME="${GS64_STONE_SERVICE_NAME:-gs64stone}"
+
+echo <<EOF >> .topazini
+set gemstone !@${GS64_STONE_HOSTNAME}!${STONE_NAME} user SystemUser pass ${SYSTEM_USER_PASSWORD}
+iferror exit 1
+login
+doit
+    CommandLineHandler activateWith: CommandLineArguments new
+%
+exit 0
+EOF
+
+exec topaz -l -- launchpad "$@"
