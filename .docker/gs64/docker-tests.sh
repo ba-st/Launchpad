@@ -51,7 +51,9 @@ function assertOutputIncludesMessage() {
 set -e
 
 print_info "Creating network"
-docker network rm launchpad-net
+if docker network inspect launchpad-net > /dev/null 2>&1 ;then
+  docker network rm launchpad-net
+fi
 docker network create --attachable launchpad-net
 
 print_info "Starting stone"
@@ -98,55 +100,47 @@ run_launchpad_gem launchpad --version
 assertOutputIncludesMessage "Launchpad" out
 print_success "OK"
 
-# print_info "Running launchpad-list test"
-# executeWithArguments docker run launchpad-examples:sut launchpad-list
-# assertOutputIncludesMessage "broken greeter" out
-# print_success "OK"
+print_info "Running launchpad-list test"
+run_launchpad_gem launchpad-list
+assertOutputIncludesMessage "broken greeter" out
+print_success "OK"
 
-# print_info "Running launchpad-list --verbose test"
-# executeWithArguments docker run launchpad-examples:sut launchpad-list --verbose
-# assertOutputIncludesMessage "broken v0.0.1" out
-# assertOutputIncludesMessage "greeter v1.0.0" out
-# print_success "OK"
+print_info "Running launchpad-list --verbose test"
+run_launchpad_gem launchpad-list --verbose
+assertOutputIncludesMessage "broken v0.0.1" out
+assertOutputIncludesMessage "greeter v1.0.0" out
+print_success "OK"
 
-# print_info "Running launchpad-explain test"
-# executeWithArguments docker run launchpad-examples:sut launchpad-explain broken
-# assertOutputIncludesMessage "broken \[v0.0.1\] - A broken application" out
-# executeWithArguments docker run launchpad-examples:sut launchpad-explain greeter
-# assertOutputIncludesMessage "greeter \[v1.0.0\] - A greetings application" out
-# executeWithArguments docker run launchpad-examples:sut launchpad-explain
-# assertOutputIncludesMessage "\[ERROR\] Missing application name or option." err
-# print_success "OK"
+print_info "Running launchpad-explain test"
+run_launchpad_gem launchpad-explain broken
+assertOutputIncludesMessage "broken \[v0.0.1\] - A broken application" out
+run_launchpad_gem launchpad-explain greeter
+assertOutputIncludesMessage "greeter \[v1.0.0\] - A greetings application" out
+run_launchpad_gem launchpad-explain
+assertOutputIncludesMessage "\[ERROR\] Missing application name or option." err
+print_success "OK"
 
-# print_info "Running launchpad-start greeter test"
-# executeWithArguments docker run launchpad-examples:sut launchpad-start greeter --name=Juan
-# assertOutputIncludesMessage "Hi Juan!" out
-# print_success " Just name, OK"
-# executeWithArguments docker run launchpad-examples:sut launchpad-start greeter --name=Julia --title=Miss
-# assertOutputIncludesMessage "Hi Miss Julia!" out
-# print_success " Name and title, OK"
-# executeWithArguments docker run launchpad-examples:sut launchpad-start greeter --title=Miss
-# assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
-# print_success " Missing name, OK"
-# executeWithArguments docker run launchpad-examples:sut launchpad-start greeter
-# assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
-# print_success "OK"
+print_info "Running launchpad-start greeter test"
+run_launchpad_gem launchpad-start greeter --name=Juan
+assertOutputIncludesMessage "Hi Juan!" out
+print_success " Just name, OK"
+run_launchpad_gem launchpad-start greeter --name=Julia --title=Miss
+assertOutputIncludesMessage "Hi Miss Julia!" out
+print_success " Name and title, OK"
+run_launchpad_gem launchpad-start greeter --title=Miss
+assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
+print_success " Missing name, OK"
+run_launchpad_gem launchpad-start greeter
+assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
+print_success "OK"
 
-# print_info "Running launchpad-start broken test"
-# executeWithArguments docker run launchpad-examples:sut launchpad-start broken --raise-error
-# assertOutputIncludesMessage "\[INFO\] Obtaining configuration... \[DONE\]" out
-# assertOutputIncludesMessage "\[ERROR\] Unexpected startup error: \"Doh!\"" err
-# print_success "OK"
-
-# print_info "Running launchpad-start command server test"
-# # broken app keeps running when passed and invalid option
-# executeWithArguments docker run --rm --name=broken-running -d launchpad-examples:sut launchpad-start broken -wait
-# sleep 1
-# rm -f out
-# docker stop -t 30 broken-running > out
-# assertOutputIncludesMessage "broken-running" out
-# print_success "OK"
+print_info "Running launchpad-start broken test"
+run_launchpad_gem launchpad-start broken --raise-error
+assertOutputIncludesMessage "\[INFO\] Obtaining configuration... \[DONE\]" out
+assertOutputIncludesMessage "\[ERROR\] Unexpected startup error: \"Doh!\"" err
+print_success "OK"
 
 print_info "Stopping stone"
 docker stop gs64-stone
+print_info "Removing network"
 docker network rm launchpad-net
