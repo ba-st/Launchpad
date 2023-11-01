@@ -37,6 +37,12 @@ CommandLineArguments >> arguments [
 ]
 
 { #category : #copying }
+CommandLineArguments >> copyAfter: argument [
+
+	^ self class withArguments: (arguments copyAfter: argument)
+]
+
+{ #category : #copying }
 CommandLineArguments >> copySubcommand [
 
 	^ self class withArguments: arguments allButFirst

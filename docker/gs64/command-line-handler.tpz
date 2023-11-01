@@ -1,4 +1,4 @@
 iferror exit 1
 login
-send LaunchpadCommandLineHandler activateWith: CommandLineArguments new
+send LaunchpadCommandLineHandler activateWith: (CommandLineArguments new copyAfter: '--')
 exit 0
