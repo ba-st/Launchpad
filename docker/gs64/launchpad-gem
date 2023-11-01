@@ -8,12 +8,6 @@ set -e
 readonly LAUNCHPAD_TOPAZ_SCRIPT="${GEMSTONE_GLOBAL_DIR}/data/launchpad-start.tpz"
 set +o histexpand
 echo "set gemstone !@${GS64_STONE_HOSTNAME}!${STONE_NAME} user SystemUser pass ${SYSTEM_USER_PASSWORD}" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
-echo "iferror exit 1" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
-echo "login" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
-echo "doit" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
-echo "    CommandLineHandler activateWith: CommandLineArguments new" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
-echo "%" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
-echo "exit 0" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
 set -o histexpand
 
 pid=0
@@ -46,6 +40,6 @@ startnetldi \
 # list GemStone services
 gslist -cvl
 
-topaz -l -S "${LAUNCHPAD_TOPAZ_SCRIPT}" -- launchpad "$@" &
+topaz -l -I "${LAUNCHPAD_TOPAZ_SCRIPT}" -S "${GEMSTONE_GLOBAL_DIR}/command-line-handler.tpz" -- launchpad "$@" &
 pid="$!"
 wait "$pid"
