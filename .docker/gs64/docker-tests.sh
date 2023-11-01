@@ -7,61 +7,61 @@ readonly ANSI_BLUE="\\033[34m"
 readonly ANSI_RESET="\\033[0m"
 
 function print_info() {
-	if [ -t 1 ]; then
-		printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\\n" "$1"
-	else
-		echo "$1"
-	fi
+  if [ -t 1 ]; then
+    printf "${ANSI_BOLD}${ANSI_BLUE}%s${ANSI_RESET}\\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 function print_success() {
-	if [ -t 1 ]; then
-		printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\\n" "$1"
-	else
-		echo "$1"
-	fi
+  if [ -t 1 ]; then
+    printf "${ANSI_BOLD}${ANSI_GREEN}%s${ANSI_RESET}\\n" "$1"
+  else
+    echo "$1"
+  fi
 }
 
 function print_error() {
-	if [ -t 1 ]; then
-		printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\\n" "$1" 1>&2
-	else
-		echo "$1" 1>&2
-	fi
+  if [ -t 1 ]; then
+    printf "${ANSI_BOLD}${ANSI_RED}%s${ANSI_RESET}\\n" "$1" 1>&2
+  else
+    echo "$1" 1>&2
+  fi
 }
 
 function executeWithArguments() {
-	rm -rf logs out err
-	LAST_ARGUMENTS=$*
-	"$@" > out 2> err || true
+  rm -rf logs out err
+  LAST_ARGUMENTS=$*
+  "$@" > out 2> err || true
 }
 
 function assertOutputIncludesMessage() {
-	local message=$1
-	local output=$2
+  local message=$1
+  local output=$2
 
-	if [ "$(grep -c "$message" "$output")" -eq 0 ]; then
-		print_error "Expected std$output to have: '$message' when invoked with $LAST_ARGUMENTS"
-		print_info "Output contents"
-		cat "$output"
-		exit 1
-	fi
+  if [ "$(grep -c "$message" "$output")" -eq 0 ]; then
+    print_error "Expected std$output to have: '$message' when invoked with $LAST_ARGUMENTS"
+    print_info "Output contents"
+    cat "$output"
+    exit 1
+  fi
 }
 
 set -e
 
 print_info "Creating network"
-docker network prune --force
+docker network rm --force launchpad-net
 docker network create --attachable launchpad-net
 
 print_info "Starting stone"
 docker run --rm --detach --name gs64-stone \
-	-e TZ="America/Argentina/Buenos_Aires" \
-	--cap-add=SYS_RESOURCE \
-        --network=launchpad-net \
-	--volume=$PWD:/opt/gemstone/projects/Launchpad:ro \
-        --volume=$PWD/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
-	ghcr.io/ba-st/gs64-rowan:v3.7.0
+  -e TZ="America/Argentina/Buenos_Aires" \
+  --cap-add=SYS_RESOURCE \
+  --network=launchpad-net \
+  --volume=$PWD:/opt/gemstone/projects/Launchpad:ro \
+  --volume=$PWD/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
+  ghcr.io/ba-st/gs64-rowan:v3.7.0
 
 sleep 1
 print_info "Loading Launchpad in the stone"
@@ -149,3 +149,4 @@ print_success "OK"
 
 print_info "Stopping stone"
 docker stop gs64-stone
+docker network rm --force launchpad-net
