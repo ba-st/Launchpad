@@ -1,0 +1,14 @@
+name: GS64 Docker Tests
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+jobs:
+   unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Run tests using Docker
+        run: ./.docker/gs64/docker-tests.sh

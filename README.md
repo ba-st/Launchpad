@@ -7,12 +7,14 @@ within the image.
 
 [![Pharo Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml)
 [![GS64 - Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests-gs64.yml)
-[![Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml)
+[![Pharo Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml)
+[![GS64 Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests-gs64.yml)
 [![Coverage Status](https://codecov.io/github/ba-st/Launchpad/coverage.svg?branch=release-candidate)](https://codecov.io/gh/ba-st/Launchpad/branch/release-candidate)
 
 [![Baseline Groups](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml)
 [![GS64 Components](https://github.com/ba-st/Launchpad/actions/workflows/loading-gs64-components.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-gs64-components.yml)
-[![Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
+[![Pharo Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
+[![GS64 Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml)
 [![Markdown Lint](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml)
 [![Shellcheck](https://github.com/ba-st/Stargate/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/ba-st/Stargate/actions/workflows/shellcheck.yml)
 
