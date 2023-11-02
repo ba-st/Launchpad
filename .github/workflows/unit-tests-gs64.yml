@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Load Image and Run Tests
-        uses: ba-st-actions/gs64-ci@v2-test
+        uses: ba-st-actions/gs64-ci@release-candidate
         with:
           project_name: 'Launchpad'
           run_tests: 'true'
