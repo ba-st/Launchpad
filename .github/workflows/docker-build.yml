@@ -1,5 +1,4 @@
 name: Build and Publish Docker Images
-
 on:
   workflow_dispatch:
   push:
@@ -8,7 +7,6 @@ on:
     tags:
       - 'v*.*.*'
   pull_request:
-
 jobs:
    build_and_publish:
     runs-on: ubuntu-latest
