@@ -57,6 +57,11 @@ fi
 docker network create --attachable launchpad-net
 
 print_info "Starting stone"
+if [[ ! -f "$PWD"/.docker/gs64/gemstone.key ]]; then
+  print_error "Missing $PWD/.docker/gs64/gemstone.key"
+  exit 1
+fi
+
 docker run --rm --detach --name gs64-stone \
   -e TZ="America/Argentina/Buenos_Aires" \
   --cap-add=SYS_RESOURCE \
