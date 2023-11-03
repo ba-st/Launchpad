@@ -13,15 +13,14 @@ within the image.
 
 [![Baseline Groups](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml)
 [![GS64 Components](https://github.com/ba-st/Launchpad/actions/workflows/loading-gs64-components.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-gs64-components.yml)
-[![Pharo Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
-[![GS64 Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml)
 [![Markdown Lint](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml)
 [![Shellcheck](https://github.com/ba-st/Stargate/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/ba-st/Stargate/actions/workflows/shellcheck.yml)
 
+[![Pharo Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
+[![GS64 Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml)
+
 [![GitHub release](https://img.shields.io/github/release/ba-st/Launchpad.svg)](https://github.com/ba-st/Launchpad/releases/latest)
 
-[![Pharo 8.0](https://img.shields.io/badge/Pharo-8.0-informational)](https://pharo.org)
-[![Pharo 9.0](https://img.shields.io/badge/Pharo-9.0-informational)](https://pharo.org)
 [![Pharo 10](https://img.shields.io/badge/Pharo-10-informational)](https://pharo.org)
 [![Pharo 11](https://img.shields.io/badge/Pharo-11-informational)](https://pharo.org)
 

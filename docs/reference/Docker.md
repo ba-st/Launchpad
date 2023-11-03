@@ -1,5 +1,7 @@
 # Docker support
 
+## Docker support for Pharo
+
 Launchpad provides a Docker image that can be used as base for containerized
 applications. It's built on top of [pharo:v11.0.0](https://github.com/ba-st/docker-pharo-runtime),
 adding some useful scripts for Launchpad-based applications:
@@ -11,7 +13,7 @@ adding some useful scripts for Launchpad-based applications:
   a `SIGTERM` handler for gracefully stopping the application.
 - `launchpad-healthcheck` is run as the default docker `HEALTHCHECK`
 
-## How to use as base docker image
+### How to use as base pharo docker image
 
 In your Dockerfile put something like:
 
@@ -20,7 +22,7 @@ FROM ghcr.io/ba-st/pharo-loader:v11.0.0 AS loader
 # Load your own application
 RUN pharo metacello install github://owner/repo:branch BaselineOfProject
 
-FROM ghcr.io/ba-st/launchpad:v4
+FROM ghcr.io/ba-st/launchpad:v5
 COPY --from=loader /opt/pharo/Pharo.image ./
 COPY --from=loader /opt/pharo/Pharo*.sources ./
 
@@ -29,8 +31,28 @@ COPY --from=loader /opt/pharo/Pharo*.sources ./
 CMD [ "launchpad-start", "app-name" , "--parameter=value" ]
 ```
 
-## Environment variables
+### Environment variables
 
 - `LAUNCHPAD__COMMAND_SERVER_PORT` defines in which port is listening the TCP
   command server. Defaults to 22222.
 - `LAUNCHPAD__LOG_FORMAT` can be set to `json` to enable structured logging
+
+## Docker support for GemStone/S 64
+
+Launchpad provides a Docker image that can be used as base for containerized
+gems. It's built on top of [gs64-gem:v3.7.0](https://github.com/ba-st/Docker-GemStone-64),
+adding some useful scripts for Launchpad-based applications:
+
+- `launchpad` starts the CLI
+
+### How to use as base gem docker image
+
+In your Dockerfile put something like:
+
+```docker
+FROM ghcr.io/ba-st/launchpad-gs64:v5
+
+# Your own directives
+
+CMD [ "launchpad", "start", "app-name" , "--parameter=value" ]
+```
