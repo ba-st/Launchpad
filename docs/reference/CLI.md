@@ -21,6 +21,20 @@ vast/bin/esnx \
     launchpad <arguments>
 ```
 
+For [GemStone/S 64](https://gemtalksystems.com/products/gs64/versions37x/) the
+command must be passed after the topaz arguments:
+
+```bash
+topaz -l -- launchpad <arguments>
+```
+
+and starting the command line handler by evaluating:
+
+```smalltalk
+  LaunchpadCommandLineHandler activateWith:
+    (CommandLineArguments new copyAfter: '--')
+```
+
 For the sake of simplicity, from now on we will omit in the examples the VM and
 image parameters:
 

@@ -1,0 +1,6 @@
+iferror exit 1
+login
+doit
+  LaunchpadCommandLineHandler activateWith: (CommandLineArguments new copyAfter: '--')
+%
+exit 0

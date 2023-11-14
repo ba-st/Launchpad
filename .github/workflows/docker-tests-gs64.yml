@@ -1,0 +1,21 @@
+name: GS64 Docker Tests
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+jobs:
+   unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Configure keyfile
+        run: |
+          echo "$GS_KEYFILE" > ./.docker/gs64/gemstone.key
+        env:
+          GS_KEYFILE: ${{ secrets.GS_KEYFILE }}
+      - name: Run tests using Docker
+        run: ./.docker/gs64/docker-tests.sh
+      - name: Remove keyfile
+        run: rm -f ./.docker/gs64/gemstone.key

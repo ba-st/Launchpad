@@ -15,3 +15,12 @@ When using Launchpad in Pharo the following dumpers are available:
   opened in a Pharo image and debugged live using the familiar tooling.
 - `NullStackTraceDumper` emits a warning and doesn't produce any stack trace. Its
   usage is discouraged in production environments.
+
+## Stack tracing for GemStone/S 64
+
+When using Launchpad in GemStone/S the following dumpers are available:
+
+- `StackTraceTextDumper` produces a textual stack trace written to the
+  configured stream.
+- `NullStackTraceDumper` emits a warning and doesn't produce any stack trace. Its
+  usage is discouraged in production environments.

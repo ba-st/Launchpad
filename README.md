@@ -5,18 +5,26 @@
 A command-line interface to start, list, and explain the applications available
 within the image.
 
-[![Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml)
-[![Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml)
+[![Pharo Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests.yml)
+[![GS64 - Unit Tests](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/unit-tests-gs64.yml)
+[![Pharo Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests.yml)
+[![GS64 Docker Tests](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-tests-gs64.yml)
 [![Coverage Status](https://codecov.io/github/ba-st/Launchpad/coverage.svg?branch=release-candidate)](https://codecov.io/gh/ba-st/Launchpad/branch/release-candidate)
+
 [![Baseline Groups](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-groups.yml)
-[![Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
+[![GS64 Components](https://github.com/ba-st/Launchpad/actions/workflows/loading-gs64-components.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/loading-gs64-components.yml)
 [![Markdown Lint](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/markdown-lint.yml)
+[![Shellcheck](https://github.com/ba-st/Stargate/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/ba-st/Stargate/actions/workflows/shellcheck.yml)
+
+[![Pharo Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build.yml)
+[![GS64 Docker Build](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml/badge.svg)](https://github.com/ba-st/Launchpad/actions/workflows/docker-build-gs64.yml)
 
 [![GitHub release](https://img.shields.io/github/release/ba-st/Launchpad.svg)](https://github.com/ba-st/Launchpad/releases/latest)
-[![Pharo 8.0](https://img.shields.io/badge/Pharo-8.0-informational)](https://pharo.org)
-[![Pharo 9.0](https://img.shields.io/badge/Pharo-9.0-informational)](https://pharo.org)
+
 [![Pharo 10](https://img.shields.io/badge/Pharo-10-informational)](https://pharo.org)
 [![Pharo 11](https://img.shields.io/badge/Pharo-11-informational)](https://pharo.org)
+
+[![GS64 3.7.0](https://img.shields.io/badge/GS64-3.7.0-informational)](https://gemtalksystems.com/products/gs64/)
 
 ## Quick links
 
