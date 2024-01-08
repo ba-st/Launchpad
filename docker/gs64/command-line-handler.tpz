@@ -1,7 +1,7 @@
 iferror exit 1
 login
 doit
-  LaunchpadCommandLineHandler activateWith: (CommandLineArguments new copyAfter: '--')
+  LaunchpadCommandLineHandler activateWith: (CommandLineArguments new copyAfter: '--').
   [ Delay waitForMilliseconds: 20 ] repeat.
 %
 exit 0
