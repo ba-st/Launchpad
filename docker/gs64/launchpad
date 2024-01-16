@@ -5,7 +5,7 @@ readonly SYSTEM_USER_PASSWORD="${GS64_SYSTEM_USER_PASSWORD:-swordfish}"
 readonly STONE_NAME="${GS64_STONE_SERVICE_NAME:-gs64stone}"
 
 set -e
-readonly LAUNCHPAD_TOPAZ_SCRIPT="${GEMSTONE_GLOBAL_DIR}/data/launchpad-start.tpz"
+readonly LAUNCHPAD_TOPAZ_SCRIPT="${GEMSTONE_GLOBAL_DIR}/launchpad-start.tpz"
 set +o histexpand
 echo "set gemstone !@${GS64_STONE_HOSTNAME}!${STONE_NAME} user SystemUser pass ${SYSTEM_USER_PASSWORD}" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
 set -o histexpand
