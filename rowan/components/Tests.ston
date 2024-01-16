@@ -3,7 +3,8 @@ RwSimpleProjectLoadComponentV2 {
 	#condition : 'tests',
 	#projectNames : [ ],
 	#componentNames : [
-		'Deployment'
+		'Deployment',
+		'Dependent-SUnit-Extensions'
 	],
 	#packageNames : [
 		'Launchpad-Applications-Tests',
@@ -11,7 +12,6 @@ RwSimpleProjectLoadComponentV2 {
 		'Launchpad-Configuration-Tests',
 		'Launchpad-Examples',
 		'Launchpad-GS64-Extensions-Tests',
-		'Launchpad-SUnit',
 		'Launchpad-Tracing-Tests'
 	],
 	#conditionalPackageMapSpecs : {
@@ -23,7 +23,6 @@ RwSimpleProjectLoadComponentV2 {
     				'Launchpad-Configuration-Tests' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Examples' : { 'symbolDictName' : 'Launchpad' },
 						'Launchpad-GS64-Extensions-Tests' : { 'symbolDictName' : 'Launchpad' },
-    				'Launchpad-SUnit' : { 'symbolDictName' : 'Launchpad' },
     				'Launchpad-Tracing-Tests' : { 'symbolDictName' : 'Launchpad' }
 				}
 			}

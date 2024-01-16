@@ -1,0 +1,13 @@
+RwLoadSpecificationV2 {
+  #specName: 'Launchpad-Dependent-SUnit-Extensions',
+  #projectName : 'Launchpad',
+  #diskUrl : 'Launchpad',
+  #projectSpecFile : 'rowan/project.ston',
+  #componentNames : [
+    'Dependent-SUnit-Extensions'
+  ],
+  #customConditionalAttributes : [
+    'tests',
+    'sunit'
+  ]
+}
