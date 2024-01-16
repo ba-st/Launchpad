@@ -1,0 +1,20 @@
+RwSimpleProjectLoadComponentV2 {
+	#name : 'Dependent-SUnit-Extensions',
+	#condition : 'sunit',
+	#projectNames : [ ],
+	#componentNames : [
+		'Deployment'
+	],
+	#packageNames : [
+		'Launchpad-SUnit'
+	],
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'allusers' : {
+				#packageNameToPlatformPropertiesMap : {
+    				'Launchpad-SUnit' : { 'symbolDictName' : 'Launchpad' }
+				}
+			}
+	 	}
+	}
+}
