@@ -1,19 +1,45 @@
 #!/usr/bin/env bash
 
-echo "${NETLDI_SERVICE_NAME} ${NETLDI_PORT}/tcp # GemStone - Netldi" >> /etc/services
+# Prepare Launchpad topaz input script
+readonly SYSTEM_USER_PASSWORD="${GS64_SYSTEM_USER_PASSWORD:-swordfish}"
+readonly STONE_NAME="${GS64_STONE_SERVICE_NAME:-gs64stone}"
 
-# Ensure write permissions
-NEED_WRITE_PERMISSION=(
-  "${GEMSTONE_GLOBAL_DIR}/locks/"
-  "${GEMSTONE_LOG_DIR}/"
-)
+set -e
+readonly LAUNCHPAD_TOPAZ_SCRIPT="${GEMSTONE_GLOBAL_DIR}/data/launchpad-start.tpz"
+set +o histexpand
+echo "set gemstone !@${GS64_STONE_HOSTNAME}!${STONE_NAME} user SystemUser pass ${SYSTEM_USER_PASSWORD}" >> "${LAUNCHPAD_TOPAZ_SCRIPT}"
+set -o histexpand
 
-for path in "${NEED_WRITE_PERMISSION[@]}"; do
-  if ! gosu "${GS_USER}" test -w "$path"; then
-    chown "${GS_UID}:${GS_GID}" "$path"
-    chmod ug+w "$path"
+pid=0
+
+termination_handler() {
+  exit_status=0
+  if [ $pid -ne 0 ]; then
+    echo 'SIGTERM received, shutting down the gem'
+    kill "$pid"
+    stopnetldi
+    wait "$pid"
+    exit_status=$?
   fi
-done
+  exit "$exit_status"    
+}
 
-# Run as GS_USER
-exec gosu "${GS_USER}" "${GEMSTONE_GLOBAL_DIR}/launchpad-gem" "$@"
+trap 'termination_handler' SIGTERM
+
+# shellcheck disable=SC2086
+startnetldi \
+  -g \
+  -a "${GS_USER}" \
+  -n \
+  -P "${NETLDI_PORT}" \
+  -l "${GEMSTONE_LOG_DIR}/${NETLDI_SERVICE_NAME}.log" \
+  -D "${GEMSTONE_LOG_DIR}" \
+  ${NETLDI_ARGS:-} \
+  "${NETLDI_SERVICE_NAME}" >> "${GEMSTONE_LOG_DIR}/startnetldi.log"
+
+# list GemStone services
+gslist -cvl >> "${GEMSTONE_LOG_DIR}/startnetldi.log"
+
+topaz -l -q -I "${LAUNCHPAD_TOPAZ_SCRIPT}" -S "${GEMSTONE_GLOBAL_DIR}/command-line-handler.tpz" -- launchpad "$@" &
+pid="$!"
+wait "$pid"
