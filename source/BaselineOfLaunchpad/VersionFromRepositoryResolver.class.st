@@ -8,11 +8,13 @@ Class {
 VersionFromRepositoryResolver >> valueFor: projectName [
 
 	| packageName version |
-	packageName := ('BaselineOf<1s>' expandMacrosWith: projectName) asSymbol.
+
+	packageName := ( 'BaselineOf<1s>' expandMacrosWith: ( projectName select: #isAlphaNumeric ) )
+		               asSymbol.
 	version := ''.
-	self class environment at: #IceRepository ifPresent: [ :icebergRepository | 
-		version := icebergRepository registry detect: [ :repository | 
-			           repository includesPackageNamed: packageName ]
+	self class environment at: #IceRepository ifPresent: [ :icebergRepository |
+		version := icebergRepository registry
+			           detect: [ :repository | repository includesPackageNamed: packageName ]
 			           ifFound: [ :repository | self versionFromGitRepository: repository ]
 			           ifNone: [ self versionFromMonticelloRepository: packageName ]
 		].
