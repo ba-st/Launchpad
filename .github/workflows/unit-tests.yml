@@ -16,7 +16,7 @@ jobs:
           - Pharo64-8.0
     name: ${{ matrix.smalltalk }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: hpi-swa/setup-smalltalkCI@v1
         with:
           smalltalk-image: ${{ matrix.smalltalk }}
@@ -36,7 +36,7 @@ jobs:
           SMALLTALK_CI_VM: ${{ steps.set-image-and-vm-location.outputs.SMALLTALK_CI_VM }}
           SMALLTALK_CI_IMAGE: ${{ steps.set-image-and-vm-location.outputs.SMALLTALK_CI_IMAGE }}
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           name: Unit-Tests-${{matrix.smalltalk}}
           token: ${{ secrets.CODECOV_TOKEN }}
