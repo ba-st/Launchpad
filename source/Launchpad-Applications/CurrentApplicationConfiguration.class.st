@@ -1,16 +1,17 @@
 Class {
-	#name : #CurrentApplicationConfiguration,
-	#superclass : #DynamicVariable,
-	#category : #'Launchpad-Applications'
+	#name : 'CurrentApplicationConfiguration',
+	#superclass : 'DynamicVariable',
+	#category : 'Launchpad-Applications',
+	#package : 'Launchpad-Applications'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CurrentApplicationConfiguration class >> default [
 
 	^ LaunchpadApplication currentlyRunning configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 CurrentApplicationConfiguration >> default [
 
 	^ self class default

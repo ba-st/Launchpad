@@ -1,19 +1,17 @@
 Class {
-	#name : #LaunchpadApplication,
-	#superclass : #Object,
+	#name : 'LaunchpadApplication',
+	#superclass : 'Object',
 	#instVars : [
 		'configurationCache',
 		'configurationProvider',
 		'mode',
 		'commandServer'
 	],
-	#classVars : [
-		'CurrentlyRunningApplicationBinding'
-	],
-	#category : #'Launchpad-Applications'
+	#category : 'Launchpad-Applications',
+	#package : 'Launchpad-Applications'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> applicationFor: commandName ifFound: aFoundBlock ifNone: aFailBlock [
 
 	^ self availableApplications detect: [ :application | application commandName = commandName ]
@@ -21,13 +19,13 @@ LaunchpadApplication class >> applicationFor: commandName ifFound: aFoundBlock i
 		  ifNone: aFailBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> availableApplications [
 
 	^ self allSubclasses reject: #isAbstract
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> commandName [
 
 	"Returns the command name to be used for starting this application"
@@ -35,38 +33,38 @@ LaunchpadApplication class >> commandName [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> configurationParameters [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> currentlyRunning [
 
-	^ CurrentlyRunningApplicationBinding content
+	^ CurrentlyRunningLaunchpadApplication new currentlyRunning
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> description [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> initialize [
 
 	<ignoreForCoverage>
 	self resetCurrentlyRunning
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 LaunchpadApplication class >> isAbstract [
 
 	^ self = LaunchpadApplication
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 LaunchpadApplication class >> printCommandArgumentsOn: stream [
 
 	self configurationParameters do: [ :parameter | 
@@ -75,7 +73,7 @@ LaunchpadApplication class >> printCommandArgumentsOn: stream [
 		]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 LaunchpadApplication class >> printHelpOn: stream [
 
 	( LaunchpadHelpPrinter on: stream )
@@ -84,14 +82,13 @@ LaunchpadApplication class >> printHelpOn: stream [
 		parametersAndEnvironmentSectionDescribing: self configurationParameters
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> resetCurrentlyRunning [
 
-	CurrentlyRunningApplicationBinding := Binding undefinedExplainedBy:
-		                                      'There''s no current application running.'
+	CurrentlyRunningLaunchpadApplication new resetCurrentlyRunning
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 LaunchpadApplication class >> runningIn: anApplicationMode configuredBy: aConfigurationProvider controlledBy: aCommandServer [
 
 	^ self new
@@ -100,47 +97,43 @@ LaunchpadApplication class >> runningIn: anApplicationMode configuredBy: aConfig
 		  controlledBy: aCommandServer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> setAsCurrentlyRunning: application [
 
-	CurrentlyRunningApplicationBinding := Binding to: application
+	CurrentlyRunningLaunchpadApplication new setAsCurrentlyRunning: application
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> setAsCurrentlyRunning: application during: aBlock [
 
-	| previousBinding |
-
-	previousBinding := CurrentlyRunningApplicationBinding.
-	CurrentlyRunningApplicationBinding := Binding to: application.
-	aBlock ensure: [ CurrentlyRunningApplicationBinding := previousBinding ]
+	CurrentlyRunningLaunchpadApplication new setAsCurrentlyRunning: application during: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> summary [
 
 	^ '<1s> [<2s>] - <3s>' expandMacrosWith: self commandName with: self version with: self description
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication class >> version [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #'private - activation/deactivation' }
+{ #category : 'private - activation/deactivation' }
 LaunchpadApplication >> basicStartWithin: context [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'private - activation/deactivation' }
+{ #category : 'private - activation/deactivation' }
 LaunchpadApplication >> basicStop [
 
 	commandServer stop
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 LaunchpadApplication >> configuration [
 
 	configurationCache ifNil: [ 
@@ -150,21 +143,21 @@ LaunchpadApplication >> configuration [
 	^ configurationCache
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 LaunchpadApplication >> exitFailure [ 
 
 	self class resetCurrentlyRunning.
 	mode exitFailure 
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 LaunchpadApplication >> exitSuccess [
 
 	self class resetCurrentlyRunning.
 	mode exitSuccess 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aConfigurationProvider controlledBy: aCommandServer [
 
 	mode := anApplicationMode.
@@ -172,13 +165,13 @@ LaunchpadApplication >> initializeRunningIn: anApplicationMode configuredBy: aCo
 	commandServer := aCommandServer
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 LaunchpadApplication >> isDebugModeEnabled [
 
 	^ mode isDebugMode
 ]
 
-{ #category : #'private - activation/deactivation' }
+{ #category : 'private - activation/deactivation' }
 LaunchpadApplication >> logConfigurationWithin: context [
 
 	LogRecord emitInfo: 'Obtaining configuration' during: [ 
@@ -189,13 +182,13 @@ LaunchpadApplication >> logConfigurationWithin: context [
 		]
 ]
 
-{ #category : #'error handling' }
+{ #category : 'error handling' }
 LaunchpadApplication >> stackTraceDumper [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : #'activation/deactivation' }
+{ #category : 'activation/deactivation' }
 LaunchpadApplication >> startWithin: context [
 
 	mode
@@ -214,7 +207,7 @@ LaunchpadApplication >> startWithin: context [
 			]
 ]
 
-{ #category : #'activation/deactivation' }
+{ #category : 'activation/deactivation' }
 LaunchpadApplication >> stop [
 
 	mode value: [ self basicStop ] onErrorDo: [ :error | 

@@ -1,28 +1,29 @@
 Class {
-	#name : #ReleasedApplicationMode,
-	#superclass : #LaunchpadApplicationRunningMode,
-	#category : #'Launchpad-Applications'
+	#name : 'ReleasedApplicationMode',
+	#superclass : 'LaunchpadApplicationRunningMode',
+	#category : 'Launchpad-Applications',
+	#package : 'Launchpad-Applications'
 }
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 ReleasedApplicationMode >> exitFailure [
 
 	Exit signalFailure
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 ReleasedApplicationMode >> exitSuccess [
 
 	Exit signalSuccess
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 ReleasedApplicationMode >> isDebugMode [
 
 	^ false
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 ReleasedApplicationMode >> value: aBlock onErrorDo: errorHandler [
 
 	^ aBlock on: Error except: Exit do: errorHandler
