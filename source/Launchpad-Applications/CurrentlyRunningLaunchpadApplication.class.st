@@ -21,7 +21,7 @@ CurrentlyRunningLaunchpadApplication class >> initialize [
 { #category : 'initialization' }
 CurrentlyRunningLaunchpadApplication class >> initializeUniqueInstance [
 
-	uniqueInstance := super new initialize
+	uniqueInstance := super new resetCurrentlyRunning
 ]
 
 { #category : 'instance creation' }
@@ -34,13 +34,6 @@ CurrentlyRunningLaunchpadApplication class >> new [
 CurrentlyRunningLaunchpadApplication >> currentlyRunning [
 
 	^ application content
-]
-
-{ #category : 'initialization' }
-CurrentlyRunningLaunchpadApplication >> initialize [
-
-	<ignoreForCoverage>
-	self resetCurrentlyRunning
 ]
 
 { #category : 'accessing' }
