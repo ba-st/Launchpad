@@ -51,13 +51,6 @@ LaunchpadApplication class >> description [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
-LaunchpadApplication class >> initialize [
-
-	<ignoreForCoverage>
-	self resetCurrentlyRunning
-]
-
 { #category : 'testing' }
 LaunchpadApplication class >> isAbstract [
 
