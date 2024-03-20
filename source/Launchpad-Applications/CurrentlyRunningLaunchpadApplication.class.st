@@ -21,6 +21,7 @@ CurrentlyRunningLaunchpadApplication class >> initialize [
 { #category : 'initialization' }
 CurrentlyRunningLaunchpadApplication class >> initializeUniqueInstance [
 
+	<ignoreForCoverage>
 	uniqueInstance := super new
 ]
 

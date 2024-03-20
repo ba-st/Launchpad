@@ -12,7 +12,6 @@ Class {
 CurrentlyRunningLaunchpadApplicationTest >> setUp [
 
 	super setUp.
-	CurrentlyRunningLaunchpadApplication initialize.
 	currentlyRunningLaunchpadApp := CurrentlyRunningLaunchpadApplication new.
 	currentlyRunningLaunchpadApp resetCurrentlyRunning
 ]
