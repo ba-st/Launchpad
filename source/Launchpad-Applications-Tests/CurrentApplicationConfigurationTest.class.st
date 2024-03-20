@@ -2,12 +2,13 @@
 A CurrentApplicationConfigurationTest is a test class for testing the behavior of CurrentApplicationConfiguration
 "
 Class {
-	#name : #CurrentApplicationConfigurationTest,
-	#superclass : #TestCase,
-	#category : #'Launchpad-Applications-Tests'
+	#name : 'CurrentApplicationConfigurationTest',
+	#superclass : 'TestCase',
+	#category : 'Launchpad-Applications-Tests',
+	#package : 'Launchpad-Applications-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 CurrentApplicationConfigurationTest >> testAccessingConfigurationOfRunningApplication [
 
 	| application |
@@ -22,7 +23,7 @@ CurrentApplicationConfigurationTest >> testAccessingConfigurationOfRunningApplic
 		during: [ self assert: CurrentApplicationConfiguration value equals: application configuration ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CurrentApplicationConfigurationTest >> testNoApplicationRunning [
 
 	self should: [ CurrentApplicationConfiguration value ]
