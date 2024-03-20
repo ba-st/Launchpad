@@ -2,7 +2,7 @@ Class {
 	#name : 'CurrentlyRunningLaunchpadApplication',
 	#superclass : 'Object',
 	#instVars : [
-		'application'
+		'binding'
 	],
 	#classInstVars : [
 		'uniqueInstance'
@@ -21,7 +21,7 @@ CurrentlyRunningLaunchpadApplication class >> initialize [
 { #category : 'initialization' }
 CurrentlyRunningLaunchpadApplication class >> initializeUniqueInstance [
 
-	uniqueInstance := super new resetCurrentlyRunning
+	uniqueInstance := super new
 ]
 
 { #category : 'instance creation' }
@@ -33,27 +33,27 @@ CurrentlyRunningLaunchpadApplication class >> new [
 { #category : 'accessing' }
 CurrentlyRunningLaunchpadApplication >> currentlyRunning [
 
-	^ application content
+	^ (binding ifNil: [ self resetCurrentlyRunning ]) content
 ]
 
 { #category : 'accessing' }
 CurrentlyRunningLaunchpadApplication >> resetCurrentlyRunning [
 
-	application := Binding undefinedExplainedBy:
+	binding := Binding undefinedExplainedBy:
 		               'There''s no current application running.'
 ]
 
 { #category : 'accessing' }
 CurrentlyRunningLaunchpadApplication >> setAsCurrentlyRunning: anApplication [
 
-	application := Binding to: anApplication
+	binding := Binding to: anApplication
 ]
 
 { #category : 'accessing' }
 CurrentlyRunningLaunchpadApplication >> setAsCurrentlyRunning: anApplication during: aBlock [
 
 	| previousBinding |
-	previousBinding := application.
-	application := Binding to: anApplication.
-	aBlock ensure: [ application := previousBinding ]
+	previousBinding := binding.
+	binding := Binding to: anApplication.
+	aBlock ensure: [ binding := previousBinding ]
 ]
