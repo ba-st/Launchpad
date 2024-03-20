@@ -33,7 +33,8 @@ CurrentlyRunningLaunchpadApplication class >> new [
 { #category : 'accessing' }
 CurrentlyRunningLaunchpadApplication >> currentlyRunning [
 
-	^ (binding ifNil: [ self resetCurrentlyRunning ]) content
+	binding ifNil: [ self resetCurrentlyRunning ].
+	^ binding content
 ]
 
 { #category : 'accessing' }
