@@ -10,10 +10,10 @@ removeNonTransientVersionsOf := [:class |
 LaunchpadApplication instancesDbTransient
     ifFalse: [
         Object subclass: 'LaunchpadApplication'
-        	instVarNames: #( configurationCache configurationProvider mode commandServer )
-        	classVars: #()
-        	classInstVars: #()
-        	poolDictionaries: #()
+        	instVarNames: LaunchpadApplication instVarNames
+        	classVars: LaunchpadApplication classVarNames
+        	classInstVars: LaunchpadApplication class instVarNames
+        	poolDictionaries: LaunchpadApplication _poolDictionaries
         	inDictionary: Launchpad
         	options: #( dbTransient ).
         (OrderedCollection new
@@ -26,10 +26,10 @@ LaunchpadApplication instancesDbTransient
 CurrentlyRunningLaunchpadApplication instancesDbTransient
     ifFalse: [
         Object subclass: 'CurrentlyRunningLaunchpadApplication'
-        	instVarNames: #( binding )
-        	classVars: #( uniqueInstance )
-        	classInstVars: #()
-        	poolDictionaries: #()
+        	instVarNames: CurrentlyRunningLaunchpadApplication instVarNames
+        	classVars: CurrentlyRunningLaunchpadApplication classVarNames
+        	classInstVars: CurrentlyRunningLaunchpadApplication class instVarNames
+        	poolDictionaries: CurrentlyRunningLaunchpadApplication _poolDictionaries
         	inDictionary: Launchpad
         	options: #( dbTransient ).
         removeNonTransientVersionsOf value: CurrentlyRunningLaunchpadApplication.
