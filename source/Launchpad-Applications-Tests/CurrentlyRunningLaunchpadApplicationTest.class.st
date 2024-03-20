@@ -23,7 +23,7 @@ CurrentlyRunningLaunchpadApplicationTest >> testCurrentlyRunning [
 	self
 		should: [ currentlyRunningLaunchpadApp currentlyRunning ]
 		raise: AssertionFailed
-		description: 'There''s no current application running.'
+		withMessageText: 'There''s no current application running.'
 ]
 
 { #category : 'tests' }
@@ -34,7 +34,7 @@ CurrentlyRunningLaunchpadApplicationTest >> testResetCurrentlyRunning [
 	self
 		should: [ currentlyRunningLaunchpadApp currentlyRunning ]
 		raise: AssertionFailed
-		description: 'There''s no current application running.'
+		withMessageText: 'There''s no current application running.'
 ]
 
 { #category : 'tests' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'binding'
 	],
-	#classInstVars : [
+	#classVars : [
 		'uniqueInstance'
 	],
 	#category : 'Launchpad-Applications',
