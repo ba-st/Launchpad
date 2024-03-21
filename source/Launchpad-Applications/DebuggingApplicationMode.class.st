@@ -1,28 +1,29 @@
 Class {
-	#name : #DebuggingApplicationMode,
-	#superclass : #LaunchpadApplicationRunningMode,
-	#category : #'Launchpad-Applications'
+	#name : 'DebuggingApplicationMode',
+	#superclass : 'LaunchpadApplicationRunningMode',
+	#category : 'Launchpad-Applications',
+	#package : 'Launchpad-Applications'
 }
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 DebuggingApplicationMode >> exitFailure [
 
 	LogRecord emitError: 'Exit application'
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 DebuggingApplicationMode >> exitSuccess [
 
 	LogRecord emitInfo: 'Exit application'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 DebuggingApplicationMode >> isDebugMode [
 
 	^ true
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 DebuggingApplicationMode >> value: aBlock onErrorDo: errorHandler [
 
 	^ aBlock value

@@ -2,12 +2,13 @@
 A NullStackTraceDumperTest is a test class for testing the behavior of NullStackTraceDumper
 "
 Class {
-	#name : #NullStackTraceDumperTest,
-	#superclass : #LaunchpadTest,
-	#category : #'Launchpad-Applications-Tests'
+	#name : 'NullStackTraceDumperTest',
+	#superclass : 'LaunchpadTest',
+	#category : 'Launchpad-Applications-Tests',
+	#package : 'Launchpad-Applications-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 NullStackTraceDumperTest >> testDumpStackTraceFor [
 
 	self

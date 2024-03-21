@@ -2,12 +2,13 @@
 A ReleasedApplicationModeTest is a test class for testing the behavior of ReleasedApplicationMode
 "
 Class {
-	#name : #ReleasedApplicationModeTest,
-	#superclass : #TestCase,
-	#category : #'Launchpad-Applications-Tests'
+	#name : 'ReleasedApplicationModeTest',
+	#superclass : 'TestCase',
+	#category : 'Launchpad-Applications-Tests',
+	#package : 'Launchpad-Applications-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 ReleasedApplicationModeTest >> testExitFailure [
 
 	self should: [ ReleasedApplicationMode new exitFailure ]
@@ -15,7 +16,7 @@ ReleasedApplicationModeTest >> testExitFailure [
 		withExceptionDo: [ :exit | self deny: exit isSuccess ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ReleasedApplicationModeTest >> testExitSuccess [
 
 	self should: [ ReleasedApplicationMode new exitSuccess ]
@@ -23,13 +24,13 @@ ReleasedApplicationModeTest >> testExitSuccess [
 		withExceptionDo: [ :exit | self assert: exit isSuccess ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ReleasedApplicationModeTest >> testIsDebugMode [
 
 	self deny: ReleasedApplicationMode new isDebugMode
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ReleasedApplicationModeTest >> testValueOnErrorDo [
 
 	| errorWasHandled |

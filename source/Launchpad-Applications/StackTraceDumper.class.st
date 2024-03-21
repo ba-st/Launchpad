@@ -1,17 +1,18 @@
 Class {
-	#name : #StackTraceDumper,
-	#superclass : #Object,
-	#category : #'Launchpad-Applications'
+	#name : 'StackTraceDumper',
+	#superclass : 'Object',
+	#category : 'Launchpad-Applications',
+	#package : 'Launchpad-Applications'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 StackTraceDumper class >> isAbstract [
 
 	<ignoreForCoverage>
 	^ self = StackTraceDumper
 ]
 
-{ #category : #'error handling' }
+{ #category : 'error handling' }
 StackTraceDumper >> dumpStackTraceFor: anError [
 
 	self subclassResponsibility

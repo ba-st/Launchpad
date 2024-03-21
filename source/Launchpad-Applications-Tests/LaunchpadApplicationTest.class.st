@@ -2,12 +2,13 @@
 A LaunchpadApplicationTest is a test class for testing the behavior of LaunchpadApplication
 "
 Class {
-	#name : #LaunchpadApplicationTest,
-	#superclass : #TestCase,
-	#category : #'Launchpad-Applications-Tests'
+	#name : 'LaunchpadApplicationTest',
+	#superclass : 'TestCase',
+	#category : 'Launchpad-Applications-Tests',
+	#package : 'Launchpad-Applications-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 LaunchpadApplicationTest >> testIsDebugModeEnabled [
 
 	| application |
@@ -19,7 +20,7 @@ LaunchpadApplicationTest >> testIsDebugModeEnabled [
 	self assert: application isDebugModeEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LaunchpadApplicationTest >> testIsDebugModeNotEnabled [
 
 	| application |

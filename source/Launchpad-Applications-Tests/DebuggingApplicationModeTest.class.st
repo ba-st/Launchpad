@@ -2,12 +2,13 @@
 A DebuggingApplicationModeTest is a test class for testing the behavior of DebuggingApplicationMode
 "
 Class {
-	#name : #DebuggingApplicationModeTest,
-	#superclass : #LaunchpadTest,
-	#category : #'Launchpad-Applications-Tests'
+	#name : 'DebuggingApplicationModeTest',
+	#superclass : 'LaunchpadTest',
+	#category : 'Launchpad-Applications-Tests',
+	#package : 'Launchpad-Applications-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 DebuggingApplicationModeTest >> testExitFailure [
 
 	self
@@ -15,7 +16,7 @@ DebuggingApplicationModeTest >> testExitFailure [
 		assertingLogRecordsMatch: #( '[ERROR] Exit application' )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DebuggingApplicationModeTest >> testExitSuccess [
 
 	self
@@ -23,13 +24,13 @@ DebuggingApplicationModeTest >> testExitSuccess [
 		assertingLogRecordsMatch: #( '[INFO] Exit application' )
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 DebuggingApplicationModeTest >> testIsDebugMode [
 
 	self assert: DebuggingApplicationMode new isDebugMode
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DebuggingApplicationModeTest >> testValueOnErrorDo [
 
 	DebuggingApplicationMode new value: [  ] onErrorDo: [ self fail ].

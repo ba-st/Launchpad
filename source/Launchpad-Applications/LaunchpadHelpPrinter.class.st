@@ -1,19 +1,20 @@
 Class {
-	#name : #LaunchpadHelpPrinter,
-	#superclass : #Object,
+	#name : 'LaunchpadHelpPrinter',
+	#superclass : 'Object',
 	#instVars : [
 		'stream'
 	],
-	#category : #'Launchpad-Applications'
+	#category : 'Launchpad-Applications',
+	#package : 'Launchpad-Applications'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 LaunchpadHelpPrinter class >> on: aWriteStream [
 
 	^ self new initializeOn: aWriteStream
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> commandsSectionDescribing: subcommands [
 
 	subcommands ifNotEmpty: [ 
@@ -32,25 +33,25 @@ LaunchpadHelpPrinter >> commandsSectionDescribing: subcommands [
 		]
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> descriptionSectionContaining: contents [
 
 	self sectionNamed: 'DESCRIPTION' containing: contents
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LaunchpadHelpPrinter >> initializeOn: aWriteStream [
 
 	stream := aWriteStream
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> nameSectionContaining: contents [
 
 	self sectionNamed: 'NAME' containing: contents
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> optionsSectionDescribing: options [
 
 	options ifNotEmpty: [ 
@@ -69,7 +70,7 @@ LaunchpadHelpPrinter >> optionsSectionDescribing: options [
 		]
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> parametersAndEnvironmentSectionDescribing: parameters [
 
 	parameters ifNotEmpty: [ 
@@ -106,7 +107,7 @@ LaunchpadHelpPrinter >> parametersAndEnvironmentSectionDescribing: parameters [
 		]
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> sectionNamed: sectionName containing: contents [
 
 	stream nextPutAll: sectionName.
@@ -119,7 +120,7 @@ LaunchpadHelpPrinter >> sectionNamed: sectionName containing: contents [
 		]
 ]
 
-{ #category : #'printing - sections' }
+{ #category : 'printing - sections' }
 LaunchpadHelpPrinter >> synopsysSectionFor: commandName with: aBlock [
 
 	stream
