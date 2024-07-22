@@ -10,8 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         smalltalk:
-          - Pharo64-10
+          - Pharo64-12
           - Pharo64-11
+          - Pharo64-10
           - Pharo64-9.0
           - Pharo64-8.0
     name: ${{ matrix.smalltalk }}
