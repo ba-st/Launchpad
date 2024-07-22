@@ -35,7 +35,10 @@ BaselineOfLaunchpad >> baseline: spec [
 	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
 	spec for: #'pharo11.x' do: [
 		self setUpPharo11Packages: spec.
-		spec preLoadDoIt: #closeWelcomeWindow ]
+		spec preLoadDoIt: #closeWelcomeWindow ].
+	spec for: #'pharo12.x' do: [
+		self setUpPharo11Packages: spec.
+		spec preLoadDoIt: #closeWelcomeWindow ]. 
 ]
 
 { #category : 'post-load actions' }
