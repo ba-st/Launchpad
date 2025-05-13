@@ -44,9 +44,14 @@ VersionFromRepositoryResolver >> versionFromGitRepository: repository [
 { #category : 'private' }
 VersionFromRepositoryResolver >> versionFromMonticelloRepository: aPackageName [
 
-	self class environment at: #MCWorkingCopy ifPresent: [ :workingCopy | 
-		workingCopy allManagers detect: [ :manager | manager packageName = aPackageName ]
-			ifFound: [ :manager | ^ manager versionInfo id printString ]
-		].
-	^ ''
+  self class environment at: #MCWorkingCopy ifPresent: [ :workingCopy |
+      | workingCopies |
+      workingCopies := ( workingCopy respondsTo: #allWorkingCopies )
+                         then: [ workingCopy allWorkingCopies ]
+                         otherwise: [ workingCopy allManagers ].
+      workingCopies
+        detect: [ :manager | manager packageName = aPackageName ]
+        ifFound: [ :manager | ^ manager versionInfo id printString ]
+    ].
+  ^ ''
 ]
