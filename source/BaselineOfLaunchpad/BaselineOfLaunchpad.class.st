@@ -18,27 +18,34 @@ BaselineOfLaunchpad >> addLaunchpadLogRecordAsGlobalAndConfigureTransientClasses
 { #category : 'baselines' }
 BaselineOfLaunchpad >> baseline: spec [
 
-	<baseline>
-	spec for: #pharo do: [
-		spec postLoadDoIt: #addLaunchpadLogRecordAsGlobalAndConfigureTransientClasses.
-		self
-			setUpDependencies: spec;
-			setUpPackages: spec.
+  <baseline>
+  spec for: #pharo do: [
+      spec postLoadDoIt: #addLaunchpadLogRecordAsGlobalAndConfigureTransientClasses.
+      self
+        setUpDependencies: spec;
+        setUpPackages: spec.
 
-		spec
-			group: 'Development' with: #( 'Tests' 'Tools' );
-			group: 'CI' with: 'Tests';
-			group: 'default' with: 'Development' ].
+      spec
+        group: 'Development' with: #( 'Tests' 'Tools' );
+        group: 'CI' with: 'Tests';
+        group: 'default' with: 'Development'
+    ].
 
-	spec for: #'pharo8.x' do: [ self setUpPharo8Packages: spec ].
-	spec for: #'pharo9.x' do: [ self setUpPharo9Packages: spec ].
-	spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
-	spec for: #'pharo11.x' do: [
-		self setUpPharo11Packages: spec.
-		spec preLoadDoIt: #closeWelcomeWindow ].
-	spec for: #'pharo12.x' do: [
-		self setUpPharo11Packages: spec.
-		spec preLoadDoIt: #closeWelcomeWindow ]. 
+  spec for: #'pharo8.x' do: [ self setUpPharo8Packages: spec ].
+  spec for: #'pharo9.x' do: [ self setUpPharo9Packages: spec ].
+  spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
+  spec for: #'pharo11.x' do: [
+      self setUpPharo11Packages: spec.
+      spec preLoadDoIt: #closeWelcomeWindow
+    ].
+  spec for: #'pharo12.x' do: [
+      self setUpPharo11Packages: spec.
+      spec preLoadDoIt: #closeWelcomeWindow
+    ].
+  spec for: #'pharo13.x' do: [
+      self setUpPharo11Packages: spec.
+      spec preLoadDoIt: #closeWelcomeWindow
+    ]
 ]
 
 { #category : 'post-load actions' }
