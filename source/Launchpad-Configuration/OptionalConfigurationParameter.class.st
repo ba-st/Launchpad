@@ -53,7 +53,7 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 		  convertingWith: aConverterAction
 ]
 
-{ #category : 'accessing' }
+{ #category : 'configuring' }
 OptionalConfigurationParameter >> basicSummary [
 	"Private - Returns the summary without any formatting."
 

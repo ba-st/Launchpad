@@ -114,7 +114,7 @@ ApplicationConfigurationTest >> testAsEnvironment [
 COMMUNICATIONS__HTTP__PORT=8086
 # Scheme. Defaults to https
 COMMUNICATIONS__HTTP__SCHEME=https
-# Public URL
+# Public URL. (SENSITIVE)
 PUBLIC_URL=https://api.example.com/
 # Location of the Consul Agent. Defaults to localhost
 SERVICE_DISCOVERY__CONSUL_AGENT_LOCATION=localhost
@@ -128,7 +128,7 @@ ApplicationConfigurationTest >> testAsIniFile [
 
 	configuration := self newApplicationConfiguration.
 	ini := String streamContents: [ :stream | configuration asIniFileOn: stream ].
-	self assert: ini isLineEndingInsensitiveEqualsTo: '; Public URL
+	self assert: ini isLineEndingInsensitiveEqualsTo: '; Public URL. (SENSITIVE)
 publicURL = https://api.example.com/
 
 [Communications.HTTP]
@@ -195,18 +195,18 @@ ApplicationConfigurationTest >> testCantCreateConfigurationWithOverlappingParame
 { #category : 'tests' }
 ApplicationConfigurationTest >> testDoNotWarnOnOptionalParametersWhenUsingDefault [
 
-	| configuration parameter provider logger |
+  | configuration parameter provider logger |
+  parameter := ( OptionalConfigurationParameter
+                   named: 'Scheme'
+                   describedBy: 'Scheme'
+                   defaultingTo: 'https' ) doNotWarnWhenUsingDefault.
 
-	parameter := ( OptionalConfigurationParameter named: 'Scheme'
-		               describedBy: 'Scheme'
-		               defaultingTo: 'https' ) doNotWarnWhenUsingDefault.
+  provider := NullConfigurationProvider new.
 
-	provider := NullConfigurationProvider new.
+  logger := MemoryLogger new runDuring: [
+                configuration := ApplicationConfiguration forAll: { parameter } providedBy: provider ].
 
-	logger := MemoryLogger new runDuring: [ 
-		          configuration := ApplicationConfiguration forAll: { parameter } providedBy: provider ].
-
-	self assert: logger recordings isEmpty
+  self assert: logger entries isEmpty
 ]
 
 { #category : 'tests' }
