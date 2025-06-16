@@ -59,7 +59,7 @@ SensitiveConfigurationParameter >> sections [
 { #category : 'accessing' }
 SensitiveConfigurationParameter >> summary [
 
-	^ parameter summary
+	^ '<1s>. Defaults to ********' expandMacrosWith: parameter basicSummary
 ]
 
 { #category : 'logging' }

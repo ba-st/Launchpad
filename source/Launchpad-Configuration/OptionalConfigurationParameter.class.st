@@ -53,6 +53,13 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 		  convertingWith: aConverterAction
 ]
 
+{ #category : 'accessing' }
+OptionalConfigurationParameter >> basicSummary [
+	"Private - Returns the summary without any formatting."
+
+	^ summary
+]
+
 { #category : 'configuring' }
 OptionalConfigurationParameter >> doNotWarnWhenUsingDefault [
 
