@@ -90,7 +90,7 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
 	spec
-		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v6' ];
+		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v7' ];
 		project: 'Hyperspace-SUnit'
 		copyFrom: 'Hyperspace'
 		with: [ spec loads: 'Dependent-SUnit-Extensions' ]
