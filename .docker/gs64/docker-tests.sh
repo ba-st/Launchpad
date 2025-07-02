@@ -61,7 +61,7 @@ function assertOutputIsEmpty() {
 set -e
 
 if [ $# -eq 0 ]; then
-  print_error "Missing GS64 version argument. Eg. 3.7.0"
+  print_error "Missing GS64 version argument. Eg. 3.7.1"
   exit 1
 fi
 

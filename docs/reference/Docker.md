@@ -40,8 +40,7 @@ CMD [ "launchpad-start", "app-name" , "--parameter=value" ]
 ## Docker support for GemStone/S 64
 
 Launchpad provides a Docker image that can be used as base for containerized
-gems. It's built on top of [gs64-gem:v3.7.0](https://github.com/ba-st/Docker-GemStone-64)
-and [gs64-gem:v3.7.1](https://github.com/ba-st/Docker-GemStone-64),
+gems. It's built on top of [gs64-gem:v3.7.1](https://github.com/ba-st/Docker-GemStone-64),
 adding some useful scripts for Launchpad-based applications:
 
 - `launchpad` starts the CLI
@@ -51,7 +50,6 @@ adding some useful scripts for Launchpad-based applications:
 In your Dockerfile put something like:
 
 ```docker
-# FROM ghcr.io/ba-st/launchpad-gs64-3.7.0:v5
 FROM ghcr.io/ba-st/launchpad-gs64-3.7.1:v5
 
 # Your own directives
@@ -60,4 +58,4 @@ CMD [ "launchpad", "start", "app-name" , "--parameter=value" ]
 ```
 
 > Note that `ghcr.io/ba-st/launchpad-gs64` packages are deprecated and not receiving
-> more updates. Use `ghcr.io/ba-st/launchpad-gs64-3.7.0` instead.
+> more updates. Use `ghcr.io/ba-st/launchpad-gs64-3.7.1` instead.
