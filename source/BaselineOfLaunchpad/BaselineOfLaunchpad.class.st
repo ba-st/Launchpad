@@ -93,7 +93,7 @@ BaselineOfLaunchpad >> setUpDependencies: spec [
 		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v7' ];
 		project: 'Hyperspace-SUnit'
 		copyFrom: 'Hyperspace'
-		with: [ spec loads: 'Dependent-SUnit-Extensions' ]
+		with: [ spec loads: 'Dependent-SUnit-Extensions' ] .
 ]
 
 { #category : 'baselines' }
