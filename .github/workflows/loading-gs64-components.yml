@@ -4,22 +4,6 @@ on:
   - pull_request
   - workflow_dispatch
 jobs:
-   component-loading-3_7_0:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        load-spec:
-          - Deployment
-          - Dependent-SUnit-Extensions
-    name: GS64 v3.7.0 + ${{ matrix.load-spec }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Load component in image
-        uses: ba-st-actions/gs64-ci@v2
-        with:
-          project_name: 'Launchpad'
-          load_spec: 'Launchpad-${{ matrix.load-spec }}'
    component-loading-3_7_1:
     runs-on: ubuntu-latest
     strategy:

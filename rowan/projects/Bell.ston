@@ -2,7 +2,7 @@ RwLoadSpecificationV2 {
   #specName: 'Bell',
   #projectName : 'Bell',
   #gitUrl : 'https://github.com/ba-st/Bell.git',
-  #revision : 'v3',
+  #revision : 'v4',
   #projectSpecFile : 'rowan/project.ston',
   #componentNames : [
     'Deployment',
