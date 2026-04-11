@@ -3,29 +3,55 @@ on:
   - push
   - pull_request
   - workflow_dispatch
+
 jobs:
-   unit-tests:
+  # We can't run these tests with the coverage enabled because it will modify the stack it's
+  # trying to serialize making the tests fail in some situations
+  unit-tests-pharo-10:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        smalltalk:    
-          - Pharo64-13
-          - Pharo64-12
-          - Pharo64-11
-          - Pharo64-10
-          - Pharo64-9.0
-          - Pharo64-8.0
-    name: ${{ matrix.smalltalk }}
+    name: Pharo64-10
     steps:
-      - uses: actions/checkout@v4
-      - uses: hpi-swa/setup-smalltalkCI@v1
-        with:
-          smalltalk-image: ${{ matrix.smalltalk }}
+      - uses: actions/checkout@v6
       - name: Load Image and Run Tests
-        # We can't run these tests with the coverage enabled because it will modify the stack it's
-        # trying to serialize making the tests fail in some situations
-        run: smalltalkci -s ${{ matrix.smalltalk }} .smalltalkci/.binary-stack-serialization.ston
+        uses: ba-st-actions/pharo-ci@v10
+        with:
+          spec: .smalltalkci/.binary-stack-serialization.ston
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        timeout-minutes: 15
+  unit-tests-pharo-11:
+    runs-on: ubuntu-latest
+    name: Pharo64-11
+    steps:
+      - uses: actions/checkout@v6
+      - name: Load Image and Run Tests
+        uses: ba-st-actions/pharo-ci@v11
+        with:
+          spec: .smalltalkci/.binary-stack-serialization.ston
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        timeout-minutes: 15
+  unit-tests-pharo-12:
+    runs-on: ubuntu-latest
+    name: Pharo64-12
+    steps:
+      - uses: actions/checkout@v6
+      - name: Load Image and Run Tests
+        uses: ba-st-actions/pharo-ci@v12
+        with:
+          spec: .smalltalkci/.binary-stack-serialization.ston
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        timeout-minutes: 15
+  unit-tests-pharo-13:
+    runs-on: ubuntu-latest
+    name: Pharo64-13
+    steps:
+      - uses: actions/checkout@v6
+      - name: Load Image and Run Tests
+        uses: ba-st-actions/pharo-ci@v13
+        with:
+          spec: .smalltalkci/.binary-stack-serialization.ston
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 15

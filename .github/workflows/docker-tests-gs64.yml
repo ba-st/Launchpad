@@ -13,7 +13,7 @@ jobs:
           - "3.7.1"
     name: GS64 v${{ matrix.version }} Docker Tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Configure keyfile

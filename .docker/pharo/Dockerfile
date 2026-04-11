@@ -1,4 +1,4 @@
-FROM ghcr.io/ba-st/pharo-loader:v12.0.1 as loader
+FROM ghcr.io/ba-st/pharo-loader:v13.1.2 AS loader
 
 COPY --chown=pharo:users ./source ./source
 COPY --chown=pharo:users ./.git/ ./.git/
