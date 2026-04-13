@@ -8,11 +8,9 @@ echo "::endgroup::"
 echo "::group::Declaring Shell Functions"
 
 function executeWithArguments() {
-	rm -rf stdout stderr logs
+	rm -rf logs
 	LAST_ARGUMENTS=$*
-	/opt/pharo/pharo-vm Pharo.image "$@" > out 2> err || true
-	[ -f stdout ] && mv stdout out || touch out
-	[ -f stderr ] && mv stderr err || touch err
+	/opt/pharo/pharo-vm /opt/pharo/Pharo.image "$@" > out 2> err || true
 }
  
 function assertOutputIncludesMessage() {
@@ -55,7 +53,7 @@ function assertStandardErrorIncludesText() {
 }
 echo "::endgroup::"
 
-echo "::group::Running Shell Tests"
+echo "Running Shell Tests"
 
 echo "::group::Global Options"
 # global options
@@ -129,6 +127,4 @@ assertInfo "Obtaining configuration..."
 assertInfo "Obtaining configuration... \[DONE\]"
 assertError 'Unexpected startup error: "Doh!"'
 assertStandardErrorIncludesText "The full stack"
-echo "::endgroup::"
-
 echo "::endgroup::"
