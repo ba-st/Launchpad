@@ -31,8 +31,6 @@ BaselineOfLaunchpad >> baseline: spec [
         group: 'default' with: 'Development'
     ].
 
-  spec for: #'pharo8.x' do: [ self setUpPharo8Packages: spec ].
-  spec for: #'pharo9.x' do: [ self setUpPharo9Packages: spec ].
   spec for: #'pharo10.x' do: [ self setUpPharo10Packages: spec ].
   spec for: #'pharo11.x' do: [
       self setUpPharo11Packages: spec.
@@ -74,26 +72,26 @@ BaselineOfLaunchpad >> projectClass [
 { #category : 'baselines' }
 BaselineOfLaunchpad >> setUpDependencies: spec [
 
-	spec
-		baseline: 'Buoy' with: [ spec repository: 'github://ba-st/Buoy:v8' ];
-		project: 'Buoy-Deployment' copyFrom: 'Buoy' with: [ spec loads: 'Deployment' ];
-		project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ];
-		project: 'Buoy-Tools' copyFrom: 'Buoy' with: [ spec loads: 'Tools' ].
+  spec
+    baseline: 'Buoy' with: [ spec repository: 'github://ba-st/Buoy:v8' ];
+    project: 'Buoy-Deployment' copyFrom: 'Buoy' with: [ spec loads: 'Deployment' ];
+    project: 'Buoy-SUnit' copyFrom: 'Buoy' with: [ spec loads: 'Dependent-SUnit-Extensions' ];
+    project: 'Buoy-Tools' copyFrom: 'Buoy' with: [ spec loads: 'Tools' ].
 
-	spec
-		baseline: 'Bell' with: [ spec repository: 'github://ba-st/Bell:v4' ];
-		project: 'Bell-Deployment' copyFrom: 'Bell' with: [ spec loads: 'Deployment' ];
-		project: 'Bell-SUnit' copyFrom: 'Bell' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
+  spec
+    baseline: 'Bell' with: [ spec repository: 'github://ba-st/Bell:v4' ];
+    project: 'Bell-Deployment' copyFrom: 'Bell' with: [ spec loads: 'Deployment' ];
+    project: 'Bell-SUnit' copyFrom: 'Bell' with: [ spec loads: 'Dependent-SUnit-Extensions' ].
 
-	spec
-		baseline: 'INIParser' with: [ spec repository: 'github://ba-st-dependencies/INI-Parser:v3' ];
-		project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
+  spec
+    baseline: 'INIParser' with: [ spec repository: 'github://ba-st-dependencies/INI-Parser:v3' ];
+    project: 'INIParser-Deployment' copyFrom: 'INIParser' with: [ spec loads: 'Deployment' ].
 
-	spec
-		baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v7' ];
-		project: 'Hyperspace-SUnit'
-		copyFrom: 'Hyperspace'
-		with: [ spec loads: 'Dependent-SUnit-Extensions' ] .
+  spec
+    baseline: 'Hyperspace' with: [ spec repository: 'github://ba-st/Hyperspace:v8' ];
+    project: 'Hyperspace-SUnit'
+    copyFrom: 'Hyperspace'
+    with: [ spec loads: 'Dependent-SUnit-Extensions' ]
 ]
 
 { #category : 'baselines' }
@@ -184,28 +182,6 @@ BaselineOfLaunchpad >> setUpPharo11Packages: spec [
 		package: 'Launchpad-Development-Tools'
 		with: [ spec requires: #( 'Launchpad-Applications' 'Launchpad-Configuration' ) ];
 		group: 'Tools' with: 'Launchpad-Development-Tools'
-]
-
-{ #category : 'baselines' }
-BaselineOfLaunchpad >> setUpPharo8Packages: spec [
-
-	spec
-		package: 'Launchpad-Tracing-Fuel-Legacy' with: [ spec requires: 'Launchpad-Tracing' ];
-		group: 'Deployment' with: 'Launchpad-Tracing-Fuel-Legacy';
-		group: 'Tests' with: 'Launchpad-Tracing-Fuel-Legacy'.
-
-	spec
-		package: 'Launchpad-Tracing-Pharo8' with: [ spec requires: 'Launchpad-Tracing-Fuel-Legacy' ];
-		group: 'Deployment' with: 'Launchpad-Tracing-Pharo8'
-]
-
-{ #category : 'baselines' }
-BaselineOfLaunchpad >> setUpPharo9Packages: spec [
-
-	spec
-		package: 'Launchpad-Tracing-Fuel-Legacy' with: [ spec requires: 'Launchpad-Tracing' ];
-		group: 'Deployment' with: 'Launchpad-Tracing-Fuel-Legacy';
-		group: 'Tests' with: 'Launchpad-Tracing-Fuel-Legacy'
 ]
 
 { #category : 'baselines' }
