@@ -117,5 +117,5 @@ Documentation lives in the `docs/` folder, licensed under CC BY-SA 4.0., and org
 | --- | --- |
 | `docs/how-to/` | Step-by-step guides for accomplishing specific tasks |
 | `docs/reference/` | Reference material (APIs, configuration options, etc.) |
-| `docs/tutorials/` | Learning-oriented walkthroughs for newcomers |
-| `docs/explanations/` | Clarifications and in-depth discussions of concepts |
+| `docs/tutorial/` | Learning-oriented walkthroughs for newcomers |
+| `docs/explanation/` | Clarifications and in-depth discussions of concepts |
