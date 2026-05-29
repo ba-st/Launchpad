@@ -5,6 +5,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    ignore:
+      - dependency-name: "ba-st-actions/pharo-ci"
     groups:
       github-actions:
         patterns:
