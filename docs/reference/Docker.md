@@ -35,7 +35,10 @@ CMD [ "launchpad-start", "app-name" , "--parameter=value" ]
 
 - `LAUNCHPAD__COMMAND_SERVER_PORT` defines in which port is listening the TCP
   command server. Defaults to 22222.
-- `LAUNCHPAD__LOG_FORMAT` can be set to `json` to enable structured logging
+- `LAUNCHPAD__LOG_FORMAT` can be set to `json` to enable structured logging.
+- `LAUNCHPAD__SETTINGS_FILE` defines the path to a settings file to load for
+  application configuration. Supports INI and JSON formats (see the
+  [configuration reference](Configuration.md) for details).
 
 ## Docker support for GemStone/S 64
 

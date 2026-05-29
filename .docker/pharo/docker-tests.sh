@@ -109,7 +109,13 @@ print_success "OK"
 print_info "Running launchpad-start greeter test"
 executeWithArguments docker run launchpad-examples:sut launchpad-start greeter --name=Juan
 assertOutputIncludesMessage "Hi Juan!" out
-print_success " Just name, OK"
+print_success " Just name via command-line, OK"
+SETTINGS_FILE=$(mktemp --suffix=.ini)
+echo "name = Maria" > "$SETTINGS_FILE"
+executeWithArguments docker run -v "$SETTINGS_FILE:/tmp/settings.ini" -e LAUNCHPAD__SETTINGS_FILE=/tmp/settings.ini launchpad-examples:sut launchpad-start greeter
+rm -f "$SETTINGS_FILE"
+assertOutputIncludesMessage "Hi Maria!" out
+print_success " Just name via settings file env var, OK"
 executeWithArguments docker run launchpad-examples:sut launchpad-start greeter --name=Julia --title=Miss
 assertOutputIncludesMessage "Hi Miss Julia!" out
 print_success " Name and title, OK"

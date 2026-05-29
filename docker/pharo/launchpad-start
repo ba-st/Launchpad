@@ -12,7 +12,7 @@ termination_handler() {
   if [ $pid -ne 0 ]; then
     echo
     echo 'SIGTERM received, shutting down the application'
-    echo "SHUTDOWN" | nc localhost $LAUNCHPAD__COMMAND_SERVER_PORT
+    echo "SHUTDOWN" | nc localhost "$LAUNCHPAD__COMMAND_SERVER_PORT"
     wait "$pid"
     exit_status=$?
   fi
@@ -21,11 +21,14 @@ termination_handler() {
 
 trap 'termination_handler' SIGTERM
 
-STRUCTURED_LOGGING=
+EXTRA_ARGS=()
 if [[ "$LAUNCHPAD__LOG_FORMAT" == "json" ]]; then
-    STRUCTURED_LOGGING=--enable-structured-logging
+    EXTRA_ARGS+=(--enable-structured-logging)
+fi
+if [[ -n "$LAUNCHPAD__SETTINGS_FILE" ]]; then
+    EXTRA_ARGS+=("--settings-file=$LAUNCHPAD__SETTINGS_FILE")
 fi
 
-launchpad start $STRUCTURED_LOGGING --enable-tcp-command-server=$LAUNCHPAD__COMMAND_SERVER_PORT "$@" &
+launchpad start "${EXTRA_ARGS[@]}" --enable-tcp-command-server="$LAUNCHPAD__COMMAND_SERVER_PORT" "$@" &
 pid="$!"
 wait "$pid"
