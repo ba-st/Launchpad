@@ -44,7 +44,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         if: ${{ github.event_name != 'pull_request' }}
         with:
-          image-ref: ghcr.io/${{ github.repository_owner }}/launchpad:${{ github.ref_name }}
+          image-ref: ghcr.io/${{ github.repository_owner }}/launchpad:${{ steps.docker_meta.outputs.version }}
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
@@ -55,4 +55,4 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         with:
           sarif_file: 'trivy-results.sarif'
-          category: ghcr.io/${{ github.repository_owner }}/launchpad:${{ github.ref_name }}
+          category: ghcr.io/${{ github.repository_owner }}/launchpad:${{ steps.docker_meta.outputs.version }}
