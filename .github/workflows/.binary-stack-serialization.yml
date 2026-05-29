@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Load Image and Run Tests
-        uses: ba-st-actions/pharo-ci@v10
+        uses: ba-st-actions/pharo-ci@v13
         with:
           spec: .smalltalkci/.binary-stack-serialization.ston
         env:
@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Load Image and Run Tests
-        uses: ba-st-actions/pharo-ci@v11
+        uses: ba-st-actions/pharo-ci@v13
         with:
           spec: .smalltalkci/.binary-stack-serialization.ston
         env:
@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Load Image and Run Tests
-        uses: ba-st-actions/pharo-ci@v12
+        uses: ba-st-actions/pharo-ci@v13
         with:
           spec: .smalltalkci/.binary-stack-serialization.ston
         env:
