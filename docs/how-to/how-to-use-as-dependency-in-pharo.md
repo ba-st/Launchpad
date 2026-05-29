@@ -16,7 +16,7 @@ the package in your product baseline:
 
       spec
         baseline: 'Launchpad'
-        with: [ spec repository: 'github://github://ba-st/Launchpad:v{XX}' ];
+        with: [ spec repository: 'github://ba-st/Launchpad:v{XX}' ];
         project: 'Launchpad-Deployment'
         copyFrom: 'Launchpad' with: [ spec loads: 'Deployment' ]
     ```

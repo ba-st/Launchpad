@@ -248,7 +248,9 @@ $ launchpad start greeter
                 launchpad-start - Start the selected application
   SYNOPSYS
                 launchpad start [--help|-h] [--debug-mode]
-                  [--settings-file=<filename>] [--dry-run] <app> [<parameters>]
+                  [--settings-file=<filename>] [--enable-structured-logging]
+                  [--enable-tcp-command-server=<listeningPort>]
+                  [--dry-run] <app> [<parameters>]
   DESCRIPTION
                 Start the application selected via <app>.
 
