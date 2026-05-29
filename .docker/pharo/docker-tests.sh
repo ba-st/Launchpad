@@ -112,6 +112,7 @@ assertOutputIncludesMessage "Hi Juan!" out
 print_success " Just name via command-line, OK"
 SETTINGS_FILE=$(mktemp --suffix=.ini)
 echo "name = Maria" > "$SETTINGS_FILE"
+chmod +r "$SETTINGS_FILE"
 executeWithArguments docker run -v "$SETTINGS_FILE:/tmp/settings.ini" -e LAUNCHPAD__SETTINGS_FILE=/tmp/settings.ini launchpad-examples:sut launchpad-start greeter
 rm -f "$SETTINGS_FILE"
 assertOutputIncludesMessage "Hi Maria!" out
