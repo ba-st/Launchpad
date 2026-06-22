@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pharo64-10
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Load Image and Run Tests
         uses: ba-st-actions/pharo-ci@v10
         with:
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pharo64-11
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Load Image and Run Tests
         uses: ba-st-actions/pharo-ci@v11
         with:
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pharo64-12
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Load Image and Run Tests
         uses: ba-st-actions/pharo-ci@v12
         with:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pharo64-13
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Load Image and Run Tests
         uses: ba-st-actions/pharo-ci@v13
         with:
