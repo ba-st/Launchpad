@@ -42,6 +42,23 @@ fi
 # list GemStone services
 gslist -cvl >> "${GEMSTONE_LOG_DIR}/startnetldi.log"
 
-topaz -l -q -I "${LAUNCHPAD_TOPAZ_SCRIPT}" -S "${GEMSTONE_GLOBAL_DIR}/command-line-handler.tpz" -- launchpad "$@" &
+# Translate Launchpad environment variables into start command options
+EXTRA_ARGS=()
+if [[ "$LAUNCHPAD__LOG_FORMAT" == "json" ]]; then
+    EXTRA_ARGS+=(--enable-structured-logging)
+fi
+if [[ -n "$LAUNCHPAD__SETTINGS_FILE" ]]; then
+    EXTRA_ARGS+=("--settings-file=$LAUNCHPAD__SETTINGS_FILE")
+fi
+
+# These options are only valid for the start command and must precede the <app>
+# argument, so inject them right after the start subcommand
+LAUNCHPAD_ARGS=("$@")
+if [[ "${1:-}" == "start" ]]; then
+    shift
+    LAUNCHPAD_ARGS=(start "${EXTRA_ARGS[@]}" "$@")
+fi
+
+topaz -l -q -I "${LAUNCHPAD_TOPAZ_SCRIPT}" -S "${GEMSTONE_GLOBAL_DIR}/command-line-handler.tpz" -- launchpad "${LAUNCHPAD_ARGS[@]}" &
 pid="$!"
 wait "$pid"
