@@ -101,6 +101,7 @@ docker buildx build --tag launchpad-gs64:sut docker/gs64-"$GS64_VERSION"
    --file .docker/gs64/Dockerfile \
    .
 
+EXTRA_DOCKER_OPTIONS=()
 function run_launchpad_gem(){
   executeWithArguments docker run \
   -e TZ="America/Argentina/Buenos_Aires" \
@@ -108,12 +109,21 @@ function run_launchpad_gem(){
   --cap-add=SYS_RESOURCE \
   --network=launchpad-net \
   --volume="$PWD"/.docker/gs64/gem.conf:/opt/gemstone/conf/gem.conf \
+  "${EXTRA_DOCKER_OPTIONS[@]}" \
   launchpad-examples-gs64:sut "$@"
 }
 
 print_info "Running basic test"
 run_launchpad_gem
 assertOutputIncludesMessage '[INFO]' out
+assertOutputIncludesMessage "Hi Mr. DJ!" out
+print_success "OK"
+
+print_info "Running basic test with structured logging"
+EXTRA_DOCKER_OPTIONS=(-e LAUNCHPAD__LOG_FORMAT=json)
+run_launchpad_gem
+EXTRA_DOCKER_OPTIONS=()
+assertOutputIncludesMessage '"level":"INFO"' out
 assertOutputIncludesMessage "Hi Mr. DJ!" out
 print_success "OK"
 
@@ -149,6 +159,15 @@ print_success " Just name, OK"
 run_launchpad_gem launchpad start greeter --name=Julia --title=Miss
 assertOutputIncludesMessage "Hi Miss Julia!" out
 print_success " Name and title, OK"
+SETTINGS_FILE=$(mktemp --suffix=.ini)
+echo "name = Maria" > "$SETTINGS_FILE"
+chmod +r "$SETTINGS_FILE"
+EXTRA_DOCKER_OPTIONS=(-v "$SETTINGS_FILE:/tmp/settings.ini" -e LAUNCHPAD__SETTINGS_FILE=/tmp/settings.ini)
+run_launchpad_gem launchpad start greeter
+EXTRA_DOCKER_OPTIONS=()
+rm -f "$SETTINGS_FILE"
+assertOutputIncludesMessage "Hi Maria!" out
+print_success " Just name via settings file env var, OK"
 run_launchpad_gem launchpad start greeter --title=Miss
 assertOutputIncludesMessage "\[ERROR\] \"Name\" parameter not provided. You must provide one." err
 print_success " Missing name, OK"
