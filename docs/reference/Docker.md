@@ -62,3 +62,10 @@ CMD [ "launchpad", "start", "app-name" , "--parameter=value" ]
 
 > Note that `ghcr.io/ba-st/launchpad-gs64` packages are deprecated and not receiving
 > more updates. Use `ghcr.io/ba-st/launchpad-gs64-3.7.1` instead.
+
+### Environment variables
+
+- `LAUNCHPAD__LOG_FORMAT` can be set to `json` to enable structured logging.
+- `LAUNCHPAD__SETTINGS_FILE` defines the path to a settings file to load for
+  application configuration. Supports INI and JSON formats (see the
+  [configuration reference](Configuration.md) for details).
