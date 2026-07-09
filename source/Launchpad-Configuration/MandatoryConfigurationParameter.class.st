@@ -1,23 +1,22 @@
 Class {
-	#name : 'MandatoryConfigurationParameter',
-	#superclass : 'ConfigurationParameter',
+	#name : #MandatoryConfigurationParameter,
+	#superclass : #ConfigurationParameter,
 	#instVars : [
 		'name',
 		'summary',
 		'sections',
 		'converter'
 	],
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MandatoryConfigurationParameter class >> named: aName describedBy: aDescription [
 
 	^ self named: aName describedBy: aDescription inside: #(  )
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MandatoryConfigurationParameter class >> named: aName describedBy: aDescription convertingWith: aConverterAction [
 
 	^ self named: aName
@@ -26,7 +25,7 @@ MandatoryConfigurationParameter class >> named: aName describedBy: aDescription 
 		  convertingWith: aConverterAction
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MandatoryConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection [
 
 	^ self named: aName
@@ -35,7 +34,7 @@ MandatoryConfigurationParameter class >> named: aName describedBy: aDescription 
 		  convertingWith: #yourself
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MandatoryConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection convertingWith: aConverterAction [
 
 	self assertNotEmpty: aName and: aDescription.
@@ -46,7 +45,7 @@ MandatoryConfigurationParameter class >> named: aName describedBy: aDescription 
 		  convertingWith: aConverterAction
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MandatoryConfigurationParameter >> initializeNamed: aName describedBy: aDescription inside: aSectionCollection convertingWith: aConverterAction [
 
 	name := aName.
@@ -55,13 +54,13 @@ MandatoryConfigurationParameter >> initializeNamed: aName describedBy: aDescript
 	converter := aConverterAction
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MandatoryConfigurationParameter >> name [
 
 	^ name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 MandatoryConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream [
 
 	stream
@@ -72,7 +71,7 @@ MandatoryConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream 
 		nextPutAll: '>'
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 MandatoryConfigurationParameter >> printOn: stream [
 
 	stream
@@ -86,19 +85,19 @@ MandatoryConfigurationParameter >> printOn: stream [
 		nextPut: $.
 ]
 
-{ #category : 'resolving' }
+{ #category : #resolving }
 MandatoryConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ aConfigurationProvider valueFor: self ifFound: converter ifNone: aBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MandatoryConfigurationParameter >> sections [
 
 	^ sections
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MandatoryConfigurationParameter >> summary [
 
 	^ summary

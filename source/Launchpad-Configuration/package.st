@@ -1,1 +1,1 @@
-Package { #name : 'Launchpad-Configuration' }
+Package { #name : #'Launchpad-Configuration' }

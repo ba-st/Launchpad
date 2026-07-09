@@ -1,28 +1,27 @@
 Class {
-	#name : 'ConfigurationFromIniSettingsFileProvider',
-	#superclass : 'ConfigurationFromSettingsFileProvider',
+	#name : #ConfigurationFromIniSettingsFileProvider,
+	#superclass : #ConfigurationFromSettingsFileProvider,
 	#instVars : [
 		'fileReference',
 		'iniData',
 		'nextProvider'
 	],
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 ConfigurationFromIniSettingsFileProvider class >> canHandle: aFileReference [
 
 	^ aFileReference extension = 'ini'
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 ConfigurationFromIniSettingsFileProvider class >> loading: anIniFileReference chainedWith: aConfigurationProvider [
 
 	^ self new initializeLoading: anIniFileReference chainedWith: aConfigurationProvider
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ConfigurationFromIniSettingsFileProvider >> initializeLoading: aFileReference chainedWith: aConfigurationProvider [
 
 	fileReference := aFileReference.
@@ -30,20 +29,20 @@ ConfigurationFromIniSettingsFileProvider >> initializeLoading: aFileReference ch
 	nextProvider := aConfigurationProvider
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ConfigurationFromIniSettingsFileProvider >> loadConfiguration [
 
 	fileReference readStreamDo: [ :stream | iniData := ( IniReader on: stream ) parse ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ConfigurationFromIniSettingsFileProvider >> reloadConfiguration [
 
 	self loadConfiguration.
 	nextProvider reloadConfiguration
 ]
 
-{ #category : 'resolving' }
+{ #category : #resolving }
 ConfigurationFromIniSettingsFileProvider >> valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock [
 
 	^ iniData

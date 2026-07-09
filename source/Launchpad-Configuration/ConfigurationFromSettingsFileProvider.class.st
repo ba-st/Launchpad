@@ -1,30 +1,29 @@
 Class {
-	#name : 'ConfigurationFromSettingsFileProvider',
-	#superclass : 'ConfigurationProvider',
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#name : #ConfigurationFromSettingsFileProvider,
+	#superclass : #ConfigurationProvider,
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 ConfigurationFromSettingsFileProvider class >> canHandle: aFileReference [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 ConfigurationFromSettingsFileProvider class >> isAbstract [
 
 	<ignoreForCoverage>
 	^ self = ConfigurationFromSettingsFileProvider
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 ConfigurationFromSettingsFileProvider class >> loading: aFileReference [
 
 	^ self loading: aFileReference chainedWith: NullConfigurationProvider new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 ConfigurationFromSettingsFileProvider class >> loading: aFileReference chainedWith: aConfigurationProvider [
 
 	^ self subclasses detect: [ :providerClass | providerClass canHandle: aFileReference ]

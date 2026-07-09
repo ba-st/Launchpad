@@ -1,68 +1,67 @@
 Class {
-	#name : 'SensitiveConfigurationParameter',
-	#superclass : 'ConfigurationParameter',
+	#name : #SensitiveConfigurationParameter,
+	#superclass : #ConfigurationParameter,
 	#instVars : [
 		'parameter'
 	],
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 SensitiveConfigurationParameter class >> over: aConfigurationParameter [
 
 	^ self new initializeOver: aConfigurationParameter
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 SensitiveConfigurationParameter >> asSensitive [
 
 	^ self
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 SensitiveConfigurationParameter >> initializeOver: aConfigurationParameter [
 
 	parameter := aConfigurationParameter
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SensitiveConfigurationParameter >> name [
 
 	^ parameter name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 SensitiveConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream [
 
 	parameter printAsCommandLineArgumentTemplateOn: stream
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 SensitiveConfigurationParameter >> printOn: stream [
 
 	parameter printOn: stream
 ]
 
-{ #category : 'resolving' }
+{ #category : #resolving }
 SensitiveConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ parameter resolveValueUsing: aConfigurationProvider ifUnable: aBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SensitiveConfigurationParameter >> sections [
 
 	^ parameter sections
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SensitiveConfigurationParameter >> summary [
 
 	^ parameter summary
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 SensitiveConfigurationParameter >> valueToLogFrom: configuration [
 
 	^ '**********'

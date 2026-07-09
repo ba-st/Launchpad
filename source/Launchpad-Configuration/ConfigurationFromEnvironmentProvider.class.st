@@ -1,38 +1,37 @@
 Class {
-	#name : 'ConfigurationFromEnvironmentProvider',
-	#superclass : 'ConfigurationProvider',
+	#name : #ConfigurationFromEnvironmentProvider,
+	#superclass : #ConfigurationProvider,
 	#instVars : [
 		'nextProvider'
 	],
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 ConfigurationFromEnvironmentProvider class >> chainedWith: aConfigurationProvider [
 
 	^ super new initializeChainedWith: aConfigurationProvider
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 ConfigurationFromEnvironmentProvider class >> new [
 
 	^ self chainedWith: NullConfigurationProvider new
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ConfigurationFromEnvironmentProvider >> initializeChainedWith: aConfigurationProvider [
 
 	nextProvider := aConfigurationProvider
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ConfigurationFromEnvironmentProvider >> reloadConfiguration [
 
 	^ nextProvider reloadConfiguration
 ]
 
-{ #category : 'resolving' }
+{ #category : #resolving }
 ConfigurationFromEnvironmentProvider >> valueFor: aConfigurationParameter ifFound: aPresentBlock ifNone: aFailBlock [
 
 	^ LanguagePlatform current os

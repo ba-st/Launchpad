@@ -1,11 +1,10 @@
 Class {
-	#name : 'ConfigurationParameter',
-	#superclass : 'Object',
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#name : #ConfigurationParameter,
+	#superclass : #Object,
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'private - asserting' }
+{ #category : #'private - asserting' }
 ConfigurationParameter class >> assertNotEmpty: aName and: aDescription [
 
 	AssertionCheckerBuilder new
@@ -18,14 +17,14 @@ ConfigurationParameter class >> assertNotEmpty: aName and: aDescription [
 		buildAndCheck
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 ConfigurationParameter class >> isAbstract [
 
 	<ignoreForCoverage>
 	^ self = ConfigurationParameter
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> asAttributeName: string [
 
 	| parts |
@@ -35,7 +34,7 @@ ConfigurationParameter >> asAttributeName: string [
 		    parts allButFirstDo: [ :word | stream nextPutAll: word capitalized ] ] )
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> asIniFileSection [
 
 	^ String streamContents: [ :stream | 
@@ -44,7 +43,7 @@ ConfigurationParameter >> asIniFileSection [
 		  ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> asIniFileSectionName: string [
 
 	^ string collect: [ :character | 
@@ -53,19 +52,19 @@ ConfigurationParameter >> asIniFileSectionName: string [
 		  ]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 ConfigurationParameter >> asSensitive [
 
 	^ SensitiveConfigurationParameter over: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> attributeName [
 
 	^ self asAttributeName: self name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> commandLineArgumentName [
 
 	| transformer |
@@ -86,7 +85,7 @@ ConfigurationParameter >> commandLineArgumentName [
 		  ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> environmentVariableName [
 
 	| transformer |
@@ -107,50 +106,50 @@ ConfigurationParameter >> environmentVariableName [
 		  ]
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 ConfigurationParameter >> logValueIn: configuration [
 
 	LogRecord emitInfo:
 		( '<1s>: <2s>' expandMacrosWith: self name with: ( self valueToLogFrom: configuration ) asString )
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> name [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 ConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'resolving' }
+{ #category : #resolving }
 ConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> sections [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> sectionsAsAttributeNames [
 
 	^ self sections collect: [ :section | self asAttributeName: section ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConfigurationParameter >> summary [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'logging' }
+{ #category : #logging }
 ConfigurationParameter >> valueToLogFrom: configuration [
 
 	^ configuration valueFor: self

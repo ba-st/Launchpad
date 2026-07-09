@@ -1,6 +1,6 @@
 Class {
-	#name : 'OptionalConfigurationParameter',
-	#superclass : 'ConfigurationParameter',
+	#name : #OptionalConfigurationParameter,
+	#superclass : #ConfigurationParameter,
 	#instVars : [
 		'name',
 		'summary',
@@ -9,11 +9,10 @@ Class {
 		'default',
 		'emitWarningAction'
 	],
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration'
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 OptionalConfigurationParameter class >> named: aName describedBy: aDescription defaultingTo: aDefaultValue [
 
 	^ self named: aName
@@ -22,7 +21,7 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription d
 		  convertingWith: #yourself
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 OptionalConfigurationParameter class >> named: aName describedBy: aDescription defaultingTo: aDefaultValue convertingWith: aConverterAction [
 
 	^ self named: aName
@@ -32,7 +31,7 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription d
 		  convertingWith: aConverterAction
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 OptionalConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection defaultingTo: aDefaultValue [
 
 	^ self named: aName
@@ -42,7 +41,7 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 		  convertingWith: #yourself
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 OptionalConfigurationParameter class >> named: aName describedBy: aDescription inside: aSectionCollection defaultingTo: aDefaultValue convertingWith: aConverterAction [
 
 	self assertNotEmpty: aName and: aDescription.
@@ -53,13 +52,13 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 		  convertingWith: aConverterAction
 ]
 
-{ #category : 'configuring' }
+{ #category : #configuring }
 OptionalConfigurationParameter >> doNotWarnWhenUsingDefault [
 
 	emitWarningAction := [  ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 OptionalConfigurationParameter >> initializeNamed: aName describedBy: aDescription inside: aSectionCollection defaultingTo: aDefaultValue convertingWith: aConverterAction [
 
 	name := aName.
@@ -73,13 +72,13 @@ OptionalConfigurationParameter >> initializeNamed: aName describedBy: aDescripti
 	                 ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 OptionalConfigurationParameter >> name [
 
 	^ name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 OptionalConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream [
 
 	stream
@@ -90,7 +89,7 @@ OptionalConfigurationParameter >> printAsCommandLineArgumentTemplateOn: stream [
 		nextPutAll: '>]'
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 OptionalConfigurationParameter >> printOn: stream [
 
 	stream
@@ -104,7 +103,7 @@ OptionalConfigurationParameter >> printOn: stream [
 		nextPut: $.
 ]
 
-{ #category : 'resolving' }
+{ #category : #resolving }
 OptionalConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUnable: aBlock [
 
 	^ aConfigurationProvider valueFor: self ifFound: converter ifNone: [ 
@@ -113,13 +112,13 @@ OptionalConfigurationParameter >> resolveValueUsing: aConfigurationProvider ifUn
 		  ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 OptionalConfigurationParameter >> sections [
 
 	^ sections
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 OptionalConfigurationParameter >> summary [
 
 	^ '<1s>. Defaults to <2s>' expandMacrosWith: summary with: ( default = '' ifTrue: [ 'nothing' ]

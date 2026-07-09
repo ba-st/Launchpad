@@ -1,25 +1,21 @@
 Class {
-	#name : 'ApplicationConfiguration',
-	#superclass : 'Object',
+	#name : #ApplicationConfiguration,
+	#superclass : #Object,
 	#instVars : [
 		'parameters',
 		'provider',
 		'values'
 	],
-	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration',
-	#'gs_options' : [
-		'dbTransient'
-	]
+	#category : 'Launchpad-Configuration'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 ApplicationConfiguration class >> forAll: parameters providedBy: aConfigurationProvider [
 
 	^ self new initializeForAll: parameters providedBy: aConfigurationProvider
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 ApplicationConfiguration >> asCommandLineOn: stream [
 
 	( parameters sorted: #commandLineArgumentName ascending ) do: [ :parameter | 
@@ -32,7 +28,7 @@ ApplicationConfiguration >> asCommandLineOn: stream [
 		]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 ApplicationConfiguration >> asEnvironmentOn: stream [
 
 	( parameters sorted: #environmentVariableName ascending ) do: [ :parameter | 
@@ -48,7 +44,7 @@ ApplicationConfiguration >> asEnvironmentOn: stream [
 		]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ApplicationConfiguration >> asIniFile: aParameterCollection on: stream [
 
 	( aParameterCollection sorted: #attributeName ascending ) do: [ :parameter | 
@@ -66,7 +62,7 @@ ApplicationConfiguration >> asIniFile: aParameterCollection on: stream [
 		]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 ApplicationConfiguration >> asIniFileOn: stream [
 
 	| settingsInSection |
@@ -86,13 +82,13 @@ ApplicationConfiguration >> asIniFileOn: stream [
 		]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 ApplicationConfiguration >> asJson [
 
 	^ String streamContents: [ :stream | self asJsonOn: stream ]
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 ApplicationConfiguration >> asJsonOn: stream [
 
 	^ ( NeoJSONWriterSortingKeys on: stream )
@@ -101,7 +97,7 @@ ApplicationConfiguration >> asJsonOn: stream [
 		  nextPut: values
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ApplicationConfiguration >> assert: section isNotInConflictWithParameterNamed: name [
 
 	"Sections in the configuration are instances of NeoJSONObject, if we get 
@@ -112,7 +108,7 @@ ApplicationConfiguration >> assert: section isNotInConflictWithParameterNamed: n
 		raising: ConflictingObjectFound
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ApplicationConfiguration >> containingSectionFor: parameter startingAt: resolvedValues [
 
 	| currentSection |
@@ -126,13 +122,13 @@ ApplicationConfiguration >> containingSectionFor: parameter startingAt: resolved
 	^ currentSection
 ]
 
-{ #category : 'reflective operations' }
+{ #category : #'reflective operations' }
 ApplicationConfiguration >> doesNotUnderstand: message [
 
 	^ self valueAt: message selector ifAbsent: [ super doesNotUnderstand: message ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ApplicationConfiguration >> initializeForAll: aParameterCollection providedBy: aConfigurationProvider [
 
 	parameters := aParameterCollection.
@@ -140,7 +136,7 @@ ApplicationConfiguration >> initializeForAll: aParameterCollection providedBy: a
 	self resolveParameterValues
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ApplicationConfiguration >> missingConfigurationFor: parameter [
 
 	LogRecord emitError:
@@ -149,20 +145,20 @@ ApplicationConfiguration >> missingConfigurationFor: parameter [
 		( '"<1s>" parameter not present.' expandMacrosWith: parameter name )
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ApplicationConfiguration >> parameters [
 
 	^ parameters
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 ApplicationConfiguration >> reload [
 
 	provider reloadConfiguration.
 	self resolveParameterValues
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ApplicationConfiguration >> resolveParameterValues [
 
 	| section resolvedValues |
@@ -181,31 +177,31 @@ ApplicationConfiguration >> resolveParameterValues [
 	self synchronizeValuesWith: resolvedValues
 ]
 
-{ #category : 'reflective operations' }
+{ #category : #'reflective operations' }
 ApplicationConfiguration >> respondsTo: selector [
 
 	^ ( super respondsTo: selector ) or: [ values includesKey: selector ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ApplicationConfiguration >> signalAsConflictingParameter: parameter [
 
 	ConflictingObjectFound signal: ( 'Conflicting parameter: "<1s>"' expandMacrosWith: parameter name )
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ApplicationConfiguration >> synchronizeValuesWith: resolvedValues [
 
 	values := resolvedValues
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ApplicationConfiguration >> valueAt: aKey [
 
 	^ self valueAt: aKey ifAbsent: [ KeyNotFound signalFor: aKey ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ApplicationConfiguration >> valueAt: aKey ifAbsent: aBlock [
 	"For configuration access without DNU handling, provide standard Dictionary api. 
 	With normal configuration parameters, there should never be an absent value, but provide the standard ifAbsent option for correctness"
@@ -213,7 +209,7 @@ ApplicationConfiguration >> valueAt: aKey ifAbsent: aBlock [
 	^ values at: aKey ifAbsent: aBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ApplicationConfiguration >> valueFor: aParameter [
 
 	| section |
