@@ -46,6 +46,13 @@ MandatoryConfigurationParameter class >> named: aName describedBy: aDescription 
 		  convertingWith: aConverterAction
 ]
 
+{ #category : 'accessing' }
+MandatoryConfigurationParameter >> basicSummary [
+	"Private - Returns the summary without any formatting."
+
+	^ summary
+]
+
 { #category : 'initialization' }
 MandatoryConfigurationParameter >> initializeNamed: aName describedBy: aDescription inside: aSectionCollection convertingWith: aConverterAction [
 

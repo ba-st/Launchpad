@@ -18,7 +18,7 @@ SensitiveConfigurationParameterTest >> testAccessing [
 
 	self
 		assert: parameter name equals: 'Public URL';
-		assert: parameter summary equals: 'The service''s public URL';
+		assert: parameter summary equals: 'The service''s public URL. (SENSITIVE)';
 		assert: parameter commandLineArgumentName equals: 'public-url';
 		assert: parameter environmentVariableName equals: 'PUBLIC_URL';
 		assert: parameter attributeName equals: 'publicURL'

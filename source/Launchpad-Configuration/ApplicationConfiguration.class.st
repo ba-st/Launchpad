@@ -7,10 +7,7 @@ Class {
 		'values'
 	],
 	#category : 'Launchpad-Configuration',
-	#package : 'Launchpad-Configuration',
-	#'gs_options' : [
-		'dbTransient'
-	]
+	#package : 'Launchpad-Configuration'
 }
 
 { #category : 'instance creation' }

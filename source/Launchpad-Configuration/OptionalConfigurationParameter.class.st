@@ -54,6 +54,13 @@ OptionalConfigurationParameter class >> named: aName describedBy: aDescription i
 ]
 
 { #category : 'configuring' }
+OptionalConfigurationParameter >> basicSummary [
+	"Private - Returns the summary without any formatting."
+
+	^ summary
+]
+
+{ #category : 'configuring' }
 OptionalConfigurationParameter >> doNotWarnWhenUsingDefault [
 
 	emitWarningAction := [  ]
